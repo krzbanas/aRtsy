@@ -1,3 +1,7 @@
+# aRtsy 0.1.9
+
+- Added new function `canvas_mesh()`.
+
 # aRtsy 0.1.8
 
 **New features**

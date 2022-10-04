@@ -29,6 +29,10 @@ iterate_maze <- function(X, x, y) {
     .Call('_aRtsy_iterate_maze', PACKAGE = 'aRtsy', X, x, y)
 }
 
+iterate_mesh <- function(iterations, start, order, points, centers, radii, increase) {
+    .Call('_aRtsy_iterate_mesh', PACKAGE = 'aRtsy', iterations, start, order, points, centers, radii, increase)
+}
+
 get_closest_node <- function(attractor_x, attractor_y, nodes_x, nodes_y, attraction_distance) {
     .Call('_aRtsy_get_closest_node', PACKAGE = 'aRtsy', attractor_x, attractor_y, nodes_x, nodes_y, attraction_distance)
 }

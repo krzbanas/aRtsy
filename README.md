@@ -62,6 +62,7 @@ saveCanvas(artwork, filename = "myArtwork.png")
 * [`canvas_chladni()`](#chladni-figures)
 * [`canvas_flow()`](#flow-fields)
 * [`canvas_maze()`](#mazes)
+* [`canvas_mesh()`](#meshes)
 * [`canvas_petri()`](#petri-dishes)
 * [`canvas_planet()`](#planets)
 * [`canvas_splits()`](#split-lines)
@@ -215,6 +216,24 @@ You can use the `canvas_maze()` function to make your own artwork using this alg
 set.seed(1)
 canvas_maze(color = "#fafafa")
 # see ?canvas_maze for more input parameters of this function
+```
+
+#### Meshes
+
+This artwork creates meshes.
+
+<p align="center">
+  <img src='https://github.com/koenderks/aRtsy/raw/development/png/meshes/2022-10-03.png' width='30%'>
+  <img src='https://github.com/koenderks/aRtsy/raw/development/png/meshes/2022-10-02.png' width='30%'>
+  <img src='https://github.com/koenderks/aRtsy/raw/development/png/meshes/2022-10-04.png' width='30%'>
+</p>
+
+You can use the `canvas_mesh()` function to make your own artwork using this algorithm.
+
+```r
+set.seed(1)
+canvas_mesh(color = "#000000")
+# see ?canvas_mesh for more input parameters of this function
 ```
 
 #### Petri dishes

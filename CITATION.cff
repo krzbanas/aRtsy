@@ -1,5 +1,5 @@
 # -----------------------------------------------------------
-# CITATION file created with {cffr} R package, v0.2.2
+# CITATION file created with {cffr} R package, v0.3.0
 # See also: https://docs.ropensci.org/cffr/
 # -----------------------------------------------------------
  
@@ -8,7 +8,7 @@ message: 'To cite package "aRtsy" in publications use:'
 type: software
 license: GPL-3.0-or-later
 title: 'aRtsy: Generative Art with ''ggplot2'''
-version: 0.1.8
+version: 0.1.9
 abstract: Provides algorithms for creating artworks in the 'ggplot2' language that
   incorporate some form of randomness.
 authors:
@@ -23,12 +23,12 @@ preferred-citation:
     given-names: Koen
     email: koen-derks@hotmail.com
   year: '2022'
-  notes: R package version 0.1.8
+  notes: R package version 0.1.9
   url: https://CRAN.R-project.org/package=aRtsy
 repository: https://CRAN.R-project.org/package=aRtsy
 repository-code: https://github.com/koenderks/aRtsy
 url: https://koenderks.github.io/aRtsy/
-date-released: '2022-05-13'
+date-released: '2022-10-04'
 contact:
 - family-names: Derks
   given-names: Koen

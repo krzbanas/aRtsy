@@ -113,6 +113,23 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// iterate_mesh
+Rcpp::DataFrame iterate_mesh(int iterations, int start, Rcpp::IntegerVector order, Rcpp::DoubleVector points, Rcpp::DoubleVector centers, Rcpp::DoubleVector radii, Rcpp::DoubleVector increase);
+RcppExport SEXP _aRtsy_iterate_mesh(SEXP iterationsSEXP, SEXP startSEXP, SEXP orderSEXP, SEXP pointsSEXP, SEXP centersSEXP, SEXP radiiSEXP, SEXP increaseSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< int >::type iterations(iterationsSEXP);
+    Rcpp::traits::input_parameter< int >::type start(startSEXP);
+    Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type order(orderSEXP);
+    Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type points(pointsSEXP);
+    Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type centers(centersSEXP);
+    Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type radii(radiiSEXP);
+    Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type increase(increaseSEXP);
+    rcpp_result_gen = Rcpp::wrap(iterate_mesh(iterations, start, order, points, centers, radii, increase));
+    return rcpp_result_gen;
+END_RCPP
+}
 // get_closest_node
 Rcpp::IntegerVector get_closest_node(Rcpp::NumericVector attractor_x, Rcpp::NumericVector attractor_y, Rcpp::NumericVector nodes_x, Rcpp::NumericVector nodes_y, double attraction_distance);
 RcppExport SEXP _aRtsy_get_closest_node(SEXP attractor_xSEXP, SEXP attractor_ySEXP, SEXP nodes_xSEXP, SEXP nodes_ySEXP, SEXP attraction_distanceSEXP) {
@@ -335,6 +352,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_aRtsy_draw_collatz", (DL_FUNC) &_aRtsy_draw_collatz, 4},
     {"_aRtsy_iterate_flow", (DL_FUNC) &_aRtsy_iterate_flow, 8},
     {"_aRtsy_iterate_maze", (DL_FUNC) &_aRtsy_iterate_maze, 3},
+    {"_aRtsy_iterate_mesh", (DL_FUNC) &_aRtsy_iterate_mesh, 7},
     {"_aRtsy_get_closest_node", (DL_FUNC) &_aRtsy_get_closest_node, 5},
     {"_aRtsy_kill_attractors", (DL_FUNC) &_aRtsy_kill_attractors, 5},
     {"_aRtsy_draw_circle", (DL_FUNC) &_aRtsy_draw_circle, 4},
