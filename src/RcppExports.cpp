@@ -82,6 +82,20 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// iterate_flame
+Rcpp::DataFrame iterate_flame(int iterations, Rcpp::DoubleVector weights, Rcpp::DoubleVector point, Rcpp::DoubleVector coef);
+RcppExport SEXP _aRtsy_iterate_flame(SEXP iterationsSEXP, SEXP weightsSEXP, SEXP pointSEXP, SEXP coefSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< int >::type iterations(iterationsSEXP);
+    Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type weights(weightsSEXP);
+    Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type point(pointSEXP);
+    Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type coef(coefSEXP);
+    rcpp_result_gen = Rcpp::wrap(iterate_flame(iterations, weights, point, coef));
+    return rcpp_result_gen;
+END_RCPP
+}
 // iterate_flow
 Rcpp::DataFrame iterate_flow(arma::mat angles, int j, int iters, int left, int right, int top, int bottom, double step);
 RcppExport SEXP _aRtsy_iterate_flow(SEXP anglesSEXP, SEXP jSEXP, SEXP itersSEXP, SEXP leftSEXP, SEXP rightSEXP, SEXP topSEXP, SEXP bottomSEXP, SEXP stepSEXP) {
@@ -350,6 +364,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_aRtsy_draw_circlemap", (DL_FUNC) &_aRtsy_draw_circlemap, 6},
     {"_aRtsy_get_collatz_sequence", (DL_FUNC) &_aRtsy_get_collatz_sequence, 1},
     {"_aRtsy_draw_collatz", (DL_FUNC) &_aRtsy_draw_collatz, 4},
+    {"_aRtsy_iterate_flame", (DL_FUNC) &_aRtsy_iterate_flame, 4},
     {"_aRtsy_iterate_flow", (DL_FUNC) &_aRtsy_iterate_flow, 8},
     {"_aRtsy_iterate_maze", (DL_FUNC) &_aRtsy_iterate_maze, 3},
     {"_aRtsy_iterate_mesh", (DL_FUNC) &_aRtsy_iterate_mesh, 7},
