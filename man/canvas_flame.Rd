@@ -4,8 +4,8 @@
 \alias{canvas_flame}
 \title{Draw a Fractal Flame}
 \usage{
-canvas_flame(colors, background = "#fafafa", iterations = 500000,
-                      resolution = 1000, span = 2, weights = NULL)
+canvas_flame(colors, background = "#000000", iterations = 500000,
+                      resolution = 1000, span = 2)
 }
 \arguments{
 \item{colors}{a string or character vector specifying the color(s) used for the artwork.}
@@ -17,8 +17,6 @@ canvas_flame(colors, background = "#fafafa", iterations = 500000,
 \item{resolution}{resolution of the artwork in pixels per row/column. Increasing the resolution increases the quality of the artwork but also increases the computation time exponentially.}
 
 \item{span}{a value indicating the width.}
-
-\item{weights}{weights for the different variations.}
 }
 \value{
 A \code{ggplot} object containing the artwork.
@@ -28,10 +26,10 @@ This function draws fractal flames.
 }
 \examples{
 \donttest{
-set.seed(1)
+set.seed(2)
 
 # Simple example
-canvas_flame(colors = colorPalette("jungle"))
+canvas_flame(colors = colorPalette("origami"))
 }
 
 }

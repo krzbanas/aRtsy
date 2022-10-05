@@ -83,16 +83,20 @@ BEGIN_RCPP
 END_RCPP
 }
 // iterate_flame
-Rcpp::DataFrame iterate_flame(int iterations, Rcpp::DoubleVector weights, Rcpp::DoubleVector point, Rcpp::DoubleVector coef);
-RcppExport SEXP _aRtsy_iterate_flame(SEXP iterationsSEXP, SEXP weightsSEXP, SEXP pointSEXP, SEXP coefSEXP) {
+Rcpp::DataFrame iterate_flame(int iterations, Rcpp::DoubleVector point, Rcpp::DoubleVector w_i, arma::mat v_ij, arma::mat mat_coef, arma::mat p_coef, Rcpp::DoubleVector f_coef, Rcpp::DoubleVector p2_coef);
+RcppExport SEXP _aRtsy_iterate_flame(SEXP iterationsSEXP, SEXP pointSEXP, SEXP w_iSEXP, SEXP v_ijSEXP, SEXP mat_coefSEXP, SEXP p_coefSEXP, SEXP f_coefSEXP, SEXP p2_coefSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< int >::type iterations(iterationsSEXP);
-    Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type weights(weightsSEXP);
     Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type point(pointSEXP);
-    Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type coef(coefSEXP);
-    rcpp_result_gen = Rcpp::wrap(iterate_flame(iterations, weights, point, coef));
+    Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type w_i(w_iSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type v_ij(v_ijSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type mat_coef(mat_coefSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type p_coef(p_coefSEXP);
+    Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type f_coef(f_coefSEXP);
+    Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type p2_coef(p2_coefSEXP);
+    rcpp_result_gen = Rcpp::wrap(iterate_flame(iterations, point, w_i, v_ij, mat_coef, p_coef, f_coef, p2_coef));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -364,7 +368,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_aRtsy_draw_circlemap", (DL_FUNC) &_aRtsy_draw_circlemap, 6},
     {"_aRtsy_get_collatz_sequence", (DL_FUNC) &_aRtsy_get_collatz_sequence, 1},
     {"_aRtsy_draw_collatz", (DL_FUNC) &_aRtsy_draw_collatz, 4},
-    {"_aRtsy_iterate_flame", (DL_FUNC) &_aRtsy_iterate_flame, 4},
+    {"_aRtsy_iterate_flame", (DL_FUNC) &_aRtsy_iterate_flame, 8},
     {"_aRtsy_iterate_flow", (DL_FUNC) &_aRtsy_iterate_flow, 8},
     {"_aRtsy_iterate_maze", (DL_FUNC) &_aRtsy_iterate_maze, 3},
     {"_aRtsy_iterate_mesh", (DL_FUNC) &_aRtsy_iterate_mesh, 7},

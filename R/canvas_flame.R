@@ -17,15 +17,14 @@
 #'
 #' @description This function draws fractal flames.
 #'
-#' @usage canvas_flame(colors, background = "#fafafa", iterations = 500000,
-#'                       resolution = 1000, span = 2, weights = NULL)
+#' @usage canvas_flame(colors, background = "#000000", iterations = 500000,
+#'                       resolution = 1000, span = 2)
 #'
 #' @param colors      a string or character vector specifying the color(s) used for the artwork.
 #' @param background  a character specifying the color used for the background.
 #' @param iterations  a positive integer specifying the number of iterations of the algorithm.
 #' @param resolution  resolution of the artwork in pixels per row/column. Increasing the resolution increases the quality of the artwork but also increases the computation time exponentially.
 #' @param span        a value indicating the width.
-#' @param weights     weights for the different variations.
 #'
 #' @return A \code{ggplot} object containing the artwork.
 #'
@@ -39,32 +38,38 @@
 #'
 #' @examples
 #' \donttest{
-#' set.seed(1)
+#' set.seed(2)
 #'
 #' # Simple example
-#' canvas_flame(colors = colorPalette("jungle"))
+#' canvas_flame(colors = colorPalette("origami"))
 #' }
 #'
 #' @export
 
-canvas_flame <- function(colors, background = "#fafafa", iterations = 500000,
-                         resolution = 1000, span = 2, weights = NULL) {
+canvas_flame <- function(colors, background = "#000000", iterations = 500000,
+                         resolution = 1000, span = 2) {
   .checkUserInput(
-    iterations = iterations, resolution = resolution, background = background
+    resolution = resolution, background = background
   )
-  nfunctions <- 9
-  if (is.null(weights)) {
-    weights <- runif(nfunctions)
-  } else {
-    if (length(weights) != nfunctions) {
-      stop(paste0("'weights' must be a vector of length ", nfunctions))
-    }
+  if (iterations < 21) {
+    stop("'iterations' must be > 20")
+  }
+  nvariations <- sample(1:9, size = 1)
+  nfunc <- sample(1:9, size = 1)
+  w_i <- stats::runif(nfunc, 0, 1)
+  v_ij <- matrix(stats::runif(nfunc * nvariations, min = -1, max = 1), nrow = nfunc, ncol = nvariations)
+  for (i in 1:nrow(v_ij)) {
+    v_ij[i, ] <- v_ij[i, ] / sum(v_ij[i, ])
   }
   df <- iterate_flame(
     iterations = iterations,
-    weights = weights + 0.01,
     point = stats::runif(2, -1, 1),
-    coef = stats::runif(6, min = -10, max = 10)
+    w_i = w_i / sum(w_i),
+    v_ij = v_ij,
+    mat_coef = matrix(stats::runif(nfunc * 6, min = -1, max = 1), nrow = nfunc, ncol = 6),
+    p_coef = matrix(stats::runif(nfunc * 6, min = -1, max = 1), nrow = nfunc, ncol = 6),
+    f_coef = stats::runif(6, min = -1, max = 1),
+    p2_coef = stats::runif(6, min = -1, max = 1)
   )
   df <- df[!is.infinite(df$x) & !is.infinite(df$y), ]
   df <- df[!is.na(df$x) & !is.na(df$y), ]
