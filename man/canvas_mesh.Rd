@@ -7,7 +7,7 @@
 canvas_mesh(colors, background = "#fafafa", 
              transform = c("perlin", "fbm", "simplex", "cubic",
                            "worley", "knn", "rf", "svm"),
-             n = 301, iterations = 500, mixProb = 0)
+             lines = 500, iterations = 500, mixprob = 0)
 }
 \arguments{
 \item{colors}{a string or character vector specifying the color(s) used for the artwork.}
@@ -16,17 +16,17 @@ canvas_mesh(colors, background = "#fafafa",
 
 \item{transform}{a character specifying the type of transformation to use for the radius.}
 
-\item{n}{an integer specifying the number of lines.}
+\item{lines}{an integer specifying the number of lines to darw.}
 
 \item{iterations}{a positive integer specifying the number of iterations of the algorithm.}
 
-\item{mixProb}{a value between 0 and 1 specifying the probability of a line segment having another color.}
+\item{mixprob}{a value between 0 and 1 specifying the probability of a line segment getting another color.}
 }
 \value{
 A \code{ggplot} object containing the artwork.
 }
 \description{
-This function draws meshes.
+This function draws one or more rotating circular morphing meshes on the canvas.
 }
 \examples{
 \donttest{
@@ -36,6 +36,9 @@ set.seed(2)
 canvas_mesh(colors = colorPalette("origami"))
 }
 
+}
+\references{
+\url{http://rectangleworld.com/blog/archives/462}
 }
 \seealso{
 \code{colorPalette}

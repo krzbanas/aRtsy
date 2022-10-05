@@ -15,23 +15,25 @@
 
 #' Draw Meshes
 #'
-#' @description This function draws meshes.
+#' @description This function draws one or more rotating circular morphing meshes on the canvas.
 #'
 #' @usage canvas_mesh(colors, background = "#fafafa", 
 #'              transform = c("perlin", "fbm", "simplex", "cubic",
 #'                            "worley", "knn", "rf", "svm"),
-#'              n = 301, iterations = 500, mixProb = 0)
+#'              lines = 500, iterations = 500, mixprob = 0)
 #'
 #' @param colors         a string or character vector specifying the color(s) used for the artwork.
 #' @param background     a character specifying the color used for the background (and the hole).
 #' @param transform      a character specifying the type of transformation to use for the radius.
-#' @param n              an integer specifying the number of lines.
+#' @param lines          an integer specifying the number of lines to darw.
 #' @param iterations     a positive integer specifying the number of iterations of the algorithm.
-#' @param mixProb        a value between 0 and 1 specifying the probability of a line segment having another color.
+#' @param mixprob        a value between 0 and 1 specifying the probability of a line segment getting another color.
 #'
 #' @return A \code{ggplot} object containing the artwork.
 #'
 #' @author Koen Derks, \email{koen-derks@hotmail.com}
+#' 
+#' @references \url{http://rectangleworld.com/blog/archives/462}
 #'
 #' @keywords artwork canvas
 #'
@@ -50,38 +52,37 @@
 canvas_mesh <- function(colors, background = "#fafafa", 
                         transform = c("perlin", "fbm", "simplex", "cubic", 
                                       "worley", "knn", "rf", "svm"),
-                        n = 301, iterations = 500, mixProb = 0) {
+                        lines = 500, iterations = 500, mixprob = 0) {
   transform <- match.arg(transform)
   .checkUserInput(iterations = iterations, background = background)
   artwork <- ggplot2::ggplot()
   miny <- Inf
   maxy <- -Inf
-  xSqueeze <- 0.75
   for (j in 1:length(colors)) {
-    circle_points <- seq(-pi, pi, length.out = n)
+    circle_points <- seq(from = -pi, to = pi, length.out = lines)
     start <- stats::runif(1, min = -10, max = 10)
     centers <- data.frame(x = 0:iterations, y = c(start, start + .bmline(n = iterations, lwd = stats::runif(1, min = 1, max = 10))))
     circle_centers <- predict(stats::loess(y ~ x, data = centers), newdata = centers) 
     if (transform == "fbm") {
-      radius <- data.frame(x = 1:n, y = .bmline(n = n, lwd = stats::runif(1, min = 0.5, max = 1)))
+      radius <- data.frame(x = 1:lines, y = .bmline(n = lines, lwd = stats::runif(1, min = 0.5, max = 1)))
       circle_radius <- predict(stats::loess(y ~ x, data = radius), newdata = radius)
     } else {
-      circle_radius <- c(.noise(c(1, n), type = transform, limits = c(0.5, 1)))
+      circle_radius <- c(.noise(c(1, lines), type = transform, limits = c(0.5, 1)))
     }
-    radius_increase <- data.frame(x = 1:n, y = stats::rnorm(n, mean = 0, sd = stats::runif(1, min = 0.01, max = 0.5)))
+    radius_increase <- data.frame(x = 1:lines, y = stats::rnorm(lines, mean = 0, sd = stats::runif(1, min = 0.01, max = 0.5)))
     circle_radius_increase <- predict(stats::loess(y ~ x, data = radius_increase), newdata = radius_increase)
-    x <- rep(0:iterations, each = n) + xSqueeze * cos(circle_points)
-    mesh <- iterate_mesh(iterations, start, 1:n, circle_points, circle_centers, circle_radius, circle_radius_increase)
-    if (mixProb > 0) {
+    x <- rep(0:iterations, each = lines) + 0.75 * cos(circle_points)
+    mesh <- iterate_mesh(iterations, start, 1:lines, circle_points, circle_centers, circle_radius, circle_radius_increase)
+    if (mixprob > 0) {
       probs <- rep(1, length(colors))
-      probs[j] <- probs[j] + 1 / mixProb
-      col <- sample(colors, size = length(mesh$y), replace = TRUE, prob = probs)
+      probs[j] <- probs[j] + 1 / mixprob
+      col <- sample(colors, size = length(mesh[["y"]]), replace = TRUE, prob = probs)
     } else {
       col <- colors[j]
     }
-    df <- data.frame(x = x, y = mesh$y, z = mesh$z, col = col)
-    if (min(df$y) < miny) miny <- min(df$y)
-    if (max(df$y) > maxy) maxy <- max(df$y)
+    df <- data.frame(x = x, y = mesh[["y"]], z = mesh[["z"]], col = col)
+    if (min(df[["y"]]) < miny) miny <- min(df[["y"]])
+    if (max(df[["y"]]) > maxy) maxy <- max(df[["y"]])
     artwork <- artwork + ggplot2::geom_line(
       data = df,
       mapping = ggplot2::aes(x = x, y = y, group = z, col = col),
@@ -93,11 +94,4 @@ canvas_mesh <- function(colors, background = "#fafafa",
     ggplot2::scale_y_continuous(limits = c(miny - abs(maxy - miny) / 10, maxy + abs(maxy - miny) / 10))
   artwork <- theme_canvas(artwork, background = background)
   return(artwork)
-}
-
-shift_right <- function(x) {
-  x1 <- x[1]
-  newx <- x[-1]
-  x <- c(newx, x1)
-  return(x)
 }
