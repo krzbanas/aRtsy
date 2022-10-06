@@ -77,8 +77,13 @@ The \code{variation} argument can be used to include specific variations into th
  \item{\code{31}: Noise}
  \item{\code{32}: JuliaN}
  \item{\code{33}: JuliaScope}
- \item{\code{33}: Blur}
- \item{\code{33}: Gaussian}
+ \item{\code{34}: Blur}
+ \item{\code{35}: Gaussian}
+ \item{\code{36}: RadialBlur}
+ \item{\code{37}: Pie}
+ \item{\code{38}: Ngon}
+ \item{\code{39}: Curl}
+ \item{\code{40}: Rectangles}
 }
 }
 \examples{

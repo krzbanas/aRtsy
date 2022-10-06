@@ -72,8 +72,13 @@
 #'  \item{\code{31}: Noise}
 #'  \item{\code{32}: JuliaN}
 #'  \item{\code{33}: JuliaScope}
-#'  \item{\code{33}: Blur}
-#'  \item{\code{33}: Gaussian}
+#'  \item{\code{34}: Blur}
+#'  \item{\code{35}: Gaussian}
+#'  \item{\code{36}: RadialBlur}
+#'  \item{\code{37}: Pie}
+#'  \item{\code{38}: Ngon}
+#'  \item{\code{39}: Curl}
+#'  \item{\code{40}: Rectangles}
 #' }
 #'
 #' @return A \code{ggplot} object containing the artwork.
@@ -114,7 +119,7 @@ canvas_flame <- function(colors, background = "#fafafa",
   if (is.null(variations)) {
     user <- TRUE
     v <- 0:(noVariations - 1)
-    variations <- sample(x = v, size = sample(1:length(v), size = 1), replace = FALSE)
+    variations <- sample(x = v, size = sample(1:5, size = 1), replace = FALSE)
   } else if (min(variations) < 0 || max(variations) > (noVariations - 1)) {
     stop("'variations' must be between 0 and ", (noVariations - 1))
   }
@@ -135,19 +140,18 @@ canvas_flame <- function(colors, background = "#fafafa",
   }
   for (i in 1:nrow(v_ij)) {
     v_ij[i, ] <- v_ij[i, ] / sum(v_ij[i, ])
-  }
-  # blob.high, blob.low, blob.waves, 
-  # padj.a, pdj.b, pdj.c, pdj.d, 
-  # rings2.val, 
-  # perspective.angle, perspective.dist, 
-  # juliaN.power, juliaN.dist
-  # juliaScope.power, juliaScope.dist
-  v_params <- c(stats::runif(1, 0, 1), stats::runif(1, -1, 0), stats::runif(1, 1, 10), 
-                stats::runif(1, 0, 1), stats::runif(1, 0, 1), stats::runif(1, 0, 1), stats::runif(1, 0, 1), 
-                stats::runif(1, 0, 1), 
-                stats::runif(1, 1, pi), stats::runif(1, 0, 1), 
-                stats::runif(1, 1, 5), stats::runif(1, 0, 10),
-                stats::runif(1, 1, 5), stats::runif(1, 0, 10))
+  } 
+  v_params <- c(stats::runif(1, 0, 1), stats::runif(1, -1, 0), stats::runif(1, 1, 10), # blob.high, blob.low, blob.waves
+                stats::runif(1, 0, 1), stats::runif(1, 0, 1), stats::runif(1, 0, 1), stats::runif(1, 0, 1), # padj.a, pdj.b, pdj.c, pdj.d
+                stats::runif(1, 0, 1), # rings2.val
+                stats::runif(1, 1, pi), stats::runif(1, 0, 1), # perspective.angle, perspective.dist
+                stats::runif(1, 1, 5), stats::runif(1, 0, 10), # juliaN.power, juliaN.dist
+                stats::runif(1, 1, 5), stats::runif(1, 0, 10), # juliaScope.power, juliaScope.dist
+                stats::runif(1, 1, pi), stats::runif(1, 1, 5), # radialBlur.angle, v_ij[3, 6]
+                sample(1:10, size = 1), stats::runif(1, 1, pi), stats::runif(1, 1, 5), # pie.slices, pie.rotation, pie.thickness
+                stats::runif(1, 1, 4), 2 * pi / sample(3:10, size = 1), sample(2:10, size = 1), stats::runif(1, 0, 1), # ngon.power, ngon.sides, ngon.corners, ngon.circle
+                stats::runif(1, 0, 1), stats::runif(1, 0, 1), # curl.c1, curl.c2
+                stats::runif(1, 2, 50), stats::runif(1, 2, 50)) # rectangles.x, rectangles.y
   df <- iterate_flame(
     iterations = iterations,
     variations = variations,
@@ -178,6 +182,7 @@ canvas_flame <- function(colors, background = "#fafafa",
     canvas = matrix(0, nrow = resolution + 1, ncol = resolution + 1),
     x = df[["x"]], y = df[["y"]], binsx = xbins, binsy = ybins
   )
+  # TODO: stop if canvas is (almost) empty
   full_canvas <- .unraster(canvas, c("x", "y", "z"))
   full_canvas$z[full_canvas$z != 0] <- log(full_canvas$z[full_canvas$z != 0], base = 1.2589)
   full_canvas$z[full_canvas$z == 0] <- NA
@@ -225,7 +230,12 @@ canvas_flame <- function(colors, background = "#fafafa",
     "JuliaN",
     "JuliaScope",
     "Blur",
-    "Gaussian"
+    "Gaussian",
+    "RadialBlur",
+    "Pie",
+    "Ngon",
+    "Curl",
+    "Rectangles"
   )
   return(x)
 }

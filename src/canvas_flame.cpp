@@ -218,7 +218,7 @@ Rcpp::DoubleVector variation(Rcpp::DoubleVector p,
     double Psi2 = R::runif(0, 1);
     x[0] = Psi1 * cos(2 * M_PI * Psi2);
     x[1] = Psi1 * sin(2 * M_PI * Psi2);
-  } else if (i == 35) {
+  } else if (i == 35) { // Gaussian
     double Psi1 = R::runif(0, 1);
     double Psi2 = R::runif(0, 1);
     double Psi3 = R::runif(0, 1);
@@ -226,6 +226,45 @@ Rcpp::DoubleVector variation(Rcpp::DoubleVector p,
     double Psi5 = R::runif(0, 1);
     x[0] = (Psi1 + Psi2 + Psi3 + Psi4 - 2) * cos(2 * M_PI * Psi5);
     x[1] = (Psi1 + Psi2 + Psi3 + Psi4 - 2) * sin(2 * M_PI * Psi5);
+  } else if (i == 36) { // RadialBlur
+    double Psi1 = R::runif(0, 1);
+    double Psi2 = R::runif(0, 1);
+    double Psi3 = R::runif(0, 1);
+    double Psi4 = R::runif(0, 1);
+    double p1 = pparams[14] * (M_PI / 2);
+    double t1 = pparams[15] * (Psi1 + Psi2 + Psi3 + Psi4 - 2);
+    double t2 = phi + t1 * sin(p1);
+    double t3 = t1 * cos(p1) - 1;
+    x[0] = (1 / pparams[15]) * (r * cos(t2) + t3 * p[0]);
+    x[1] = (1 / pparams[15]) * (r * sin(t2) + t3 * p[1]);
+  } else if (i == 37) { // Pie
+    double Psi1 = R::runif(0, 1);
+    double Psi2 = R::runif(0, 1);
+    double Psi3 = R::runif(0, 1);
+    double t1 = floor(Psi1 * pparams[16] + 0.5);
+    double t2 = pparams[17] + ((2 * M_PI) / pparams[16]) * (t1 + Psi2 * pparams[17]);
+    x[0] = Psi3 * cos(t2);
+    x[1] = Psi3 * sin(t2);
+  } else if (i == 38) { // Ngon
+    double t3 = phi - pparams[19] * floor(phi / pparams[19]);
+    double t4;
+    if (t3 > (pparams[19] / 2)) {
+      t4 = t3;
+    } else {
+      t4 = t3 - pparams[19];
+    }
+    double k = (pparams[20] * ((1 / cos(t4) - 1) + pparams[21]) + pparams[22]) / pow(r, pparams[18]);
+    x[0] = k * p[0];
+    x[1] = k * p[1];
+  } else if (i == 39) { // Curl
+    double t1 = 1 + pparams[23] * p[0] + pparams[24] * (pow(p[0], 2) - pow(p[1], 2));
+    double t2 = pparams[23] * p[1] + 2 * pparams[24] * p[0] * p[1];
+    double first = 1 / (pow(t1, 2) + pow(t2, 2));
+    x[0] = first * (p[0] * t1 + p[1] * t2);
+    x[1] = first * (p[1] * t1 - p[0] * t2);
+  } else if (i == 40) { // Rectangles
+    x[0] = (2 * floor(p[0] / pparams[25]) + 1) * pparams[25] - p[0];
+    x[1] = (2 * floor(p[1] / pparams[26]) + 1) * pparams[26] - p[1];
   }
   return x;
 }
@@ -281,6 +320,9 @@ Rcpp::DataFrame iterate_flame(int iterations,
     if (blend_variations) {
       for (int j = 0; j < nvariations; j++) {
         int ch = variations[j];
+        if (v_ij(i[0], j) == 0) {
+          continue;
+        }
         newpoint += v_ij(i[0], j) * variation(p, ch, mat_coef(i[0], 0), mat_coef(i[0], 1), mat_coef(i[0], 2), mat_coef(i[0], 3), mat_coef(i[0], 4), mat_coef(i[0], 5), v_params);
       }
     } else {
