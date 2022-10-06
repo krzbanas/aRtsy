@@ -71,6 +71,9 @@
 #'  \item{\code{30}: Perspective}
 #'  \item{\code{31}: Noise}
 #'  \item{\code{32}: JuliaN}
+#'  \item{\code{33}: JuliaScope}
+#'  \item{\code{33}: Blur}
+#'  \item{\code{33}: Gaussian}
 #' }
 #'
 #' @return A \code{ggplot} object containing the artwork.
@@ -138,10 +141,12 @@ canvas_flame <- function(colors, background = "#fafafa",
   # rings2.val, 
   # perspective.angle, perspective.dist, 
   # juliaN.power, juliaN.dist
+  # juliaScope.power, juliaScope.dist
   v_params <- c(stats::runif(1, 0, 1), stats::runif(1, -1, 0), stats::runif(1, 1, 10), 
                 stats::runif(1, 0, 1), stats::runif(1, 0, 1), stats::runif(1, 0, 1), stats::runif(1, 0, 1), 
                 stats::runif(1, 0, 1), 
                 stats::runif(1, 1, pi), stats::runif(1, 0, 1), 
+                stats::runif(1, 1, 5), stats::runif(1, 0, 10),
                 stats::runif(1, 1, 5), stats::runif(1, 0, 10))
   df <- iterate_flame(
     iterations = iterations,
@@ -217,7 +222,10 @@ canvas_flame <- function(colors, background = "#fafafa",
     "Cylinder",
     "Perspective",
     "Noise",
-    "JuliaN"
+    "JuliaN",
+    "JuliaScope",
+    "Blur",
+    "Gaussian"
   )
   return(x)
 }

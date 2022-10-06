@@ -76,6 +76,9 @@ The \code{variation} argument can be used to include specific variations into th
  \item{\code{30}: Perspective}
  \item{\code{31}: Noise}
  \item{\code{32}: JuliaN}
+ \item{\code{33}: JuliaScope}
+ \item{\code{33}: Blur}
+ \item{\code{33}: Gaussian}
 }
 }
 \examples{

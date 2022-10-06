@@ -104,7 +104,13 @@ Rcpp::DoubleVector variation(Rcpp::DoubleVector p,
     x[0] = r * (pow(p0, 3) + pow(p1, 3));
     x[1] = r * (pow(p0, 3) - pow(p1, 3));
   } else if (i == 13) { // Julia
-    int Omega = floor(R::runif(0, 2));
+    double s = R::runif(0, 1);
+    double Omega;
+    if (s < 0.5) {
+      Omega = 0;
+    } else {
+      Omega = M_PI;
+    }
     x[0] = sqrt(r) * cos(theta / 2 + Omega);
     x[1] = sqrt(r) * sin(theta / 2 + Omega);
   } else if (i == 14) { // Bent
@@ -200,6 +206,26 @@ Rcpp::DoubleVector variation(Rcpp::DoubleVector p,
     double t = (phi + 2 * M_PI * p3) / pparams[11];
     x[0] = pow(r, pparams[11] / pparams[10]) * cos(t);
     x[1] = pow(r, pparams[11] / pparams[10]) * sin(t);
+  } else if (i == 33) { // JuliaScope
+    double Psi = R::runif(0, 1);
+    int Lambda = floor(R::runif(0, 2));
+    double p3 = floor(fabs(pparams[12] * Psi));
+    double t = (Lambda * phi + 2 * M_PI * p3) / pparams[12];
+    x[0] = pow(r, pparams[13] / pparams[12]) * cos(t);
+    x[1] = pow(r, pparams[13] / pparams[12]) * sin(t);
+  } else if (i == 34) { // Blur
+    double Psi1 = R::runif(0, 1);
+    double Psi2 = R::runif(0, 1);
+    x[0] = Psi1 * cos(2 * M_PI * Psi2);
+    x[1] = Psi1 * sin(2 * M_PI * Psi2);
+  } else if (i == 35) {
+    double Psi1 = R::runif(0, 1);
+    double Psi2 = R::runif(0, 1);
+    double Psi3 = R::runif(0, 1);
+    double Psi4 = R::runif(0, 1);
+    double Psi5 = R::runif(0, 1);
+    x[0] = (Psi1 + Psi2 + Psi3 + Psi4 - 2) * cos(2 * M_PI * Psi5);
+    x[1] = (Psi1 + Psi2 + Psi3 + Psi4 - 2) * sin(2 * M_PI * Psi5);
   }
   return x;
 }
