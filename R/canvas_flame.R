@@ -59,6 +59,7 @@
 #'  \item{\code{19}: Power}
 #'  \item{\code{20}: Cosine}
 #'  \item{\code{21}: Rings}
+#'  \item{\code{22}: Fan}
 #' }
 #'
 #' @return A \code{ggplot} object containing the artwork.
@@ -176,6 +177,7 @@ canvas_flame <- function(colors, background = "#000000",
          "Exponential",
          "Power",
          "Cosine",
-         "Rings")
+         "Rings",
+         "Fan")
   return(x)
 }

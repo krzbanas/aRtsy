@@ -141,6 +141,15 @@ Rcpp::DoubleVector variation(Rcpp::DoubleVector p,
 	double fp = fmod(r + pow(c, 2), 2 * pow(c, 2)) - pow(c, 2) + r * (1 - pow(c, 2));
     x[0] = fp * cos(theta);
 	x[1] = fp * sin(theta);
+  } else if (i == 22) {
+    double t = M_PI * pow(c, 2);
+	if (fmod(theta + f, t) > (t / 2)) {
+      x[0] = r * cos(theta - (t/2));
+      x[1] = r * sin(theta - (t/2));
+	} else {
+      x[0] = r * cos(theta + (t/2));;
+      x[1] = r * sin(theta + (t/2));	
+	}
   }
   return x;
 }

@@ -63,6 +63,7 @@ The \code{variation} argument can be used to include specific variations into th
  \item{\code{19}: Power}
  \item{\code{20}: Cosine}
  \item{\code{21}: Rings}
+ \item{\code{22}: Fan}
 }
 }
 \examples{
