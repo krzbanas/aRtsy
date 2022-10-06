@@ -4,9 +4,10 @@
 \alias{canvas_flame}
 \title{Draw a Fractal Flame}
 \usage{
-canvas_flame(colors, background = "#000000", variations = NULL,
+canvas_flame(colors, background = "#000000",
                       iterations = 1000000, resolution = 1000,
-                      blend = TRUE, post = FALSE, final = FALSE,
+                      variations = NULL, blend = TRUE, 
+                      post = FALSE, final = FALSE, extra = FALSE,
                       verbose = FALSE)
 }
 \arguments{
@@ -14,17 +15,19 @@ canvas_flame(colors, background = "#000000", variations = NULL,
 
 \item{background}{a character specifying the color used for the background.}
 
-\item{variations}{an integer (vector) specifying the variations to be included in the flame. The default \code{NULL} includes all variations. See the details section for more information about possible variations.}
-
 \item{iterations}{a positive integer specifying the number of iterations of the algorithm.}
 
 \item{resolution}{resolution of the artwork in pixels per row/column. Increasing the resolution increases the quality of the artwork but also increases the computation time exponentially.}
 
+\item{variations}{an integer (vector) specifying the variations to be included in the flame. The default \code{NULL} includes all variations. See the details section for more information about possible variations.}
+
 \item{blend}{logical. Whether to blend the variations (\code{TRUE}) or pick a unique variation in each iteration (\code{FALSE}).}
 
-\item{post}{logical. Whether to apply a posttransformation in each iteration.}
+\item{post}{logical. Whether to apply a post transformation in each iteration.}
 
 \item{final}{logical. Whether to apply a final transformation in each iteration.}
+
+\item{extra}{logical. Whether to apply an additional post transformation after the final transformation. Only has an effect when \code{final = TRUE}.}
 
 \item{verbose}{logical. Whether to print information.}
 }
@@ -35,7 +38,7 @@ A \code{ggplot} object containing the artwork.
 This function implements the fractal flame algorithm.
 }
 \details{
-The \code{variation} argument can be used to specify the variations. Possible options are:
+The \code{variation} argument can be used to include specific variations into the flame. See the appendix in the references for examples of all variations. Possible variations are:
 
 \itemize{
  \item{\code{0}: Linear}
@@ -48,6 +51,10 @@ The \code{variation} argument can be used to specify the variations. Possible op
  \item{\code{7}: Heart}
  \item{\code{8}: Disc}
  \item{\code{9}: Spiral}
+ \item{\code{10}: Hyperbolic}
+ \item{\code{11}: Diamond}
+ \item{\code{12}: Ex}
+ \item{\code{13}: Julia}
 }
 }
 \examples{
@@ -60,7 +67,7 @@ canvas_flame(colors = colorPalette("origami"))
 
 }
 \references{
-\url{https://en.wikipedia.org/wiki/Fractal_flame}
+\url{https://flam3.com/flame_draves.pdf}
 }
 \seealso{
 \code{colorPalette}

@@ -83,6 +83,21 @@ Rcpp::DoubleVector variation(Rcpp::DoubleVector p, int i) {;
   } else if (i == 9) { // Spiral
     x[0] = 1 / r * cos(theta) + sin(r);
     x[1] = 1 / r * sin(theta) + cos(r);
+  } else if (i == 10) {
+    x[0] = sin(theta) / r;
+    x[1] = r * cos(theta);
+  } else if (i == 11) {
+    x[0] = sin(theta) * cos(r);
+    x[1] = cos(theta) * sin(r);
+  } else if (i == 12) {
+    double p0 = sin(theta + r);
+    double p1 = cos(theta - r);
+    x[0] = r * (pow(p0, 3) + pow(p1, 3));
+    x[1] = r * (pow(p0, 3) - pow(p1, 3));
+  } else if (i == 13) {
+    int Phi = floor(R::runif(0, 2));
+    x[0] = sqrt(r) * cos(theta / 2 + Phi);
+    x[1] = sqrt(r) * sin(theta / 2 + Phi);
   }
   return x;
 }
@@ -115,14 +130,15 @@ Rcpp::DataFrame iterate_flame(int iterations,
                               Rcpp::DoubleVector variations,
                               Rcpp::DoubleVector point,
                               Rcpp::DoubleVector w_i,
-                              arma::mat v_ij,
                               arma::mat mat_coef,
-                              arma::mat p_coef,
-                              Rcpp::DoubleVector f_coef,
-                              Rcpp::DoubleVector p2_coef,
-                              bool blend_var,
+                              bool blend_variations,
+                              arma::mat v_ij,
                               bool transform_p,
-                              bool transform_f) {
+                              arma::mat p_coef,
+                              bool transform_f,
+                              Rcpp::DoubleVector f_coef,
+                              bool transform_e,
+                              Rcpp::DoubleVector e_coef) {
   int nvariations = variations.length();
   int npoints = (iterations - 20);
   Rcpp::DoubleVector x(npoints);
@@ -133,7 +149,7 @@ Rcpp::DataFrame iterate_flame(int iterations,
     Rcpp::NumericVector i = RcppArmadillo::sample(double_seq(0, w_i.length() - 1), 1, false, w_i);
     Rcpp::DoubleVector newpoint(2);
     p = affine(point, mat_coef(i[0], 0), mat_coef(i[0], 1), mat_coef(i[0], 2), mat_coef(i[0], 3), mat_coef(i[0], 4), mat_coef(i[0], 5));
-    if (blend_var) {
+    if (blend_variations) {
       for (int j = 0; j < nvariations; j++) {
 		int ch = variations[j];
         newpoint += v_ij(i[0], j) * variation(p, ch);
@@ -149,7 +165,9 @@ Rcpp::DataFrame iterate_flame(int iterations,
     }
     if (transform_f) {
       point = affine(point, f_coef[0], f_coef[1], f_coef[2], f_coef[3], f_coef[4], f_coef[5]);
-      point = posttransform(point, p2_coef[0], p2_coef[1], p2_coef[2], p2_coef[3], p2_coef[4], p2_coef[5]);
+      if (transform_e) {
+        point = affine(point, e_coef[0], e_coef[1], e_coef[2], e_coef[3], e_coef[4], e_coef[5]);
+      }
     }
     if (iter > 19) {
       x[iter - 20] = point[0];

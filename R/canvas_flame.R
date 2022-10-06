@@ -17,22 +17,24 @@
 #'
 #' @description This function implements the fractal flame algorithm.
 #'
-#' @usage canvas_flame(colors, background = "#000000", variations = NULL,
+#' @usage canvas_flame(colors, background = "#000000",
 #'                       iterations = 1000000, resolution = 1000,
-#'                       blend = TRUE, post = FALSE, final = FALSE,
+#'                       variations = NULL, blend = TRUE, 
+#'                       post = FALSE, final = FALSE, extra = FALSE,
 #'                       verbose = FALSE)
 #'
 #' @param colors      a string or character vector specifying the color(s) used for the artwork.
 #' @param background  a character specifying the color used for the background.
-#' @param variations  an integer (vector) specifying the variations to be included in the flame. The default \code{NULL} includes all variations. See the details section for more information about possible variations.
 #' @param iterations  a positive integer specifying the number of iterations of the algorithm.
 #' @param resolution  resolution of the artwork in pixels per row/column. Increasing the resolution increases the quality of the artwork but also increases the computation time exponentially.
+#' @param variations  an integer (vector) specifying the variations to be included in the flame. The default \code{NULL} includes all variations. See the details section for more information about possible variations.
 #' @param blend       logical. Whether to blend the variations (\code{TRUE}) or pick a unique variation in each iteration (\code{FALSE}).
-#' @param post        logical. Whether to apply a posttransformation in each iteration.
+#' @param post        logical. Whether to apply a post transformation in each iteration.
 #' @param final       logical. Whether to apply a final transformation in each iteration.
+#' @param extra       logical. Whether to apply an additional post transformation after the final transformation. Only has an effect when \code{final = TRUE}.
 #' @param verbose     logical. Whether to print information.
 #'
-#' @details           The \code{variation} argument can be used to specify the variations. Possible options are:
+#' @details           The \code{variation} argument can be used to include specific variations into the flame. See the appendix in the references for examples of all variations. Possible variations are:
 #'
 #' \itemize{
 #'  \item{\code{0}: Linear}
@@ -45,11 +47,15 @@
 #'  \item{\code{7}: Heart}
 #'  \item{\code{8}: Disc}
 #'  \item{\code{9}: Spiral}
+#'  \item{\code{10}: Hyperbolic}
+#'  \item{\code{11}: Diamond}
+#'  \item{\code{12}: Ex}
+#'  \item{\code{13}: Julia}
 #' }
 #'
 #' @return A \code{ggplot} object containing the artwork.
 #'
-#' @references \url{https://en.wikipedia.org/wiki/Fractal_flame}
+#' @references \url{https://flam3.com/flame_draves.pdf}
 #'
 #' @author Koen Derks, \email{koen-derks@hotmail.com}
 #'
@@ -67,15 +73,17 @@
 #'
 #' @export
 
-canvas_flame <- function(colors, background = "#000000", variations = NULL,
+canvas_flame <- function(colors, background = "#000000",
                          iterations = 1000000, resolution = 1000,
-                         blend = TRUE, post = FALSE, final = FALSE,
+                         variations = NULL, blend = TRUE,
+                         post = FALSE, final = FALSE, extra = FALSE,
                          verbose = FALSE) {
   .checkUserInput(
     resolution = resolution, background = background
   )
   iterations <- iterations + 20
-  noVariations <- 10
+  varNames <- .getVariationNames()
+  noVariations <- length(varNames)
   if (is.null(variations)) {
     v <- 0:(noVariations - 1)
     variations <- sample(x = v, size = sample(1:length(v), size = 1))
@@ -83,8 +91,11 @@ canvas_flame <- function(colors, background = "#000000", variations = NULL,
     stop("'variations' must be between 0 and ", (noVariations - 1)) 
   }
   if (verbose) {
-    varNames <- .getVariationNames()
-    cat("\nUsing variations:", varNames[variations + 1], "\n")
+    cat("\nVariation:", paste(varNames[variations + 1], collapse = " + "), "\n")
+	catp <- if (post) "Post transformation" else NULL
+	catc <- if (final) "Final transformation" else NULL
+	cate <- if (extra) "Final transformation" else NULL
+	cat("Effect:", paste(c("Affine transformation", catp, catc, cate), collapse = " + "), "\n")
   }
   nvariations <- length(variations)
   nfunc <- sample(1:10, size = 1)
@@ -98,14 +109,15 @@ canvas_flame <- function(colors, background = "#000000", variations = NULL,
     variations = variations,
     point = stats::runif(2, -1, 1),
     w_i = w_i / sum(w_i),
-    v_ij = v_ij,
     mat_coef = matrix(stats::runif(nfunc * 6, min = -1, max = 1), nrow = nfunc, ncol = 6),
-    p_coef = matrix(stats::runif(nfunc * 6, min = -1, max = 1), nrow = nfunc, ncol = 6),
-    f_coef = stats::runif(6, min = -1, max = 1),
-    p2_coef = stats::runif(6, min = -1, max = 1),
-    blend_var = blend,
+    blend_variations = blend,
+    v_ij = v_ij,
     transform_p = post,
-    transform_f = final
+    p_coef = matrix(stats::runif(nfunc * 6, min = -1, max = 1), nrow = nfunc, ncol = 6),
+    transform_f = final,
+	f_coef = stats::runif(6, min = -1, max = 1),
+    transform_e = extra,
+    e_coef = stats::runif(6, min = -1, max = 1)
   )
   df <- df[!is.infinite(df[["x"]]) & !is.infinite(df[["y"]]), ]
   df <- df[!is.na(df[["x"]]) & !is.na(df[["y"]]), ]
@@ -129,6 +141,19 @@ canvas_flame <- function(colors, background = "#000000", variations = NULL,
 }
 
 .getVariationNames <- function() {
-  x <- c("Linear", "Sine", "Spherical", "Swirl", "Horsehoe", "Polar", "Handkerchief", "Heart", "Disc", "Spiral")
+  x <- c("Linear", 
+         "Sine", 
+         "Spherical", 
+         "Swirl", 
+         "Horsehoe", 
+         "Polar", 
+         "Handkerchief", 
+         "Heart", 
+         "Disc", 
+         "Spiral",
+         "Hyperbolic",
+         "Diamond",
+         "Ex",
+         "Julia")
   return(x)
 }
