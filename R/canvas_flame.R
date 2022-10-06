@@ -77,14 +77,14 @@ canvas_flame <- function(colors, background = "#000000", variations = NULL,
   iterations <- iterations + 20
   noVariations <- 10
   if (is.null(variations)) {
-    v <- 0:(maxVariations - 1)
+    v <- 0:(noVariations - 1)
     variations <- sample(x = v, size = sample(1:length(v), size = 1))
   } else if (min(variations) < 0 || max(variations) > (noVariations - 1)) {
     stop("'variations' must be between 0 and ", (noVariations - 1)) 
   }
   if (verbose) {
     varNames <- .getVariationNames()
-	cat("\nUsing variations:", varNames[variations], "\n")
+    cat("\nUsing variations:", varNames[variations + 1], "\n")
   }
   nvariations <- length(variations)
   nfunc <- sample(1:10, size = 1)
