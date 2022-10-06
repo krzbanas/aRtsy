@@ -4,8 +4,8 @@
 \alias{canvas_flame}
 \title{Draw a Fractal Flame}
 \usage{
-canvas_flame(colors, background = "#000000",
-                      iterations = 1000000, resolution = 1000,
+canvas_flame(colors, background = "#fafafa",
+                      iterations = 1000000, zoom = 1, resolution = 1000,
                       variations = NULL, blend = TRUE, 
                       post = FALSE, final = FALSE, extra = FALSE,
                       verbose = FALSE)
@@ -17,9 +17,11 @@ canvas_flame(colors, background = "#000000",
 
 \item{iterations}{a positive integer specifying the number of iterations of the algorithm.}
 
+\item{zoom}{a positive value specifying the amount of zooming.}
+
 \item{resolution}{resolution of the artwork in pixels per row/column. Increasing the resolution increases the quality of the artwork but also increases the computation time exponentially.}
 
-\item{variations}{an integer (vector) specifying the variations to be included in the flame. The default \code{NULL} includes all variations. See the details section for more information about possible variations.}
+\item{variations}{an integer (vector) specifying the variations to be included in the flame. The default \code{NULL} includes a random number of variations. See the details section for more information about possible variations.}
 
 \item{blend}{logical. Whether to blend the variations (\code{TRUE}) or pick a unique variation in each iteration (\code{FALSE}).}
 
@@ -64,6 +66,8 @@ The \code{variation} argument can be used to include specific variations into th
  \item{\code{20}: Cosine}
  \item{\code{21}: Rings}
  \item{\code{22}: Fan}
+ \item{\code{23}: Blob}
+ \item{\code{24}: PDJ}
 }
 }
 \examples{

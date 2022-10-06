@@ -17,8 +17,8 @@
 #'
 #' @description This function implements the fractal flame algorithm.
 #'
-#' @usage canvas_flame(colors, background = "#000000",
-#'                       iterations = 1000000, resolution = 1000,
+#' @usage canvas_flame(colors, background = "#fafafa",
+#'                       iterations = 1000000, zoom = 1, resolution = 1000,
 #'                       variations = NULL, blend = TRUE, 
 #'                       post = FALSE, final = FALSE, extra = FALSE,
 #'                       verbose = FALSE)
@@ -26,8 +26,9 @@
 #' @param colors      a string or character vector specifying the color(s) used for the artwork.
 #' @param background  a character specifying the color used for the background.
 #' @param iterations  a positive integer specifying the number of iterations of the algorithm.
+#' @param zoom        a positive value specifying the amount of zooming.
 #' @param resolution  resolution of the artwork in pixels per row/column. Increasing the resolution increases the quality of the artwork but also increases the computation time exponentially.
-#' @param variations  an integer (vector) specifying the variations to be included in the flame. The default \code{NULL} includes all variations. See the details section for more information about possible variations.
+#' @param variations  an integer (vector) specifying the variations to be included in the flame. The default \code{NULL} includes a random number of variations. See the details section for more information about possible variations.
 #' @param blend       logical. Whether to blend the variations (\code{TRUE}) or pick a unique variation in each iteration (\code{FALSE}).
 #' @param post        logical. Whether to apply a post transformation in each iteration.
 #' @param final       logical. Whether to apply a final transformation in each iteration.
@@ -60,6 +61,8 @@
 #'  \item{\code{20}: Cosine}
 #'  \item{\code{21}: Rings}
 #'  \item{\code{22}: Fan}
+#'  \item{\code{23}: Blob}
+#'  \item{\code{24}: PDJ}
 #' }
 #'
 #' @return A \code{ggplot} object containing the artwork.
@@ -82,8 +85,8 @@
 #'
 #' @export
 
-canvas_flame <- function(colors, background = "#000000",
-                         iterations = 1000000, resolution = 1000,
+canvas_flame <- function(colors, background = "#fafafa",
+                         iterations = 1000000, zoom = 1, resolution = 1000,
                          variations = NULL, blend = TRUE,
                          post = FALSE, final = FALSE, extra = FALSE,
                          verbose = FALSE) {
@@ -97,7 +100,7 @@ canvas_flame <- function(colors, background = "#000000",
   if (is.null(variations)) {
 	user <- TRUE
     v <- 0:(noVariations - 1)
-    variations <- sample(x = v, size = sample(1:length(v), size = 1))
+    variations <- sample(x = v, size = sample(1:length(v), size = 1), replace = FALSE)
   } else if (min(variations) < 0 || max(variations) > (noVariations - 1)) {
     stop("'variations' must be between 0 and ", (noVariations - 1)) 
   }
@@ -136,10 +139,13 @@ canvas_flame <- function(colors, background = "#000000",
   )
   df <- df[!is.infinite(df[["x"]]) & !is.infinite(df[["y"]]), ]
   df <- df[!is.na(df[["x"]]) & !is.na(df[["y"]]), ]
+  if (nrow(df) == 0) {
+    stop("The algorithm did not converge")
+  }
   center <- c(stats::median(df[["x"]]), stats::median(df[["y"]]))
-  spanx <- diff(quantile(df[["x"]], probs = c(0.25, 0.75)))
+  spanx <- diff(quantile(df[["x"]], probs = c(0.1, 0.9))) * (1 / zoom)
   xbins <- seq(center[1] - spanx, center[1] + spanx, length.out = resolution + 1)
-  spany <- diff(quantile(df[["y"]], probs = c(0.25, 0.75)))
+  spany <- diff(quantile(df[["y"]], probs = c(0.1, 0.9))) * (1 / zoom)
   ybins <- seq(center[2] - spany, center[2] + spany, length.out = resolution + 1)
   canvas <- color_flame(
     canvas = matrix(0, nrow = resolution + 1, ncol = resolution + 1),
@@ -178,6 +184,8 @@ canvas_flame <- function(colors, background = "#000000",
          "Power",
          "Cosine",
          "Rings",
-         "Fan")
+         "Fan",
+         "Blob",
+         "PDJ")
   return(x)
 }

@@ -56,7 +56,8 @@ Rcpp::DoubleVector variation(Rcpp::DoubleVector p,
                              double c,
                              double d,
                              double e,
-                             double f) {;
+                             double f,
+							 Rcpp::DoubleVector pparams) {;
   Rcpp::DoubleVector x(2);
   double r = sqrt(pow(p[0], 2) + pow(p[1], 2));
   double theta = atan(p[0] / p[1]);
@@ -150,6 +151,13 @@ Rcpp::DoubleVector variation(Rcpp::DoubleVector p,
       x[0] = r * cos(theta + (t/2));;
       x[1] = r * sin(theta + (t/2));	
 	}
+  } else if (i == 23) {
+    double first = r * (pparams[1] + ((pparams[0] - pparams[1])/ 2) * (sin(pparams[3] * theta) + 1));
+    x[0] = first * cos(theta);
+    x[1] = first * sin(theta);
+  } else if (i == 24) {
+    x[0] = sin(pparams[4] * p[1]) - cos(pparams[5] * p[0]);
+    x[1] = sin(pparams[6] * p[0]) - cos(pparams[7] * p[1]);
   }
   return x;
 }
@@ -196,6 +204,8 @@ Rcpp::DataFrame iterate_flame(int iterations,
   Rcpp::DoubleVector x(npoints);
   Rcpp::DoubleVector y(npoints);
   Rcpp::DoubleVector p(2);
+  // blob.high, blob.low, blob.waves, padj.a, pdj.b, pdj.c, pdj.d
+  Rcpp::DoubleVector pparams = {R::runif(0, 1), R::runif(-1, 0), R::runif(1, 10), R::runif(0, 1), R::runif(0, 1), R::runif(0, 1), R::runif(0, 1)};
   for (int iter = 0; iter < iterations; iter++) {
     Rcpp::checkUserInterrupt();
     Rcpp::NumericVector i = RcppArmadillo::sample(double_seq(0, w_i.length() - 1), 1, false, w_i);
@@ -204,12 +214,12 @@ Rcpp::DataFrame iterate_flame(int iterations,
     if (blend_variations) {
       for (int j = 0; j < nvariations; j++) {
 		int ch = variations[j];
-        newpoint += v_ij(i[0], j) * variation(p, ch, mat_coef(i[0], 0), mat_coef(i[0], 1), mat_coef(i[0], 2), mat_coef(i[0], 3), mat_coef(i[0], 4), mat_coef(i[0], 5));
+        newpoint += v_ij(i[0], j) * variation(p, ch, mat_coef(i[0], 0), mat_coef(i[0], 1), mat_coef(i[0], 2), mat_coef(i[0], 3), mat_coef(i[0], 4), mat_coef(i[0], 5), pparams);
       }
     } else {
 	  Rcpp::NumericVector v_j = get_vj(v_ij, i[0]);
 	  Rcpp::NumericVector ch = RcppArmadillo::sample(variations, 1, false, v_j);
-      newpoint = variation(p, ch[0], mat_coef(i[0], 0), mat_coef(i[0], 1), mat_coef(i[0], 2), mat_coef(i[0], 3), mat_coef(i[0], 4), mat_coef(i[0], 5));
+      newpoint = variation(p, ch[0], mat_coef(i[0], 0), mat_coef(i[0], 1), mat_coef(i[0], 2), mat_coef(i[0], 3), mat_coef(i[0], 4), mat_coef(i[0], 5), pparams);
     }
     point = newpoint;
     if (transform_p) {
