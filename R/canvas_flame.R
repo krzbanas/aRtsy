@@ -51,6 +51,8 @@
 #'  \item{\code{11}: Diamond}
 #'  \item{\code{12}: Ex}
 #'  \item{\code{13}: Julia}
+#'  \item{\code{14}: Bent}
+#'  \item{\code{15}: Waves}
 #' }
 #'
 #' @return A \code{ggplot} object containing the artwork.
@@ -154,6 +156,8 @@ canvas_flame <- function(colors, background = "#000000",
          "Hyperbolic",
          "Diamond",
          "Ex",
-         "Julia")
+         "Julia",
+         "Bent",
+         "Waves")
   return(x)
 }

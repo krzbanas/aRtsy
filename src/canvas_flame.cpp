@@ -49,7 +49,14 @@ Rcpp::DoubleVector affine(Rcpp::DoubleVector p,
   return x;
 }
 
-Rcpp::DoubleVector variation(Rcpp::DoubleVector p, int i) {;
+Rcpp::DoubleVector variation(Rcpp::DoubleVector p, 
+                             int i,
+                             double a,
+                             double b,
+                             double c,
+                             double d,
+                             double e,
+                             double f) {;
   Rcpp::DoubleVector x(2);
   double r = sqrt(pow(p[0], 2) + pow(p[1], 2));
   double theta = atan(p[0] / p[1]);
@@ -98,6 +105,23 @@ Rcpp::DoubleVector variation(Rcpp::DoubleVector p, int i) {;
     int Phi = floor(R::runif(0, 2));
     x[0] = sqrt(r) * cos(theta / 2 + Phi);
     x[1] = sqrt(r) * sin(theta / 2 + Phi);
+  } else if (i == 14) {
+    if ((p[0] >= 0) & (p[1] >= 0)) {
+      x[0] = p[0];
+      x[1] = p[1];
+    } else if ((p[0] < 0) & (p[1] >= 0)) {
+      x[0] = 2 * p[0];
+      x[1] = p[1];
+    } else if ((p[0] >= 0) & (p[1] < 0)) {
+      x[0] = p[0];
+      x[1] = p[1] / 2;
+    } else if ((p[0] < 0) & (p[1] < 0)) {
+      x[0] = 2 * p[0];
+      x[1] = p[1] / 2;
+    }
+  } else if (i == 15) {
+    x[0] = p[0] + b * sin(p[1] / pow(c, 2));
+    x[1] = p[1] + e * sin(p[0] / pow(f, 2));
   }
   return x;
 }
@@ -152,12 +176,12 @@ Rcpp::DataFrame iterate_flame(int iterations,
     if (blend_variations) {
       for (int j = 0; j < nvariations; j++) {
 		int ch = variations[j];
-        newpoint += v_ij(i[0], j) * variation(p, ch);
+        newpoint += v_ij(i[0], j) * variation(p, ch, mat_coef(i[0], 0), mat_coef(i[0], 1), mat_coef(i[0], 2), mat_coef(i[0], 3), mat_coef(i[0], 4), mat_coef(i[0], 5));
       }
     } else {
 	  Rcpp::NumericVector v_j = get_vj(v_ij, i[0]);
 	  Rcpp::NumericVector ch = RcppArmadillo::sample(variations, 1, false, v_j);
-      newpoint = variation(p, ch[0]);
+      newpoint = variation(p, ch[0], mat_coef(i[0], 0), mat_coef(i[0], 1), mat_coef(i[0], 2), mat_coef(i[0], 3), mat_coef(i[0], 4), mat_coef(i[0], 5));
     }
     point = newpoint;
     if (transform_p) {
