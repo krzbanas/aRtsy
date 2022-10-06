@@ -123,7 +123,7 @@ Rcpp::DataFrame iterate_flame(int iterations,
                               bool blend_var,
                               bool transform_p,
                               bool transform_f) {
-  int nvariations = v_ij.n_cols;
+  int nvariations = variations.length();
   int npoints = (iterations - 20);
   Rcpp::DoubleVector x(npoints);
   Rcpp::DoubleVector y(npoints);
@@ -136,7 +136,7 @@ Rcpp::DataFrame iterate_flame(int iterations,
     if (blend_var) {
       for (int j = 0; j < nvariations; j++) {
 		int ch = variations[j];
-        newpoint += v_ij(i[0], ch) * variation(p, ch);
+        newpoint += v_ij(i[0], j) * variation(p, ch);
       }
     } else {
 	  Rcpp::NumericVector v_j = get_vj(v_ij, i[0]);

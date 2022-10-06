@@ -19,7 +19,8 @@
 #'
 #' @usage canvas_flame(colors, background = "#000000", variations = NULL,
 #'                       iterations = 1000000, resolution = 1000,
-#'                       blend = TRUE, post = FALSE, final = FALSE)
+#'                       blend = TRUE, post = FALSE, final = FALSE,
+#'                       verbose = FALSE)
 #'
 #' @param colors      a string or character vector specifying the color(s) used for the artwork.
 #' @param background  a character specifying the color used for the background.
@@ -29,6 +30,7 @@
 #' @param blend       logical. Whether to blend the variations (\code{TRUE}) or pick a unique variation in each iteration (\code{FALSE}).
 #' @param post        logical. Whether to apply a posttransformation in each iteration.
 #' @param final       logical. Whether to apply a final transformation in each iteration.
+#' @param verbose     logical. Whether to print information.
 #'
 #' @details           The \code{variation} argument can be used to specify the variations. Possible options are:
 #'
@@ -67,14 +69,22 @@
 
 canvas_flame <- function(colors, background = "#000000", variations = NULL,
                          iterations = 1000000, resolution = 1000,
-                         blend = TRUE, post = FALSE, final = FALSE) {
+                         blend = TRUE, post = FALSE, final = FALSE,
+                         verbose = FALSE) {
   .checkUserInput(
     resolution = resolution, background = background
   )
   iterations <- iterations + 20
+  noVariations <- 10
   if (is.null(variations)) {
-    v <- 0:9
+    v <- 0:(maxVariations - 1)
     variations <- sample(x = v, size = sample(1:length(v), size = 1))
+  } else if (min(variations) < 0 || max(variations) > (noVariations - 1)) {
+    stop("'variations' must be between 0 and ", (noVariations - 1)) 
+  }
+  if (verbose) {
+    varNames <- .getVariationNames()
+	cat("\nUsing variations:", varNames[variations], "\n")
   }
   nvariations <- length(variations)
   nfunc <- sample(1:10, size = 1)
@@ -116,4 +126,9 @@ canvas_flame <- function(colors, background = "#000000", variations = NULL,
     ggplot2::scale_fill_gradientn(colors = colors, na.value = background)
   artwork <- aRtsy:::theme_canvas(artwork, background = background)
   return(artwork)
+}
+
+.getVariationNames <- function() {
+  x <- c("Linear", "Sine", "Spherical", "Swirl", "Horsehoe", "Polar", "Handkerchief", "Heart", "Disc", "Spiral")
+  return(x)
 }

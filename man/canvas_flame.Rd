@@ -6,7 +6,8 @@
 \usage{
 canvas_flame(colors, background = "#000000", variations = NULL,
                       iterations = 1000000, resolution = 1000,
-                      blend = TRUE, post = FALSE, final = FALSE)
+                      blend = TRUE, post = FALSE, final = FALSE,
+                      verbose = FALSE)
 }
 \arguments{
 \item{colors}{a string or character vector specifying the color(s) used for the artwork.}
@@ -24,6 +25,8 @@ canvas_flame(colors, background = "#000000", variations = NULL,
 \item{post}{logical. Whether to apply a posttransformation in each iteration.}
 
 \item{final}{logical. Whether to apply a final transformation in each iteration.}
+
+\item{verbose}{logical. Whether to print information.}
 }
 \value{
 A \code{ggplot} object containing the artwork.
