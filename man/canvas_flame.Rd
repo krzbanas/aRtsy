@@ -4,8 +4,9 @@
 \alias{canvas_flame}
 \title{Draw a Fractal Flame}
 \usage{
-canvas_flame(colors, background = "#000000", iterations = 500000,
-                      resolution = 1000, span = 2)
+canvas_flame(colors, background = "#000000",
+                      iterations = 1000000, resolution = 1000,
+                      blend = TRUE, post = FALSE, final = FALSE)
 }
 \arguments{
 \item{colors}{a string or character vector specifying the color(s) used for the artwork.}
@@ -16,13 +17,17 @@ canvas_flame(colors, background = "#000000", iterations = 500000,
 
 \item{resolution}{resolution of the artwork in pixels per row/column. Increasing the resolution increases the quality of the artwork but also increases the computation time exponentially.}
 
-\item{span}{a value indicating the width.}
+\item{blend}{logical. Whether to blend the variations (\code{TRUE}) or pick a unique variation in each iteration (\code{FALSE}).}
+
+\item{post}{logical. Whether to apply a posttransformation in each iteration.}
+
+\item{final}{logical. Whether to apply a final transformation in each iteration.}
 }
 \value{
 A \code{ggplot} object containing the artwork.
 }
 \description{
-This function draws fractal flames.
+This function implements the fractal flame algorithm.
 }
 \examples{
 \donttest{

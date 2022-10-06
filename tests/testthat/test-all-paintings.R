@@ -186,3 +186,15 @@ test_that("canvas_splits()", {
   artwork <- canvas_splits(colors = "black")
   expect_equal(!is.null(artwork), TRUE)
 })
+
+test_that("canvas_mesh()", {
+  set.seed(1)
+  artwork <- canvas_mesh(colors = "black")
+  expect_equal(!is.null(artwork), TRUE)
+})
+
+test_that("canvas_flame()", {
+  set.seed(1)
+  artwork <- canvas_flame(colors = "white")
+  expect_equal(!is.null(artwork), TRUE)
+})

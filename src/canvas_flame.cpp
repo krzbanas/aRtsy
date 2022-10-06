@@ -105,25 +105,35 @@ Rcpp::DataFrame iterate_flame(int iterations,
                               arma::mat mat_coef,
                               arma::mat p_coef,
                               Rcpp::DoubleVector f_coef,
-                              Rcpp::DoubleVector p2_coef) {
+                              Rcpp::DoubleVector p2_coef,
+                              bool blend_var,
+                              bool transform_p,
+                              bool transform_f) {
   int nvariations = v_ij.n_cols;
   int npoints = (iterations - 20);
   Rcpp::DoubleVector x(npoints);
   Rcpp::DoubleVector y(npoints);
   Rcpp::DoubleVector p(2);
-  // TODO: Add color mixing
   for (int iter = 0; iter < iterations; iter++) {
     Rcpp::checkUserInterrupt();
     Rcpp::NumericVector i = RcppArmadillo::sample(double_seq(0, w_i.length() - 1), 1, false, w_i);
     Rcpp::DoubleVector newpoint(2);
     p = affine(point, mat_coef(i[0], 0), mat_coef(i[0], 1), mat_coef(i[0], 2), mat_coef(i[0], 3), mat_coef(i[0], 4), mat_coef(i[0], 5));
-    for (int j = 0; j < nvariations; j++) {
-      newpoint += v_ij(i[0], j) * variation(p, j);
+    if (blend_var) {
+      for (int j = 0; j < nvariations; j++) {
+        newpoint += v_ij(i[0], j) * variation(p, j);
+      }
+    } else {
+      newpoint = variation(p, i[0]);
     }
     point = newpoint;
-    point = posttransform(point, p_coef(i[0], 0), p_coef(i[0], 1), p_coef(i[0], 2), p_coef(i[0], 3), p_coef(i[0], 4), p_coef(i[0], 5));
-    point = affine(point, f_coef[0], f_coef[1], f_coef[2], f_coef[3], f_coef[4], f_coef[5]);
-    point = posttransform(point, p2_coef[0], p2_coef[1], p2_coef[2], p2_coef[3], p2_coef[4], p2_coef[5]);
+    if (transform_p) {
+      point = posttransform(point, p_coef(i[0], 0), p_coef(i[0], 1), p_coef(i[0], 2), p_coef(i[0], 3), p_coef(i[0], 4), p_coef(i[0], 5));
+    }
+    if (transform_f) {
+      point = affine(point, f_coef[0], f_coef[1], f_coef[2], f_coef[3], f_coef[4], f_coef[5]);
+      point = posttransform(point, p2_coef[0], p2_coef[1], p2_coef[2], p2_coef[3], p2_coef[4], p2_coef[5]);
+    }
     if (iter > 19) {
       x[iter - 20] = point[0];
       y[iter - 20] = point[1];
@@ -132,4 +142,29 @@ Rcpp::DataFrame iterate_flame(int iterations,
   Rcpp::DataFrame flame = Rcpp::DataFrame::create(Rcpp::Named("x") = x,
                                                   Rcpp::Named("y") = y);
   return flame;
+}
+
+int cfindInterval(double v, const Rcpp::NumericVector& x) {
+     return std::distance(x.begin(), std::upper_bound(x.begin(), x.end(), v));
+}
+
+// [[Rcpp::export]]
+arma::mat color_flame(arma::mat canvas,
+                      Rcpp::DoubleVector x,
+                      Rcpp::DoubleVector y,
+                      Rcpp::DoubleVector binsx,
+                      Rcpp::DoubleVector binsy) {
+  for (int i = 0; i < x.length(); i++) {
+    Rcpp::checkUserInterrupt();
+    int indx = cfindInterval(x[i], binsx);
+    if ((indx == 0) | (indx == binsx.length())) {
+      continue;
+    }
+    int indy = cfindInterval(y[i], binsy);
+    if ((indy == 0) | (indy == binsy.length())) {
+      continue;
+    }
+    canvas(indx, indy) = canvas(indx, indy) + 1;
+  }
+  return canvas;
 }

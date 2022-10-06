@@ -21,8 +21,12 @@ draw_collatz <- function(empty, series, even, odd) {
     .Call('_aRtsy_draw_collatz', PACKAGE = 'aRtsy', empty, series, even, odd)
 }
 
-iterate_flame <- function(iterations, point, w_i, v_ij, mat_coef, p_coef, f_coef, p2_coef) {
-    .Call('_aRtsy_iterate_flame', PACKAGE = 'aRtsy', iterations, point, w_i, v_ij, mat_coef, p_coef, f_coef, p2_coef)
+iterate_flame <- function(iterations, point, w_i, v_ij, mat_coef, p_coef, f_coef, p2_coef, blend_var, transform_p, transform_f) {
+    .Call('_aRtsy_iterate_flame', PACKAGE = 'aRtsy', iterations, point, w_i, v_ij, mat_coef, p_coef, f_coef, p2_coef, blend_var, transform_p, transform_f)
+}
+
+color_flame <- function(canvas, x, y, binsx, binsy) {
+    .Call('_aRtsy_color_flame', PACKAGE = 'aRtsy', canvas, x, y, binsx, binsy)
 }
 
 iterate_flow <- function(angles, j, iters, left, right, top, bottom, step) {

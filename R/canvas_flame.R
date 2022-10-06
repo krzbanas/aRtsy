@@ -15,16 +15,19 @@
 
 #' Draw a Fractal Flame
 #'
-#' @description This function draws fractal flames.
+#' @description This function implements the fractal flame algorithm.
 #'
-#' @usage canvas_flame(colors, background = "#000000", iterations = 500000,
-#'                       resolution = 1000, span = 2)
+#' @usage canvas_flame(colors, background = "#000000",
+#'                       iterations = 1000000, resolution = 1000,
+#'                       blend = TRUE, post = FALSE, final = FALSE)
 #'
 #' @param colors      a string or character vector specifying the color(s) used for the artwork.
 #' @param background  a character specifying the color used for the background.
 #' @param iterations  a positive integer specifying the number of iterations of the algorithm.
 #' @param resolution  resolution of the artwork in pixels per row/column. Increasing the resolution increases the quality of the artwork but also increases the computation time exponentially.
-#' @param span        a value indicating the width.
+#' @param blend       logical. Whether to blend the variations (\code{TRUE}) or pick a unique variation in each iteration (\code{FALSE}).
+#' @param post        logical. Whether to apply a posttransformation in each iteration.
+#' @param final       logical. Whether to apply a final transformation in each iteration.
 #'
 #' @return A \code{ggplot} object containing the artwork.
 #'
@@ -46,14 +49,13 @@
 #'
 #' @export
 
-canvas_flame <- function(colors, background = "#000000", iterations = 500000,
-                         resolution = 1000, span = 2) {
+canvas_flame <- function(colors, background = "#000000",
+                         iterations = 1000000, resolution = 1000,
+                         blend = TRUE, post = FALSE, final = FALSE) {
   .checkUserInput(
     resolution = resolution, background = background
   )
-  if (iterations < 21) {
-    stop("'iterations' must be > 20")
-  }
+  iterations <- iterations + 20
   nvariations <- sample(1:9, size = 1)
   nfunc <- sample(1:9, size = 1)
   w_i <- stats::runif(nfunc, 0, 1)
@@ -69,27 +71,24 @@ canvas_flame <- function(colors, background = "#000000", iterations = 500000,
     mat_coef = matrix(stats::runif(nfunc * 6, min = -1, max = 1), nrow = nfunc, ncol = 6),
     p_coef = matrix(stats::runif(nfunc * 6, min = -1, max = 1), nrow = nfunc, ncol = 6),
     f_coef = stats::runif(6, min = -1, max = 1),
-    p2_coef = stats::runif(6, min = -1, max = 1)
+    p2_coef = stats::runif(6, min = -1, max = 1),
+    blend_var = blend,
+    transform_p = post,
+    transform_f = final
   )
-  df <- df[!is.infinite(df$x) & !is.infinite(df$y), ]
-  df <- df[!is.na(df$x) & !is.na(df$y), ]
-  canvas <- matrix(0, nrow = resolution + 1, ncol = resolution + 1)
-  center <- c(stats::median(df$x), stats::median(df$y))
-  row.bins <- seq(center[2] - span, center[2] + span, length.out = resolution + 1)
-  col.bins <- seq(center[1] - span, center[1] + span, length.out = resolution + 1)
-  for (i in 1:nrow(df)) {
-    indx <- findInterval(df[i, 1], col.bins)
-    if (indx == 0 | indx == length(col.bins)) {
-      next
-    }
-    indy <- findInterval(df[i, 2], row.bins)
-    if (indy == 0 | indy == length(row.bins)) {
-      next
-    }
-    canvas[indx, indy] <- canvas[indx, indy] + 1
-  }
+  df <- df[!is.infinite(df[["x"]]) & !is.infinite(df[["y"]]), ]
+  df <- df[!is.na(df[["x"]]) & !is.na(df[["y"]]), ]
+  center <- c(stats::median(df[["x"]]), stats::median(df[["y"]]))
+  spanx <- diff(quantile(df[["x"]], probs = c(0.25, 0.75)))
+  xbins <- seq(center[1] - spanx, center[1] + spanx, length.out = resolution + 1)
+  spany <- diff(quantile(df[["y"]], probs = c(0.25, 0.75)))
+  ybins <- seq(center[2] - spany, center[2] + spany, length.out = resolution + 1)
+  canvas <- color_flame(
+    canvas = matrix(0, nrow = resolution + 1, ncol = resolution + 1),
+    x = df[["x"]], y = df[["y"]], binsx = xbins, binsy = ybins
+  )
   full_canvas <- .unraster(canvas, c("x", "y", "z"))
-  full_canvas$z[full_canvas$z != 0] <- log(full_canvas$z[full_canvas$z != 0])
+  full_canvas$z[full_canvas$z != 0] <- log(full_canvas$z[full_canvas$z != 0], base = 1.2589)
   full_canvas$z[full_canvas$z == 0] <- NA
   artwork <- ggplot2::ggplot(data = full_canvas, mapping = ggplot2::aes(x = x, y = y, fill = z)) +
     ggplot2::geom_raster(interpolate = TRUE) +

@@ -60,6 +60,7 @@ saveCanvas(artwork, filename = "myArtwork.png")
 * [`canvas_cobweb()`](#cobwebs)
 * [`canvas_collatz()`](#collatz-conjecture)
 * [`canvas_chladni()`](#chladni-figures)
+* [`canvas_flame()`](#fractal-flames)
 * [`canvas_flow()`](#flow-fields)
 * [`canvas_maze()`](#mazes)
 * [`canvas_mesh()`](#meshes)
@@ -180,6 +181,24 @@ You can use the `canvas_chladni()` function to make your own artwork using this 
 set.seed(1)
 canvas_chladni(colors = colorPalette("tuscany1"))
 # see ?canvas_chladni for more input parameters of this function
+```
+
+#### Fractal flames
+
+This function implements the fractal flame algorithm as described in [this article](https://flam3.com/flame_draves.pdf) by Scott Draves and Erik Reckase.
+
+<p align="center">
+  <img src='https://github.com/koenderks/aRtsy/raw/development/png/flames/2022-10-06.png' width='30%'>
+  <img src='https://github.com/koenderks/aRtsy/raw/development/png/flames/2022-10-05.png' width='30%'>
+  <img src='https://github.com/koenderks/aRtsy/raw/development/png/flames/2022-10-04.png' width='30%'>
+</p>
+
+You can use the `canvas_flame()` function to make your own artwork using this algorithm.
+
+```r
+set.seed(2)
+canvas_flame(colors = colorPalette("dark2"))
+# see ?canvas_flame for more input parameters of this function
 ```
 
 #### Flow fields
