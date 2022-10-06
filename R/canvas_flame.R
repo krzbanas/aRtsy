@@ -83,6 +83,8 @@
 #'  \item{\code{42}: Tangent}
 #'  \item{\code{43}: Square}
 #'  \item{\code{44}: Rays}
+#'  \item{\code{45}: Blade}
+#'  \item{\code{46}: Secant}
 #' }
 #'
 #' @return A \code{ggplot} object containing the artwork.
@@ -157,7 +159,9 @@ canvas_flame <- function(colors, background = "#fafafa",
                 stats::runif(1, 0, 1), stats::runif(1, 0, 1), # curl.c1, curl.c2
                 stats::runif(1, 2, 50), stats::runif(1, 2, 50), # rectangles.x, rectangles.y
                 stats::runif(1, 0, 100), # v_41
-                stats::runif(1, 0, 10)) # v_44
+                stats::runif(1, 0, 10), # v_44
+                stats::runif(1, 0, 10), # v_45
+                stats::runif(1, 0, 10)) # v_46
   df <- iterate_flame(
     iterations = iterations,
     variations = variations,
@@ -245,7 +249,9 @@ canvas_flame <- function(colors, background = "#fafafa",
     "Arch",
     "Tangent",
     "Square",
-    "Rays"
+    "Rays",
+    "Blade",
+    "Secant"
   )
   return(x)
 }

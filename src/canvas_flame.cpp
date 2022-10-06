@@ -282,6 +282,13 @@ Rcpp::DoubleVector variation(Rcpp::DoubleVector p,
     double first = (pparams[28] * tan(Psi * M_PI * pparams[28])) / pow(r, 2);
     x[0] = first * cos(p[0]);
     x[1] = first * sin(p[0]);
+  } else if (i == 45) { // Rays
+    double Psi = R::runif(0, 1);
+    x[0] = p[0] * (cos(Psi * r * pparams[29]) + sin(Psi * r * pparams[29]));
+    x[1] = p[0] * (cos(Psi * r * pparams[29]) - sin(Psi * r * pparams[29]));
+  } else if (i == 46) { // Secant
+    x[0] = p[0];
+    x[1] = 1 / (pparams[30] * cos(pparams[30] * r));
   }
   return x;
 }

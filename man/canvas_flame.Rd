@@ -88,6 +88,8 @@ The \code{variation} argument can be used to include specific variations into th
  \item{\code{42}: Tangent}
  \item{\code{43}: Square}
  \item{\code{44}: Rays}
+ \item{\code{45}: Blade}
+ \item{\code{46}: Secant}
 }
 }
 \examples{
