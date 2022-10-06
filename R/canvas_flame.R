@@ -85,6 +85,8 @@
 #'  \item{\code{44}: Rays}
 #'  \item{\code{45}: Blade}
 #'  \item{\code{46}: Secant}
+#'  \item{\code{47}: Twintrian}
+#'  \item{\code{48}: Cross}
 #' }
 #'
 #' @return A \code{ggplot} object containing the artwork.
@@ -146,22 +148,25 @@ canvas_flame <- function(colors, background = "#fafafa",
   }
   for (i in 1:nrow(v_ij)) {
     v_ij[i, ] <- v_ij[i, ] / sum(v_ij[i, ])
-  } 
-  v_params <- c(stats::runif(1, 0, 1), stats::runif(1, -1, 0), stats::runif(1, 1, 10), # blob.high, blob.low, blob.waves
-                stats::runif(1, 0, 1), stats::runif(1, 0, 1), stats::runif(1, 0, 1), stats::runif(1, 0, 1), # padj.a, pdj.b, pdj.c, pdj.d
-                stats::runif(1, 0, 1), # rings2.val
-                stats::runif(1, 1, pi), stats::runif(1, 0, 1), # perspective.angle, perspective.dist
-                stats::runif(1, 1, 5), stats::runif(1, 0, 10), # juliaN.power, juliaN.dist
-                stats::runif(1, 1, 5), stats::runif(1, 0, 10), # juliaScope.power, juliaScope.dist
-                stats::runif(1, 1, pi), stats::runif(1, 1, 5), # radialBlur.angle, v_36
-                sample(1:10, size = 1), stats::runif(1, 1, pi), stats::runif(1, 1, 5), # pie.slices, pie.rotation, pie.thickness
-                stats::runif(1, 1, 4), 2 * pi / sample(3:10, size = 1), sample(2:10, size = 1), stats::runif(1, 0, 1), # ngon.power, ngon.sides, ngon.corners, ngon.circle
-                stats::runif(1, 0, 1), stats::runif(1, 0, 1), # curl.c1, curl.c2
-                stats::runif(1, 2, 50), stats::runif(1, 2, 50), # rectangles.x, rectangles.y
-                stats::runif(1, 0, 100), # v_41
-                stats::runif(1, 0, 10), # v_44
-                stats::runif(1, 0, 10), # v_45
-                stats::runif(1, 0, 10)) # v_46
+  }
+  v_params <- c(
+    stats::runif(1, 0, 1), stats::runif(1, -1, 0), stats::runif(1, 1, 10), # blob.high, blob.low, blob.waves
+    stats::runif(1, 0, 1), stats::runif(1, 0, 1), stats::runif(1, 0, 1), stats::runif(1, 0, 1), # padj.a, pdj.b, pdj.c, pdj.d
+    stats::runif(1, 0, 1), # rings2.val
+    stats::runif(1, 1, pi), stats::runif(1, 0, 1), # perspective.angle, perspective.dist
+    stats::runif(1, 1, 5), stats::runif(1, 0, 10), # juliaN.power, juliaN.dist
+    stats::runif(1, 1, 5), stats::runif(1, 0, 10), # juliaScope.power, juliaScope.dist
+    stats::runif(1, 1, pi), stats::runif(1, 1, 5), # radialBlur.angle, v_36
+    sample(1:10, size = 1), stats::runif(1, 1, pi), stats::runif(1, 1, 5), # pie.slices, pie.rotation, pie.thickness
+    stats::runif(1, 1, 4), 2 * pi / sample(3:10, size = 1), sample(2:10, size = 1), stats::runif(1, 0, 1), # ngon.power, ngon.sides, ngon.corners, ngon.circle
+    stats::runif(1, 0, 1), stats::runif(1, 0, 1), # curl.c1, curl.c2
+    stats::runif(1, 2, 50), stats::runif(1, 2, 50), # rectangles.x, rectangles.y
+    stats::runif(1, 0, 100), # v_41
+    stats::runif(1, 0, 10), # v_44
+    stats::runif(1, 0, 10), # v_45
+    stats::runif(1, 0, 10), # v_46
+    stats::runif(1, 0, 10) # v_47
+  )
   df <- iterate_flame(
     iterations = iterations,
     variations = variations,
@@ -251,7 +256,9 @@ canvas_flame <- function(colors, background = "#fafafa",
     "Square",
     "Rays",
     "Blade",
-    "Secant"
+    "Secant",
+    "Twintrian",
+    "Cross"
   )
   return(x)
 }

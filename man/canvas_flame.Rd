@@ -90,6 +90,8 @@ The \code{variation} argument can be used to include specific variations into th
  \item{\code{44}: Rays}
  \item{\code{45}: Blade}
  \item{\code{46}: Secant}
+ \item{\code{47}: Twintrian}
+ \item{\code{48}: Cross}
 }
 }
 \examples{

@@ -289,6 +289,15 @@ Rcpp::DoubleVector variation(Rcpp::DoubleVector p,
   } else if (i == 46) { // Secant
     x[0] = p[0];
     x[1] = 1 / (pparams[30] * cos(pparams[30] * r));
+  } else if (i == 47) { // Twintrian
+    double Psi = R::runif(0, 1);
+    double t = log10(pow(sin(Psi * r * pparams[31]), 2)) + cos(Psi * r * pparams[31]);
+    x[0] = p[0] * t;
+    x[1] = p[0] * (t - M_PI * sin(Psi * r * pparams[31]));
+  } else if (i == 48) { // Cross
+    double first = sqrt(1 / pow(pow(p[0], 2) - pow(p[1], 2), 2));
+    x[0] = first * p[0];
+    x[1] = first * p[1];
   }
   return x;
 }
