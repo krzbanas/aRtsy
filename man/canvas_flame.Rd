@@ -84,6 +84,10 @@ The \code{variation} argument can be used to include specific variations into th
  \item{\code{38}: Ngon}
  \item{\code{39}: Curl}
  \item{\code{40}: Rectangles}
+ \item{\code{41}: Arch}
+ \item{\code{42}: Tangent}
+ \item{\code{43}: Square}
+ \item{\code{44}: Rays}
 }
 }
 \examples{

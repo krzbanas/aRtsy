@@ -265,6 +265,23 @@ Rcpp::DoubleVector variation(Rcpp::DoubleVector p,
   } else if (i == 40) { // Rectangles
     x[0] = (2 * floor(p[0] / pparams[25]) + 1) * pparams[25] - p[0];
     x[1] = (2 * floor(p[1] / pparams[26]) + 1) * pparams[26] - p[1];
+  } else if (i == 41) { // Arch
+    double Psi = R::runif(0, 1);
+    x[0] = sin(Psi * M_PI * pparams[27]);
+    x[1] = sin(Psi * M_PI * pparams[27]) / cos(Psi * M_PI * pparams[27]);
+  } else if (i == 42) { // Tangent
+    x[0] = sin(p[0]) / cos(p[1]);
+    x[1] = tan(p[1]);
+  } else if (i == 43) { // Square
+    double Psi1 = R::runif(0, 1);
+    double Psi2 = R::runif(0, 1);
+    x[0] = Psi1 - 0.5;
+    x[1] = Psi2 - 0.5;
+  } else if (i == 44) { // Rays
+    double Psi = R::runif(0, 1);
+    double first = (pparams[28] * tan(Psi * M_PI * pparams[28])) / pow(r, 2);
+    x[0] = first * cos(p[0]);
+    x[1] = first * sin(p[0]);
   }
   return x;
 }

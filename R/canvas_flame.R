@@ -79,6 +79,10 @@
 #'  \item{\code{38}: Ngon}
 #'  \item{\code{39}: Curl}
 #'  \item{\code{40}: Rectangles}
+#'  \item{\code{41}: Arch}
+#'  \item{\code{42}: Tangent}
+#'  \item{\code{43}: Square}
+#'  \item{\code{44}: Rays}
 #' }
 #'
 #' @return A \code{ggplot} object containing the artwork.
@@ -147,11 +151,13 @@ canvas_flame <- function(colors, background = "#fafafa",
                 stats::runif(1, 1, pi), stats::runif(1, 0, 1), # perspective.angle, perspective.dist
                 stats::runif(1, 1, 5), stats::runif(1, 0, 10), # juliaN.power, juliaN.dist
                 stats::runif(1, 1, 5), stats::runif(1, 0, 10), # juliaScope.power, juliaScope.dist
-                stats::runif(1, 1, pi), stats::runif(1, 1, 5), # radialBlur.angle, v_ij[3, 6]
+                stats::runif(1, 1, pi), stats::runif(1, 1, 5), # radialBlur.angle, v_36
                 sample(1:10, size = 1), stats::runif(1, 1, pi), stats::runif(1, 1, 5), # pie.slices, pie.rotation, pie.thickness
                 stats::runif(1, 1, 4), 2 * pi / sample(3:10, size = 1), sample(2:10, size = 1), stats::runif(1, 0, 1), # ngon.power, ngon.sides, ngon.corners, ngon.circle
                 stats::runif(1, 0, 1), stats::runif(1, 0, 1), # curl.c1, curl.c2
-                stats::runif(1, 2, 50), stats::runif(1, 2, 50)) # rectangles.x, rectangles.y
+                stats::runif(1, 2, 50), stats::runif(1, 2, 50), # rectangles.x, rectangles.y
+                stats::runif(1, 0, 100), # v_41
+                stats::runif(1, 0, 10)) # v_44
   df <- iterate_flame(
     iterations = iterations,
     variations = variations,
@@ -235,7 +241,11 @@ canvas_flame <- function(colors, background = "#fafafa",
     "Pie",
     "Ngon",
     "Curl",
-    "Rectangles"
+    "Rectangles",
+    "Arch",
+    "Tangent",
+    "Square",
+    "Rays"
   )
   return(x)
 }
