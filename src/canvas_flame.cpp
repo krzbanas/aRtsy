@@ -112,6 +112,7 @@ Rcpp::NumericVector get_vj(arma::mat v_ij,
 
 // [[Rcpp::export]]
 Rcpp::DataFrame iterate_flame(int iterations,
+                              Rcpp::DoubleVector variations,
                               Rcpp::DoubleVector point,
                               Rcpp::DoubleVector w_i,
                               arma::mat v_ij,
@@ -134,11 +135,12 @@ Rcpp::DataFrame iterate_flame(int iterations,
     p = affine(point, mat_coef(i[0], 0), mat_coef(i[0], 1), mat_coef(i[0], 2), mat_coef(i[0], 3), mat_coef(i[0], 4), mat_coef(i[0], 5));
     if (blend_var) {
       for (int j = 0; j < nvariations; j++) {
-        newpoint += v_ij(i[0], j) * variation(p, j);
+		int ch = variations[j];
+        newpoint += v_ij(i[0], ch) * variation(p, ch);
       }
     } else {
 	  Rcpp::NumericVector v_j = get_vj(v_ij, i[0]);
-	  Rcpp::NumericVector ch = RcppArmadillo::sample(double_seq(0, nvariations - 1), 1, false, v_j);
+	  Rcpp::NumericVector ch = RcppArmadillo::sample(variations, 1, false, v_j);
       newpoint = variation(p, ch[0]);
     }
     point = newpoint;

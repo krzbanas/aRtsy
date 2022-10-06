@@ -4,7 +4,7 @@
 \alias{canvas_flame}
 \title{Draw a Fractal Flame}
 \usage{
-canvas_flame(colors, background = "#000000",
+canvas_flame(colors, background = "#000000", variations = NULL,
                       iterations = 1000000, resolution = 1000,
                       blend = TRUE, post = FALSE, final = FALSE)
 }
@@ -12,6 +12,8 @@ canvas_flame(colors, background = "#000000",
 \item{colors}{a string or character vector specifying the color(s) used for the artwork.}
 
 \item{background}{a character specifying the color used for the background.}
+
+\item{variations}{an integer (vector) specifying the variations to be included in the flame. The default \code{NULL} includes all variations. See the details section for more information about possible variations.}
 
 \item{iterations}{a positive integer specifying the number of iterations of the algorithm.}
 
@@ -28,6 +30,22 @@ A \code{ggplot} object containing the artwork.
 }
 \description{
 This function implements the fractal flame algorithm.
+}
+\details{
+The \code{variation} argument can be used to specify the variations. Possible options are:
+
+\itemize{
+ \item{\code{0}: Linear}
+ \item{\code{1}: Sine}
+ \item{\code{2}: Spherical}
+ \item{\code{3}: Swirl}
+ \item{\code{4}: Horsehoe}
+ \item{\code{5}: Polar}
+ \item{\code{6}: Handkerchief}
+ \item{\code{7}: Heart}
+ \item{\code{8}: Disc}
+ \item{\code{9}: Spiral}
+}
 }
 \examples{
 \donttest{

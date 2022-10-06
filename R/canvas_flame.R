@@ -17,17 +17,33 @@
 #'
 #' @description This function implements the fractal flame algorithm.
 #'
-#' @usage canvas_flame(colors, background = "#000000",
+#' @usage canvas_flame(colors, background = "#000000", variations = NULL,
 #'                       iterations = 1000000, resolution = 1000,
 #'                       blend = TRUE, post = FALSE, final = FALSE)
 #'
 #' @param colors      a string or character vector specifying the color(s) used for the artwork.
 #' @param background  a character specifying the color used for the background.
+#' @param variations  an integer (vector) specifying the variations to be included in the flame. The default \code{NULL} includes all variations. See the details section for more information about possible variations.
 #' @param iterations  a positive integer specifying the number of iterations of the algorithm.
 #' @param resolution  resolution of the artwork in pixels per row/column. Increasing the resolution increases the quality of the artwork but also increases the computation time exponentially.
 #' @param blend       logical. Whether to blend the variations (\code{TRUE}) or pick a unique variation in each iteration (\code{FALSE}).
 #' @param post        logical. Whether to apply a posttransformation in each iteration.
 #' @param final       logical. Whether to apply a final transformation in each iteration.
+#'
+#' @details           The \code{variation} argument can be used to specify the variations. Possible options are:
+#'
+#' \itemize{
+#'  \item{\code{0}: Linear}
+#'  \item{\code{1}: Sine}
+#'  \item{\code{2}: Spherical}
+#'  \item{\code{3}: Swirl}
+#'  \item{\code{4}: Horsehoe}
+#'  \item{\code{5}: Polar}
+#'  \item{\code{6}: Handkerchief}
+#'  \item{\code{7}: Heart}
+#'  \item{\code{8}: Disc}
+#'  \item{\code{9}: Spiral}
+#' }
 #'
 #' @return A \code{ggplot} object containing the artwork.
 #'
@@ -49,14 +65,18 @@
 #'
 #' @export
 
-canvas_flame <- function(colors, background = "#000000",
+canvas_flame <- function(colors, background = "#000000", variations = NULL,
                          iterations = 1000000, resolution = 1000,
                          blend = TRUE, post = FALSE, final = FALSE) {
   .checkUserInput(
     resolution = resolution, background = background
   )
   iterations <- iterations + 20
-  nvariations <- sample(1:10, size = 1)
+  if (is.null(variations)) {
+    v <- 0:9
+    variations <- sample(x = v, size = sample(1:length(v), size = 1))
+  }
+  nvariations <- length(variations)
   nfunc <- sample(1:10, size = 1)
   w_i <- stats::runif(nfunc, 0, 1)
   v_ij <- matrix(stats::runif(nfunc * nvariations, min = 0, max = 1), nrow = nfunc, ncol = nvariations)
@@ -65,6 +85,7 @@ canvas_flame <- function(colors, background = "#000000",
   }
   df <- iterate_flame(
     iterations = iterations,
+    variations = variations,
     point = stats::runif(2, -1, 1),
     w_i = w_i / sum(w_i),
     v_ij = v_ij,
