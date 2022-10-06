@@ -122,7 +122,7 @@ canvas_flame <- function(colors, background = "#fafafa",
     cat("\nVariation:", paste(varNames[variations + 1], collapse = " + "), "\n")
     catp <- if (post) "Post transformation" else NULL
     catc <- if (final) "Final transformation" else NULL
-    cate <- if (extra) "Final transformation" else NULL
+    cate <- if (extra) "Additional post transformation" else NULL
     cat("Effect:", paste(c("Affine transformation", catp, catc, cate), collapse = " + "), "\n")
   }
   nvariations <- length(variations)
