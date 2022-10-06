@@ -56,10 +56,10 @@ canvas_flame <- function(colors, background = "#000000",
     resolution = resolution, background = background
   )
   iterations <- iterations + 20
-  nvariations <- sample(1:9, size = 1)
-  nfunc <- sample(1:9, size = 1)
+  nvariations <- sample(1:10, size = 1)
+  nfunc <- sample(1:10, size = 1)
   w_i <- stats::runif(nfunc, 0, 1)
-  v_ij <- matrix(stats::runif(nfunc * nvariations, min = -1, max = 1), nrow = nfunc, ncol = nvariations)
+  v_ij <- matrix(stats::runif(nfunc * nvariations, min = 0, max = 1), nrow = nfunc, ncol = nvariations)
   for (i in 1:nrow(v_ij)) {
     v_ij[i, ] <- v_ij[i, ] / sum(v_ij[i, ])
   }

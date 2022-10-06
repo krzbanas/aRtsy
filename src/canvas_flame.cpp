@@ -80,6 +80,9 @@ Rcpp::DoubleVector variation(Rcpp::DoubleVector p, int i) {;
   } else if (i == 8) { // Disc
     x[0] = theta / M_PI * sin(M_PI * r);
     x[1] = theta / M_PI * cos(M_PI * r);
+  } else if (i == 9) { // Spiral
+    x[0] = 1 / r * cos(theta) + sin(r);
+    x[1] = 1 / r * sin(theta) + cos(r);
   }
   return x;
 }
@@ -95,6 +98,16 @@ Rcpp::DoubleVector posttransform(Rcpp::DoubleVector p,
   x[0] = alpha * p[0] + beta * p[1] + gamma;
   x[1] = delta * p[0] + epsilon * p[1] + zeta;
   return x;
+}
+
+Rcpp::NumericVector get_vj(arma::mat v_ij,
+                           Rcpp::NumericVector i) {
+  int n = v_ij.n_cols;
+  Rcpp::NumericVector v_j(n);
+  for (int iter = 0; iter < n; iter++) {
+    v_j[iter] = v_ij(i[0], iter);
+  }
+  return v_j;
 }
 
 // [[Rcpp::export]]
@@ -124,7 +137,9 @@ Rcpp::DataFrame iterate_flame(int iterations,
         newpoint += v_ij(i[0], j) * variation(p, j);
       }
     } else {
-      newpoint = variation(p, i[0]);
+	  Rcpp::NumericVector v_j = get_vj(v_ij, i[0]);
+	  Rcpp::NumericVector ch = RcppArmadillo::sample(double_seq(0, nvariations - 1), 1, false, v_j);
+      newpoint = variation(p, ch[0]);
     }
     point = newpoint;
     if (transform_p) {
