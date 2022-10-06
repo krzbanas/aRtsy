@@ -63,6 +63,12 @@
 #'  \item{\code{22}: Fan}
 #'  \item{\code{23}: Blob}
 #'  \item{\code{24}: PDJ}
+#'  \item{\code{25}: Fan2}
+#'  \item{\code{26}: Rings2}
+#'  \item{\code{27}: Eyefish}
+#'  \item{\code{28}: Bubble}
+#'  \item{\code{29}: Cylinder}
+#'  \item{\code{30}: Perspective}
 #' }
 #'
 #' @return A \code{ggplot} object containing the artwork.
@@ -190,7 +196,13 @@ canvas_flame <- function(colors, background = "#fafafa",
     "Rings",
     "Fan",
     "Blob",
-    "PDJ"
+    "PDJ",
+    "Fan2",
+    "Rings2",
+    "Eyefish",
+    "Bubble",
+    "Cylinder",
+    "Perspective"
   )
   return(x)
 }

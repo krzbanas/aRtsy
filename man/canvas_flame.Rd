@@ -68,6 +68,12 @@ The \code{variation} argument can be used to include specific variations into th
  \item{\code{22}: Fan}
  \item{\code{23}: Blob}
  \item{\code{24}: PDJ}
+ \item{\code{25}: Fan2}
+ \item{\code{26}: Rings2}
+ \item{\code{27}: Eyefish}
+ \item{\code{28}: Bubble}
+ \item{\code{29}: Cylinder}
+ \item{\code{30}: Perspective}
 }
 }
 \examples{

@@ -57,7 +57,7 @@ Rcpp::DoubleVector variation(Rcpp::DoubleVector p,
                              double d,
                              double e,
                              double f,
-							 Rcpp::DoubleVector pparams) {;
+                             Rcpp::DoubleVector pparams) {;
   Rcpp::DoubleVector x(2);
   double r = sqrt(pow(p[0], 2) + pow(p[1], 2));
   double theta = atan(p[0] / p[1]);
@@ -91,22 +91,22 @@ Rcpp::DoubleVector variation(Rcpp::DoubleVector p,
   } else if (i == 9) { // Spiral
     x[0] = 1 / r * cos(theta) + sin(r);
     x[1] = 1 / r * sin(theta) + cos(r);
-  } else if (i == 10) {
+  } else if (i == 10) { // Hyperbolic
     x[0] = sin(theta) / r;
     x[1] = r * cos(theta);
-  } else if (i == 11) {
+  } else if (i == 11) { // Diamond
     x[0] = sin(theta) * cos(r);
     x[1] = cos(theta) * sin(r);
-  } else if (i == 12) {
+  } else if (i == 12) { // Ex
     double p0 = sin(theta + r);
     double p1 = cos(theta - r);
     x[0] = r * (pow(p0, 3) + pow(p1, 3));
     x[1] = r * (pow(p0, 3) - pow(p1, 3));
-  } else if (i == 13) {
+  } else if (i == 13) { // Julia
     int Phi = floor(R::runif(0, 2));
     x[0] = sqrt(r) * cos(theta / 2 + Phi);
     x[1] = sqrt(r) * sin(theta / 2 + Phi);
-  } else if (i == 14) {
+  } else if (i == 14) { // Bent
     if ((p[0] >= 0) & (p[1] >= 0)) {
       x[0] = p[0];
       x[1] = p[1];
@@ -120,44 +120,74 @@ Rcpp::DoubleVector variation(Rcpp::DoubleVector p,
       x[0] = 2 * p[0];
       x[1] = p[1] / 2;
     }
-  } else if (i == 15) {
+  } else if (i == 15) { // Waves
     x[0] = p[0] + b * sin(p[1] / pow(c, 2));
     x[1] = p[1] + e * sin(p[0] / pow(f, 2));
-  } else if (i == 16) {
+  } else if (i == 16) { // Fisheye
     x[0] = (2 / (r + 1)) * p[1];
     x[1] = (2 / (r + 1)) * p[0];
-  } else if (i == 17) {
+  } else if (i == 17) { // Popcorn
     x[0] = p[0] + c * sin(tan(3 * p[1]));
     x[1] = p[1] + f * sin(tan(3 * p[0]));
-  } else if (i == 18) {
+  } else if (i == 18) { // Exponential
     x[0] = exp(p[0] - 1) * cos(M_PI * p[1]);
     x[1] = exp(p[0] - 1) * sin(M_PI * p[1]);
-  } else if (i == 19) {
+  } else if (i == 19) { // Power
     x[0] = pow(r, sin(theta)) * cos(theta);
     x[1] = pow(r, sin(theta)) * sin(theta);
-  } else if (i == 20) {
+  } else if (i == 20) { // Cosine
     x[0] = cos(M_PI * p[0]) * cosh(p[1]);
     x[1] = -(sin(M_PI * p[0]) * sinh(p[1]));
-  } else if (i == 21) {
-	double fp = fmod(r + pow(c, 2), 2 * pow(c, 2)) - pow(c, 2) + r * (1 - pow(c, 2));
+  } else if (i == 21) { // Rings
+    double fp = fmod(r + pow(c, 2), 2 * pow(c, 2)) - pow(c, 2) + r * (1 - pow(c, 2));
     x[0] = fp * cos(theta);
-	x[1] = fp * sin(theta);
-  } else if (i == 22) {
+    x[1] = fp * sin(theta);
+  } else if (i == 22) { // Fan
     double t = M_PI * pow(c, 2);
-	if (fmod(theta + f, t) > (t / 2)) {
+    if (fmod(theta + f, t) > (t / 2)) {
       x[0] = r * cos(theta - (t/2));
       x[1] = r * sin(theta - (t/2));
-	} else {
+    } else {
       x[0] = r * cos(theta + (t/2));;
       x[1] = r * sin(theta + (t/2));	
-	}
-  } else if (i == 23) {
+    }
+  } else if (i == 23) { // Blob
     double first = r * (pparams[1] + ((pparams[0] - pparams[1])/ 2) * (sin(pparams[3] * theta) + 1));
     x[0] = first * cos(theta);
     x[1] = first * sin(theta);
-  } else if (i == 24) {
+  } else if (i == 24) { // PDJ
     x[0] = sin(pparams[4] * p[1]) - cos(pparams[5] * p[0]);
     x[1] = sin(pparams[6] * p[0]) - cos(pparams[7] * p[1]);
+  } else if (i == 25) { // Fan2
+    Rcpp::DoubleVector fanresult = variation(p, 22, a, b, c, d, e, f, pparams);
+    double p1 = M_PI * pow(fanresult[0], 2);
+    double p2 = fanresult[1];
+    double t = theta + p2 - p1 * floor((2 * theta * p2) / p1);
+    if (t > (p1 / 2)) {
+      x[0] = r * sin(theta - (p1 / 2));
+      x[1] = r * cos(theta - (p1 / 2));
+    } else {
+      x[0] = r * sin(theta + (p1 / 2));
+      x[1] = r * cos(theta + (p1 / 2));
+    }
+  } else if (i == 26) {
+    double pp = pow(pparams[8], 2);
+    double t = r - 2 * pp * floor((r + pp) / (2 * pp)) + r * (1 - pp);
+    x[0] = t * sin(theta);
+    x[1] = t * cos(theta);
+  } else if (i == 27) {
+    x[0] = (2 / (r + 1)) * p[0];
+    x[1] = (2 / (r + 1)) * p[1];
+  } else if (i == 28) {
+    x[0] = (4 / (pow(r, 2) + 4)) * p[0];
+    x[1] = (4 / (pow(r, 2) + 4)) * p[1];	
+  } else if (i == 29) {
+    x[0] = sin(p[0]);
+    x[1] = p[1];
+  } else if (i == 30) {
+    double first = (pparams[10] / (pparams[10] - p[1] * sin(pparams[9])));
+    x[0] = first * p[0];
+    x[1] = first * p[1] * cos(pparams[9]);
   }
   return x;
 }
@@ -204,8 +234,8 @@ Rcpp::DataFrame iterate_flame(int iterations,
   Rcpp::DoubleVector x(npoints);
   Rcpp::DoubleVector y(npoints);
   Rcpp::DoubleVector p(2);
-  // blob.high, blob.low, blob.waves, padj.a, pdj.b, pdj.c, pdj.d
-  Rcpp::DoubleVector pparams = {R::runif(0, 1), R::runif(-1, 0), R::runif(1, 10), R::runif(0, 1), R::runif(0, 1), R::runif(0, 1), R::runif(0, 1)};
+  // blob.high, blob.low, blob.waves, padj.a, pdj.b, pdj.c, pdj.d, rings2.val, perspective.angle, perspective.dist
+  Rcpp::DoubleVector pparams = {R::runif(0, 1), R::runif(-1, 0), R::runif(1, 10), R::runif(0, 1), R::runif(0, 1), R::runif(0, 1), R::runif(0, 1), R::runif(0, 1), R::runif(0, M_PI), R::runif(0, 1)};
   for (int iter = 0; iter < iterations; iter++) {
     Rcpp::checkUserInterrupt();
     Rcpp::NumericVector i = RcppArmadillo::sample(double_seq(0, w_i.length() - 1), 1, false, w_i);
@@ -213,12 +243,12 @@ Rcpp::DataFrame iterate_flame(int iterations,
     p = affine(point, mat_coef(i[0], 0), mat_coef(i[0], 1), mat_coef(i[0], 2), mat_coef(i[0], 3), mat_coef(i[0], 4), mat_coef(i[0], 5));
     if (blend_variations) {
       for (int j = 0; j < nvariations; j++) {
-		int ch = variations[j];
+        int ch = variations[j];
         newpoint += v_ij(i[0], j) * variation(p, ch, mat_coef(i[0], 0), mat_coef(i[0], 1), mat_coef(i[0], 2), mat_coef(i[0], 3), mat_coef(i[0], 4), mat_coef(i[0], 5), pparams);
       }
     } else {
-	  Rcpp::NumericVector v_j = get_vj(v_ij, i[0]);
-	  Rcpp::NumericVector ch = RcppArmadillo::sample(variations, 1, false, v_j);
+      Rcpp::NumericVector v_j = get_vj(v_ij, i[0]);
+      Rcpp::NumericVector ch = RcppArmadillo::sample(variations, 1, false, v_j);
       newpoint = variation(p, ch[0], mat_coef(i[0], 0), mat_coef(i[0], 1), mat_coef(i[0], 2), mat_coef(i[0], 3), mat_coef(i[0], 4), mat_coef(i[0], 5), pparams);
     }
     point = newpoint;
@@ -242,7 +272,7 @@ Rcpp::DataFrame iterate_flame(int iterations,
 }
 
 int cfindInterval(double v, const Rcpp::NumericVector& x) {
-     return std::distance(x.begin(), std::upper_bound(x.begin(), x.end(), v));
+  return std::distance(x.begin(), std::upper_bound(x.begin(), x.end(), v));
 }
 
 // [[Rcpp::export]]
