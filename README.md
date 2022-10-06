@@ -185,7 +185,7 @@ canvas_chladni(colors = colorPalette("tuscany1"))
 
 #### Fractal flames
 
-This function implements the fractal flame algorithm as described in [this article](https://flam3.com/flame_draves.pdf) by Scott Draves and Erik Reckase. It iterates a set of randomly determined function systems following one or multiple specific variations to determine a set of points. You can specify which variations from the article to include in the flame, whether to blend the variations using a weight or to pick a single variation for each iteration, whether to apply a post transformation and whether to apply a final transformation (optionally including an additional posttransformation). The final image is based on a log density display of the hit count of each pixel.
+This function implements the Fractal Flame algorithm described in [this article](https://flam3.com/flame_draves.pdf) by Scott Draves and Erik Reckase. It iterates a set of randomly determined function systems following one or multiple specific variations to determine a set of points. You can specify which variations from the article to include in the flame, whether to blend the variations using a weight or to pick a single variation for each iteration, whether to apply a post transformation and whether to apply a final transformation (optionally including an additional posttransformation). The final image is based on a log density display of the hit count of each pixel.
 
 <p align="center">
   <img src='https://github.com/koenderks/aRtsy/raw/development/png/flames/2022-10-06.png' width='30%'>

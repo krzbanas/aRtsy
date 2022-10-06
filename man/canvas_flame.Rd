@@ -59,6 +59,10 @@ The \code{variation} argument can be used to include specific variations into th
  \item{\code{15}: Waves}
  \item{\code{16}: Fisheye}
  \item{\code{17}: Popcorn}
+ \item{\code{18}: Exponential}
+ \item{\code{19}: Power}
+ \item{\code{20}: Cosine}
+ \item{\code{21}: Rings}
 }
 }
 \examples{

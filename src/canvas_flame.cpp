@@ -128,6 +128,19 @@ Rcpp::DoubleVector variation(Rcpp::DoubleVector p,
   } else if (i == 17) {
     x[0] = p[0] + c * sin(tan(3 * p[1]));
     x[1] = p[1] + f * sin(tan(3 * p[0]));
+  } else if (i == 18) {
+    x[0] = exp(p[0] - 1) * cos(M_PI * p[1]);
+    x[1] = exp(p[0] - 1) * sin(M_PI * p[1]);
+  } else if (i == 19) {
+    x[0] = pow(r, sin(theta)) * cos(theta);
+    x[1] = pow(r, sin(theta)) * sin(theta);
+  } else if (i == 20) {
+    x[0] = cos(M_PI * p[0]) * cosh(p[1]);
+    x[1] = -(sin(M_PI * p[0]) * sinh(p[1]));
+  } else if (i == 21) {
+	double fp = fmod(r + pow(c, 2), 2 * pow(c, 2)) - pow(c, 2) + r * (1 - pow(c, 2));
+    x[0] = fp * cos(theta);
+	x[1] = fp * sin(theta);
   }
   return x;
 }

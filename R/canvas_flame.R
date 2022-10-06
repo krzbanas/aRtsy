@@ -55,6 +55,10 @@
 #'  \item{\code{15}: Waves}
 #'  \item{\code{16}: Fisheye}
 #'  \item{\code{17}: Popcorn}
+#'  \item{\code{18}: Exponential}
+#'  \item{\code{19}: Power}
+#'  \item{\code{20}: Cosine}
+#'  \item{\code{21}: Rings}
 #' }
 #'
 #' @return A \code{ggplot} object containing the artwork.
@@ -168,6 +172,10 @@ canvas_flame <- function(colors, background = "#000000",
          "Bent",
          "Waves",
          "Fisheye",
-         "Popcorn")
+         "Popcorn",
+         "Exponential",
+         "Power",
+         "Cosine",
+         "Rings")
   return(x)
 }
