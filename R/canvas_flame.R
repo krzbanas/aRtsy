@@ -53,6 +53,8 @@
 #'  \item{\code{13}: Julia}
 #'  \item{\code{14}: Bent}
 #'  \item{\code{15}: Waves}
+#'  \item{\code{16}: Fisheye}
+#'  \item{\code{17}: Popcorn}
 #' }
 #'
 #' @return A \code{ggplot} object containing the artwork.
@@ -86,7 +88,9 @@ canvas_flame <- function(colors, background = "#000000",
   iterations <- iterations + 20
   varNames <- .getVariationNames()
   noVariations <- length(varNames)
+  user <- FALSE
   if (is.null(variations)) {
+	user <- TRUE
     v <- 0:(noVariations - 1)
     variations <- sample(x = v, size = sample(1:length(v), size = 1))
   } else if (min(variations) < 0 || max(variations) > (noVariations - 1)) {
@@ -102,7 +106,11 @@ canvas_flame <- function(colors, background = "#000000",
   nvariations <- length(variations)
   nfunc <- sample(1:10, size = 1)
   w_i <- stats::runif(nfunc, 0, 1)
-  v_ij <- matrix(stats::runif(nfunc * nvariations, min = 0, max = 1), nrow = nfunc, ncol = nvariations)
+  if (user) {
+    v_ij <- matrix(1, nrow = nfunc, ncol = nvariations)
+  } else {
+	v_ij <- matrix(stats::runif(nfunc * nvariations, min = 0, max = 1), nrow = nfunc, ncol = nvariations)
+  }
   for (i in 1:nrow(v_ij)) {
     v_ij[i, ] <- v_ij[i, ] / sum(v_ij[i, ])
   }
@@ -158,6 +166,8 @@ canvas_flame <- function(colors, background = "#000000",
          "Ex",
          "Julia",
          "Bent",
-         "Waves")
+         "Waves",
+         "Fisheye",
+         "Popcorn")
   return(x)
 }

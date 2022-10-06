@@ -122,6 +122,12 @@ Rcpp::DoubleVector variation(Rcpp::DoubleVector p,
   } else if (i == 15) {
     x[0] = p[0] + b * sin(p[1] / pow(c, 2));
     x[1] = p[1] + e * sin(p[0] / pow(f, 2));
+  } else if (i == 16) {
+    x[0] = (2 / (r + 1)) * p[1];
+    x[1] = (2 / (r + 1)) * p[0];
+  } else if (i == 17) {
+    x[0] = p[0] + c * sin(tan(3 * p[1]));
+    x[1] = p[1] + f * sin(tan(3 * p[0]));
   }
   return x;
 }

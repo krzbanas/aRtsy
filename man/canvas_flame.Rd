@@ -57,6 +57,8 @@ The \code{variation} argument can be used to include specific variations into th
  \item{\code{13}: Julia}
  \item{\code{14}: Bent}
  \item{\code{15}: Waves}
+ \item{\code{16}: Fisheye}
+ \item{\code{17}: Popcorn}
 }
 }
 \examples{
