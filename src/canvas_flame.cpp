@@ -169,7 +169,7 @@ Rcpp::DoubleVector variation(Rcpp::DoubleVector p,
     Rcpp::DoubleVector fanresult = variation(p, 22, a, b, c, d, e, f, pparams);
     double p1 = M_PI * pow(fanresult[0], 2);
     double p2 = fanresult[1];
-    double t = theta + p2 - p1 * floor((2 * theta * p2) / p1);
+    double t = theta + p2 - p1 * trunc((2 * theta * p2) / p1);
     if (t > (p1 / 2)) {
       x[0] = r * sin(theta - (p1 / 2));
       x[1] = r * cos(theta - (p1 / 2));
@@ -179,7 +179,7 @@ Rcpp::DoubleVector variation(Rcpp::DoubleVector p,
     }
   } else if (i == 26) { // Rings2
     double pp = pow(pparams[7], 2);
-    double t = r - 2 * pp * floor((r + pp) / (2 * pp)) + r * (1 - pp);
+    double t = r - 2 * pp * trunc((r + pp) / (2 * pp)) + r * (1 - pp);
     x[0] = t * sin(theta);
     x[1] = t * cos(theta);
   } else if (i == 27) { // Eyefish
@@ -202,14 +202,14 @@ Rcpp::DoubleVector variation(Rcpp::DoubleVector p,
     x[1] = Psi1 * p[1] * sin(2 * M_PI * Psi2);
   } else if (i == 32) { // JuliaN
     double Psi = R::runif(0, 1);
-    double p3 = floor(fabs(pparams[11]) * Psi);
+    double p3 = trunc(fabs(pparams[11]) * Psi);
     double t = (phi + 2 * M_PI * p3) / pparams[11];
     x[0] = pow(r, pparams[11] / pparams[10]) * cos(t);
     x[1] = pow(r, pparams[11] / pparams[10]) * sin(t);
   } else if (i == 33) { // JuliaScope
     double Psi = R::runif(0, 1);
     int Lambda = floor(R::runif(0, 2));
-    double p3 = floor(fabs(pparams[12] * Psi));
+    double p3 = trunc(fabs(pparams[12] * Psi));
     double t = (Lambda * phi + 2 * M_PI * p3) / pparams[12];
     x[0] = pow(r, pparams[13] / pparams[12]) * cos(t);
     x[1] = pow(r, pparams[13] / pparams[12]) * sin(t);
@@ -241,7 +241,7 @@ Rcpp::DoubleVector variation(Rcpp::DoubleVector p,
     double Psi1 = R::runif(0, 1);
     double Psi2 = R::runif(0, 1);
     double Psi3 = R::runif(0, 1);
-    double t1 = floor(Psi1 * pparams[16] + 0.5);
+    double t1 = trunc(Psi1 * pparams[16] + 0.5);
     double t2 = pparams[17] + ((2 * M_PI) / pparams[16]) * (t1 + Psi2 * pparams[17]);
     x[0] = Psi3 * cos(t2);
     x[1] = Psi3 * sin(t2);
