@@ -69,6 +69,8 @@
 #'  \item{\code{28}: Bubble}
 #'  \item{\code{29}: Cylinder}
 #'  \item{\code{30}: Perspective}
+#'  \item{\code{31}: Noise}
+#'  \item{\code{32}: JuliaN}
 #' }
 #'
 #' @return A \code{ggplot} object containing the artwork.
@@ -131,6 +133,16 @@ canvas_flame <- function(colors, background = "#fafafa",
   for (i in 1:nrow(v_ij)) {
     v_ij[i, ] <- v_ij[i, ] / sum(v_ij[i, ])
   }
+  # blob.high, blob.low, blob.waves, 
+  # padj.a, pdj.b, pdj.c, pdj.d, 
+  # rings2.val, 
+  # perspective.angle, perspective.dist, 
+  # juliaN.power, juliaN.dist
+  v_params <- c(stats::runif(1, 0, 1), stats::runif(1, -1, 0), stats::runif(1, 1, 10), 
+                stats::runif(1, 0, 1), stats::runif(1, 0, 1), stats::runif(1, 0, 1), stats::runif(1, 0, 1), 
+                stats::runif(1, 0, 1), 
+                stats::runif(1, 1, pi), stats::runif(1, 0, 1), 
+                stats::runif(1, 1, 5), stats::runif(1, 0, 10))
   df <- iterate_flame(
     iterations = iterations,
     variations = variations,
@@ -139,6 +151,7 @@ canvas_flame <- function(colors, background = "#fafafa",
     mat_coef = matrix(stats::runif(nfunc * 6, min = -1, max = 1), nrow = nfunc, ncol = 6),
     blend_variations = blend,
     v_ij = v_ij,
+    v_params = v_params,
     transform_p = post,
     p_coef = matrix(stats::runif(nfunc * 6, min = -1, max = 1), nrow = nfunc, ncol = 6),
     transform_f = final,
@@ -202,7 +215,9 @@ canvas_flame <- function(colors, background = "#fafafa",
     "Eyefish",
     "Bubble",
     "Cylinder",
-    "Perspective"
+    "Perspective",
+    "Noise",
+    "JuliaN"
   )
   return(x)
 }
