@@ -5,10 +5,10 @@
 \title{Draw a Fractal Flame}
 \usage{
 canvas_flame(colors, background = "#fafafa",
-                      iterations = 1000000, zoom = 1, resolution = 1000,
-                      variations = NULL, blend = TRUE, 
-                      post = FALSE, final = FALSE, extra = FALSE,
-                      verbose = FALSE)
+             iterations = 1000000, zoom = 1, resolution = 1000,
+             variations = NULL, blend = TRUE,
+             post = FALSE, final = FALSE, extra = FALSE,
+             verbose = FALSE)
 }
 \arguments{
 \item{colors}{a string or character vector specifying the color(s) used for the artwork.}
@@ -76,6 +76,9 @@ set.seed(2)
 
 # Simple example
 canvas_flame(colors = colorPalette("origami"))
+
+# Advanced example (no-blend sine and spherical variations)
+canvas_flame(colors = colorPalette("origami"), variations = c(1, 2), blend = FALSE)
 }
 
 }

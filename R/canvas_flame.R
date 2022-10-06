@@ -18,10 +18,10 @@
 #' @description This function implements the fractal flame algorithm.
 #'
 #' @usage canvas_flame(colors, background = "#fafafa",
-#'                       iterations = 1000000, zoom = 1, resolution = 1000,
-#'                       variations = NULL, blend = TRUE, 
-#'                       post = FALSE, final = FALSE, extra = FALSE,
-#'                       verbose = FALSE)
+#'              iterations = 1000000, zoom = 1, resolution = 1000,
+#'              variations = NULL, blend = TRUE,
+#'              post = FALSE, final = FALSE, extra = FALSE,
+#'              verbose = FALSE)
 #'
 #' @param colors      a string or character vector specifying the color(s) used for the artwork.
 #' @param background  a character specifying the color used for the background.
@@ -81,6 +81,9 @@
 #'
 #' # Simple example
 #' canvas_flame(colors = colorPalette("origami"))
+#'
+#' # Advanced example (no-blend sine and spherical variations)
+#' canvas_flame(colors = colorPalette("origami"), variations = c(1, 2), blend = FALSE)
 #' }
 #'
 #' @export
@@ -98,18 +101,18 @@ canvas_flame <- function(colors, background = "#fafafa",
   noVariations <- length(varNames)
   user <- FALSE
   if (is.null(variations)) {
-	user <- TRUE
+    user <- TRUE
     v <- 0:(noVariations - 1)
     variations <- sample(x = v, size = sample(1:length(v), size = 1), replace = FALSE)
   } else if (min(variations) < 0 || max(variations) > (noVariations - 1)) {
-    stop("'variations' must be between 0 and ", (noVariations - 1)) 
+    stop("'variations' must be between 0 and ", (noVariations - 1))
   }
   if (verbose) {
     cat("\nVariation:", paste(varNames[variations + 1], collapse = " + "), "\n")
-	catp <- if (post) "Post transformation" else NULL
-	catc <- if (final) "Final transformation" else NULL
-	cate <- if (extra) "Final transformation" else NULL
-	cat("Effect:", paste(c("Affine transformation", catp, catc, cate), collapse = " + "), "\n")
+    catp <- if (post) "Post transformation" else NULL
+    catc <- if (final) "Final transformation" else NULL
+    cate <- if (extra) "Final transformation" else NULL
+    cat("Effect:", paste(c("Affine transformation", catp, catc, cate), collapse = " + "), "\n")
   }
   nvariations <- length(variations)
   nfunc <- sample(1:10, size = 1)
@@ -117,7 +120,7 @@ canvas_flame <- function(colors, background = "#fafafa",
   if (user) {
     v_ij <- matrix(1, nrow = nfunc, ncol = nvariations)
   } else {
-	v_ij <- matrix(stats::runif(nfunc * nvariations, min = 0, max = 1), nrow = nfunc, ncol = nvariations)
+    v_ij <- matrix(stats::runif(nfunc * nvariations, min = 0, max = 1), nrow = nfunc, ncol = nvariations)
   }
   for (i in 1:nrow(v_ij)) {
     v_ij[i, ] <- v_ij[i, ] / sum(v_ij[i, ])
@@ -133,7 +136,7 @@ canvas_flame <- function(colors, background = "#fafafa",
     transform_p = post,
     p_coef = matrix(stats::runif(nfunc * 6, min = -1, max = 1), nrow = nfunc, ncol = 6),
     transform_f = final,
-	f_coef = stats::runif(6, min = -1, max = 1),
+    f_coef = stats::runif(6, min = -1, max = 1),
     transform_e = extra,
     e_coef = stats::runif(6, min = -1, max = 1)
   )
@@ -162,30 +165,32 @@ canvas_flame <- function(colors, background = "#fafafa",
 }
 
 .getVariationNames <- function() {
-  x <- c("Linear", 
-         "Sine", 
-         "Spherical", 
-         "Swirl", 
-         "Horsehoe", 
-         "Polar", 
-         "Handkerchief", 
-         "Heart", 
-         "Disc", 
-         "Spiral",
-         "Hyperbolic",
-         "Diamond",
-         "Ex",
-         "Julia",
-         "Bent",
-         "Waves",
-         "Fisheye",
-         "Popcorn",
-         "Exponential",
-         "Power",
-         "Cosine",
-         "Rings",
-         "Fan",
-         "Blob",
-         "PDJ")
+  x <- c(
+    "Linear",
+    "Sine",
+    "Spherical",
+    "Swirl",
+    "Horsehoe",
+    "Polar",
+    "Handkerchief",
+    "Heart",
+    "Disc",
+    "Spiral",
+    "Hyperbolic",
+    "Diamond",
+    "Ex",
+    "Julia",
+    "Bent",
+    "Waves",
+    "Fisheye",
+    "Popcorn",
+    "Exponential",
+    "Power",
+    "Cosine",
+    "Rings",
+    "Fan",
+    "Blob",
+    "PDJ"
+  )
   return(x)
 }
