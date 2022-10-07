@@ -149,7 +149,7 @@ canvas_flame <- function(colors, background = "#000000",
     nfunc <- sample(x = 3:10, size = 1)
     color_mat <- matrix(stats::runif(nfunc * 3), nrow = nfunc, ncol = 3)
   } else {
-    nfunc <- sample(x = 3:10, size = 1)
+    nfunc <- sample(x = 3:max(10, length(colors)), size = 1)
     colors <- sample(x = colors, size = nfunc, replace = TRUE)
     color_mat <- matrix(t(grDevices::col2rgb(colors) / 255), nrow = length(colors), ncol = 3)
   }
@@ -198,8 +198,8 @@ canvas_flame <- function(colors, background = "#000000",
     stop("No points are drawn on the canvas")
   }
   full_canvas <- .unraster(canvas[, , 1], c("x", "y", "z"))
-  full_canvas$z[full_canvas$z != 0] <- log(full_canvas$z[full_canvas$z != 0], base = 1.2589)
-  full_canvas$z[full_canvas$z == 0] <- NA
+  full_canvas[["z"]][full_canvas[["z"]] != 0] <- log(full_canvas[["z"]][full_canvas[["z"]] != 0], base = 1.2589)
+  full_canvas[["z"]][full_canvas[["z"]] == 0] <- NA
   if (display == "logdensity") {
     artwork <- ggplot2::ggplot(data = full_canvas, mapping = ggplot2::aes(x = x, y = y, fill = z)) +
       ggplot2::geom_raster(interpolate = TRUE) +
@@ -210,10 +210,10 @@ canvas_flame <- function(colors, background = "#000000",
     if (maxColorValue == 0) {
       stop("No points are drawn on the canvas")
     }
-    full_canvas$col <- grDevices::rgb(red = canvas[, , 2], green = canvas[, , 3], blue = canvas[, , 4], maxColorValue = maxColorValue)
-    full_canvas$col[which(is.na(full_canvas[["z"]]))] <- background
+    full_canvas[["col"]] <- grDevices::rgb(red = canvas[, , 2], green = canvas[, , 3], blue = canvas[, , 4], maxColorValue = maxColorValue)
+    full_canvas[["col"]][which(is.na(full_canvas[["z"]]))] <- background
     artwork <- ggplot2::ggplot(data = full_canvas, mapping = ggplot2::aes(x = x, y = y)) +
-      ggplot2::geom_raster(interpolate = TRUE, fill = full_canvas$col)
+      ggplot2::geom_raster(interpolate = TRUE, fill = full_canvas[["col"]])
   }
   artwork <- theme_canvas(artwork, background = background)
   return(artwork)
