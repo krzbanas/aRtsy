@@ -17,7 +17,7 @@
 #'
 #' @description This function draws one or more rotating circular morphing meshes on the canvas.
 #'
-#' @usage canvas_mesh(colors, background = "#fafafa", 
+#' @usage canvas_mesh(colors, background = "#fafafa",
 #'              transform = c("perlin", "fbm", "simplex", "cubic",
 #'                            "worley", "knn", "rf", "svm"),
 #'              lines = 500, iterations = 500, mixprob = 0)
@@ -32,7 +32,7 @@
 #' @return A \code{ggplot} object containing the artwork.
 #'
 #' @author Koen Derks, \email{koen-derks@hotmail.com}
-#' 
+#'
 #' @references \url{http://rectangleworld.com/blog/archives/462}
 #'
 #' @keywords artwork canvas
@@ -49,9 +49,11 @@
 #'
 #' @export
 
-canvas_mesh <- function(colors, background = "#fafafa", 
-                        transform = c("perlin", "fbm", "simplex", "cubic", 
-                                      "worley", "knn", "rf", "svm"),
+canvas_mesh <- function(colors, background = "#fafafa",
+                        transform = c(
+                          "perlin", "fbm", "simplex", "cubic",
+                          "worley", "knn", "rf", "svm"
+                        ),
                         lines = 500, iterations = 500, mixprob = 0) {
   transform <- match.arg(transform)
   .checkUserInput(iterations = iterations, background = background)
@@ -62,7 +64,7 @@ canvas_mesh <- function(colors, background = "#fafafa",
     circle_points <- seq(from = -pi, to = pi, length.out = lines)
     start <- stats::runif(1, min = -10, max = 10)
     centers <- data.frame(x = 0:iterations, y = c(start, start + .bmline(n = iterations, lwd = stats::runif(1, min = 1, max = 10))))
-    circle_centers <- predict(stats::loess(y ~ x, data = centers), newdata = centers) 
+    circle_centers <- predict(stats::loess(y ~ x, data = centers), newdata = centers)
     if (transform == "fbm") {
       radius <- data.frame(x = 1:lines, y = .bmline(n = lines, lwd = stats::runif(1, min = 0.5, max = 1)))
       circle_radius <- predict(stats::loess(y ~ x, data = radius), newdata = radius)

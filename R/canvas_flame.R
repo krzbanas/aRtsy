@@ -198,7 +198,9 @@ canvas_flame <- function(colors, background = "#fafafa",
     canvas = matrix(0, nrow = resolution + 1, ncol = resolution + 1),
     x = df[["x"]], y = df[["y"]], binsx = xbins, binsy = ybins
   )
-  # TODO: stop if canvas is (almost) empty
+  if (length(which(canvas > 0)) < 1) {
+    stop("No points are drawn on the canvas")
+  }
   full_canvas <- .unraster(canvas, c("x", "y", "z"))
   full_canvas$z[full_canvas$z != 0] <- log(full_canvas$z[full_canvas$z != 0], base = 1.2589)
   full_canvas$z[full_canvas$z == 0] <- NA
