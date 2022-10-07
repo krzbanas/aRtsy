@@ -249,7 +249,7 @@ canvas_flame <- function(colors, background = "#000000",
   ))
 }
 
-.scaleColorChannels <- function(canvas){
+.scaleColorChannels <- function(canvas) {
   hits <- which(canvas[, , 1] > 0)
   scaling <- log(canvas[, , 1][hits]) / canvas[, , 1][hits]
   canvas[, , 2][hits] <- canvas[, , 2][hits] * scaling
