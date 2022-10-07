@@ -4,7 +4,7 @@
 \alias{canvas_mesh}
 \title{Draw Meshes}
 \usage{
-canvas_mesh(colors, background = "#fafafa", 
+canvas_mesh(colors, background = "#fafafa",
              transform = c("perlin", "fbm", "simplex", "cubic",
                            "worley", "knn", "rf", "svm"),
              lines = 500, iterations = 500, mixprob = 0)

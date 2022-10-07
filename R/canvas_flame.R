@@ -127,7 +127,7 @@ canvas_flame <- function(colors, background = "#fafafa",
   if (is.null(variations)) {
     user <- TRUE
     v <- 0:(noVariations - 1)
-    variations <- sample(x = v, size = sample(1:5, size = 1), replace = FALSE)
+    variations <- sample(x = v[-c(32, 35, 36, 37)], size = sample(2:10, size = 1), replace = FALSE)
   } else if (min(variations) < 0 || max(variations) > (noVariations - 1)) {
     stop("'variations' must be between 0 and ", (noVariations - 1))
   }
