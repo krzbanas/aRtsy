@@ -420,10 +420,10 @@ arma::cube color_flame(arma::cube canvas,
     if ((indy == 0) | (indy == binsy.length())) {
       continue;
     }
-    canvas(indx, indy, 0) = canvas(indx, indy, 0) + 1;
-    canvas(indx, indy, 1) = canvas(indx, indy, 1) + c1[i];
-    canvas(indx, indy, 2) = canvas(indx, indy, 2) + c2[i];
-    canvas(indx, indy, 3) = canvas(indx, indy, 3) + c3[i];
+    canvas(indy, indx, 0) = canvas(indy, indx, 0) + 1;
+    canvas(indy, indx, 1) = canvas(indy, indx, 1) + c1[i];
+    canvas(indy, indx, 2) = canvas(indy, indx, 2) + c2[i];
+    canvas(indy, indx, 3) = canvas(indy, indx, 3) + c3[i];
   }
   return canvas;
 }

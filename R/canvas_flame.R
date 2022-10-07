@@ -205,11 +205,7 @@ canvas_flame <- function(colors, background = "#000000",
       ggplot2::geom_raster(interpolate = TRUE) +
       ggplot2::scale_fill_gradientn(colors = colors, na.value = background)
   } else {
-    inda <- which(canvas[, , 1] > 0)
-    scaling <- log(canvas[, , 1][inda]) / canvas[, , 1][inda]
-    canvas[, , 2][inda] <- canvas[, , 2][inda] * scaling
-    canvas[, , 3][inda] <- canvas[, , 3][inda] * scaling
-    canvas[, , 4][inda] <- canvas[, , 4][inda] * scaling
+    canvas <- .scaleColorChannels(canvas)
     maxColorValue <- max(c(c(canvas[, , 2]), c(canvas[, , 3]), c(canvas[, , 4])), na.rm = TRUE)
     if (maxColorValue == 0) {
       stop("No points are drawn on the canvas")
@@ -251,4 +247,13 @@ canvas_flame <- function(colors, background = "#000000",
     stats::runif(1, 0, 100), # v_41
     stats::runif(4, 0, 10) # v_44, # v_45, # v_46, # v_47
   ))
+}
+
+.scaleColorChannels <- function(canvas){
+  hits <- which(canvas[, , 1] > 0)
+  scaling <- log(canvas[, , 1][hits]) / canvas[, , 1][hits]
+  canvas[, , 2][hits] <- canvas[, , 2][hits] * scaling
+  canvas[, , 3][hits] <- canvas[, , 3][hits] * scaling
+  canvas[, , 4][hits] <- canvas[, , 4][hits] * scaling
+  return(canvas)
 }
