@@ -146,10 +146,10 @@ canvas_flame <- function(colors, background = "#fafafa",
   }
   nvariations <- length(variations)
   if (display == "logdensity") {
-    nfunc <- sample(x = 3:20, size = 1)
+    nfunc <- sample(x = 3:10, size = 1)
     color_mat <- matrix(stats::runif(nfunc * 3), nrow = nfunc, ncol = 3)
   } else {
-    nfunc <- sample(x = 3:20, size = 1)
+    nfunc <- sample(x = 3:10, size = 1)
     colors <- sample(x = colors, size = nfunc, replace = TRUE)
     color_mat <- matrix(t(grDevices::col2rgb(colors) / 255), nrow = length(colors), ncol = 3)
   }
