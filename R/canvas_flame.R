@@ -169,6 +169,7 @@ canvas_flame <- function(colors, background = "#fafafa",
   )
   df <- iterate_flame(
     iterations = iterations,
+    functions = 0:(nfunc - 1),
     variations = variations,
     point = stats::runif(2, -1, 1),
     w_i = w_i / sum(w_i),
