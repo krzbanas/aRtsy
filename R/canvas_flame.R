@@ -190,9 +190,9 @@ canvas_flame <- function(colors, background = "#fafafa",
     stop("The algorithm did not converge")
   }
   center <- c(stats::median(df[["x"]]), stats::median(df[["y"]]))
-  spanx <- diff(quantile(df[["x"]], probs = c(0.1, 0.9))) * (1 / zoom)
+  spanx <- diff(stats::quantile(df[["x"]], probs = c(0.1, 0.9))) * (1 / zoom)
   xbins <- seq(center[1] - spanx, center[1] + spanx, length.out = resolution + 1)
-  spany <- diff(quantile(df[["y"]], probs = c(0.1, 0.9))) * (1 / zoom)
+  spany <- diff(stats::quantile(df[["y"]], probs = c(0.1, 0.9))) * (1 / zoom)
   ybins <- seq(center[2] - spany, center[2] + spany, length.out = resolution + 1)
   canvas <- color_flame(
     canvas = matrix(0, nrow = resolution + 1, ncol = resolution + 1),
@@ -207,7 +207,7 @@ canvas_flame <- function(colors, background = "#fafafa",
   artwork <- ggplot2::ggplot(data = full_canvas, mapping = ggplot2::aes(x = x, y = y, fill = z)) +
     ggplot2::geom_raster(interpolate = TRUE) +
     ggplot2::scale_fill_gradientn(colors = colors, na.value = background)
-  artwork <- aRtsy:::theme_canvas(artwork, background = background)
+  artwork <- theme_canvas(artwork, background = background)
   return(artwork)
 }
 
