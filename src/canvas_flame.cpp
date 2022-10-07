@@ -22,12 +22,12 @@
 
 // [[Rcpp::depends(RcppArmadillo)]]
 
-Rcpp::DoubleVector affine(Rcpp::DoubleVector p, 
-                         double a, 
-                         double b, 
-                         double c, 
-                         double d, 
-                         double e, 
+Rcpp::DoubleVector affine(Rcpp::DoubleVector p,
+                         double a,
+                         double b,
+                         double c,
+                         double d,
+                         double e,
                          double f) {
   Rcpp::DoubleVector x = p;
   x[0] = a * p[0] + b * p[1] + c;
@@ -35,7 +35,7 @@ Rcpp::DoubleVector affine(Rcpp::DoubleVector p,
   return x;
 }
 
-Rcpp::DoubleVector variation(Rcpp::DoubleVector p, 
+Rcpp::DoubleVector variation(Rcpp::DoubleVector p,
                              int i,
                              double a,
                              double b,
@@ -142,7 +142,7 @@ Rcpp::DoubleVector variation(Rcpp::DoubleVector p,
       x[1] = r * sin(theta - (t/2));
     } else {
       x[0] = r * cos(theta + (t/2));;
-      x[1] = r * sin(theta + (t/2));	
+      x[1] = r * sin(theta + (t/2));
     }
   } else if (i == 23) { // Blob
     double first = r * (pparams[1] + ((pparams[0] - pparams[1])/ 2) * (sin(pparams[2] * theta) + 1));
@@ -288,12 +288,12 @@ Rcpp::DoubleVector variation(Rcpp::DoubleVector p,
   return x;
 }
 
-Rcpp::DoubleVector posttransform(Rcpp::DoubleVector p, 
-                         double alpha, 
-                         double beta, 
-                         double gamma, 
-                         double delta, 
-                         double epsilon, 
+Rcpp::DoubleVector posttransform(Rcpp::DoubleVector p,
+                         double alpha,
+                         double beta,
+                         double gamma,
+                         double delta,
+                         double epsilon,
                          double zeta) {
   Rcpp::DoubleVector x = p;
   x[0] = alpha * p[0] + beta * p[1] + gamma;
@@ -302,7 +302,7 @@ Rcpp::DoubleVector posttransform(Rcpp::DoubleVector p,
 }
 
 Rcpp::NumericVector get_variation_weights(arma::mat v_ij,
-                           Rcpp::NumericVector i) {
+                                          Rcpp::NumericVector i) {
   int n = v_ij.n_cols;
   Rcpp::NumericVector v_j(n);
   for (int iter = 0; iter < n; iter++) {
@@ -315,12 +315,9 @@ Rcpp::DoubleVector update_colors(Rcpp::DoubleVector p,
                                   arma::mat colors,
                                   int i) {
   Rcpp::DoubleVector x = p;
-  double c1 = (p[2] + colors(i, 0)) / 2;
-  x[2] = c1;
-  double c2 = (p[3] + colors(i, 1)) / 2;
-  x[3] = c2;
-  double c3 = (p[4] + colors(i, 2)) / 2;
-  x[4] = c3;
+  x[2] = (p[2] + colors(i, 0)) / 2;
+  x[3] = (p[3] + colors(i, 1)) / 2;
+  x[4] = (p[4] + colors(i, 2)) / 2;
   return x;
 }
 
@@ -351,16 +348,18 @@ Rcpp::DataFrame iterate_flame(int iterations,
   Rcpp::DoubleVector p(5);
   for (int iter = 0; iter < iterations; iter++) {
     Rcpp::checkUserInterrupt();
+    // Pick an affine function to use
     Rcpp::NumericVector i = Rcpp::sample(functions, 1, false, w_i);
     Rcpp::DoubleVector newpoint(5);
+    // Apply the affine function to the point
     p = affine(point, mat_coef(i[0], 0), mat_coef(i[0], 1), mat_coef(i[0], 2), mat_coef(i[0], 3), mat_coef(i[0], 4), mat_coef(i[0], 5));
+    // Apply the variation(s) to the point
     if (blend_variations) {
       for (int j = 0; j < nvariations; j++) {
-        int ch = variations[j];
         if (v_ij(i[0], j) == 0) {
           continue;
         }
-        newpoint += v_ij(i[0], j) * variation(p, ch, mat_coef(i[0], 0), mat_coef(i[0], 1), mat_coef(i[0], 2), mat_coef(i[0], 3), mat_coef(i[0], 4), mat_coef(i[0], 5), v_params);
+        newpoint += v_ij(i[0], j) * variation(p, variations[j], mat_coef(i[0], 0), mat_coef(i[0], 1), mat_coef(i[0], 2), mat_coef(i[0], 3), mat_coef(i[0], 4), mat_coef(i[0], 5), v_params);
       }
     } else {
       Rcpp::NumericVector v_j = get_variation_weights(v_ij, i[0]);
@@ -368,12 +367,16 @@ Rcpp::DataFrame iterate_flame(int iterations,
       newpoint = variation(p, ch[0], mat_coef(i[0], 0), mat_coef(i[0], 1), mat_coef(i[0], 2), mat_coef(i[0], 3), mat_coef(i[0], 4), mat_coef(i[0], 5), v_params);
     }
     point = newpoint;
+    // Update the color of the point
     point = update_colors(point, colors, i[0]);
+    // Apply a post transformation
     if (transform_p) {
       point = posttransform(point, p_coef(i[0], 0), p_coef(i[0], 1), p_coef(i[0], 2), p_coef(i[0], 3), p_coef(i[0], 4), p_coef(i[0], 5));
     }
+    // Apply a final transformation
     if (transform_f) {
       point = affine(point, f_coef[0], f_coef[1], f_coef[2], f_coef[3], f_coef[4], f_coef[5]);
+      // Apply an additional post transformation
       if (transform_e) {
         point = affine(point, e_coef[0], e_coef[1], e_coef[2], e_coef[3], e_coef[4], e_coef[5]);
       }
@@ -394,7 +397,7 @@ Rcpp::DataFrame iterate_flame(int iterations,
   return flame;
 }
 
-int cfindInterval(double v, const Rcpp::NumericVector& x) {
+int cfi(double v, const Rcpp::NumericVector& x) {
   return std::distance(x.begin(), std::upper_bound(x.begin(), x.end(), v));
 }
 
@@ -409,11 +412,11 @@ arma::cube color_flame(arma::cube canvas,
                        Rcpp::DoubleVector c3) {
   for (int i = 0; i < x.length(); i++) {
     Rcpp::checkUserInterrupt();
-    int indx = cfindInterval(x[i], binsx);
+    int indx = cfi(x[i], binsx);
     if ((indx == 0) | (indx == binsx.length())) {
       continue;
     }
-    int indy = cfindInterval(y[i], binsy);
+    int indy = cfi(y[i], binsy);
     if ((indy == 0) | (indy == binsy.length())) {
       continue;
     }

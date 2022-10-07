@@ -109,20 +109,20 @@ BEGIN_RCPP
 END_RCPP
 }
 // color_flame
-arma::cube color_flame(arma::cube canvas, Rcpp::DoubleVector x, Rcpp::DoubleVector y, Rcpp::DoubleVector binsx, Rcpp::DoubleVector binsy, Rcpp::DoubleVector c1, Rcpp::DoubleVector c2, Rcpp::DoubleVector c3);
-RcppExport SEXP _aRtsy_color_flame(SEXP canvasSEXP, SEXP xSEXP, SEXP ySEXP, SEXP binsxSEXP, SEXP binsySEXP, SEXP c1SEXP, SEXP c2SEXP, SEXP c3SEXP) {
+arma::cube color_flame(arma::cube canvas, Rcpp::DoubleVector binsx, Rcpp::DoubleVector binsy, Rcpp::DoubleVector x, Rcpp::DoubleVector y, Rcpp::DoubleVector c1, Rcpp::DoubleVector c2, Rcpp::DoubleVector c3);
+RcppExport SEXP _aRtsy_color_flame(SEXP canvasSEXP, SEXP binsxSEXP, SEXP binsySEXP, SEXP xSEXP, SEXP ySEXP, SEXP c1SEXP, SEXP c2SEXP, SEXP c3SEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< arma::cube >::type canvas(canvasSEXP);
-    Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type x(xSEXP);
-    Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type y(ySEXP);
     Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type binsx(binsxSEXP);
     Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type binsy(binsySEXP);
+    Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type x(xSEXP);
+    Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type y(ySEXP);
     Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type c1(c1SEXP);
     Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type c2(c2SEXP);
     Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type c3(c3SEXP);
-    rcpp_result_gen = Rcpp::wrap(color_flame(canvas, x, y, binsx, binsy, c1, c2, c3));
+    rcpp_result_gen = Rcpp::wrap(color_flame(canvas, binsx, binsy, x, y, c1, c2, c3));
     return rcpp_result_gen;
 END_RCPP
 }
