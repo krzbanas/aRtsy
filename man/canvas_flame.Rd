@@ -7,6 +7,7 @@
 canvas_flame(colors, background = "#fafafa",
              iterations = 1000000, zoom = 1, resolution = 1000,
              variations = NULL, blend = TRUE,
+             display = c("colored", "logdensity"),
              post = FALSE, final = FALSE, extra = FALSE,
              verbose = FALSE)
 }
@@ -23,7 +24,9 @@ canvas_flame(colors, background = "#fafafa",
 
 \item{variations}{an integer (vector) specifying the variations to be included in the flame. The default \code{NULL} includes a random number of variations. See the details section for more information about possible variations.}
 
-\item{blend}{logical. Whether to blend the variations (\code{TRUE}) or pick a unique variation in each iteration (\code{FALSE}).}
+\item{blend}{logical. Whether to blend the variations (\code{TRUE}) or pick a unique variation in each iteration (\code{FALSE}). \code{blend = FALSE} significantly speeds up the computation time if you include many variations.}
+
+\item{display}{a character indicating how to display the flame. \code{colored} (the default) displays colors according to which function they originate from. \code{logdensity} plots a gradient using the log density of the pixel count.}
 
 \item{post}{logical. Whether to apply a post transformation in each iteration.}
 

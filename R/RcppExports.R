@@ -21,12 +21,12 @@ draw_collatz <- function(empty, series, even, odd) {
     .Call('_aRtsy_draw_collatz', PACKAGE = 'aRtsy', empty, series, even, odd)
 }
 
-iterate_flame <- function(iterations, functions, variations, point, w_i, mat_coef, blend_variations, v_ij, v_params, transform_p, p_coef, transform_f, f_coef, transform_e, e_coef) {
-    .Call('_aRtsy_iterate_flame', PACKAGE = 'aRtsy', iterations, functions, variations, point, w_i, mat_coef, blend_variations, v_ij, v_params, transform_p, p_coef, transform_f, f_coef, transform_e, e_coef)
+iterate_flame <- function(iterations, functions, variations, point, w_i, mat_coef, blend_variations, v_ij, v_params, transform_p, p_coef, transform_f, f_coef, transform_e, e_coef, colors) {
+    .Call('_aRtsy_iterate_flame', PACKAGE = 'aRtsy', iterations, functions, variations, point, w_i, mat_coef, blend_variations, v_ij, v_params, transform_p, p_coef, transform_f, f_coef, transform_e, e_coef, colors)
 }
 
-color_flame <- function(canvas, x, y, binsx, binsy) {
-    .Call('_aRtsy_color_flame', PACKAGE = 'aRtsy', canvas, x, y, binsx, binsy)
+color_flame <- function(canvas, x, y, binsx, binsy, c) {
+    .Call('_aRtsy_color_flame', PACKAGE = 'aRtsy', canvas, x, y, binsx, binsy, c)
 }
 
 iterate_flow <- function(angles, j, iters, left, right, top, bottom, step) {

@@ -20,6 +20,7 @@
 #' @usage canvas_flame(colors, background = "#fafafa",
 #'              iterations = 1000000, zoom = 1, resolution = 1000,
 #'              variations = NULL, blend = TRUE,
+#'              display = c("colored", "logdensity"),
 #'              post = FALSE, final = FALSE, extra = FALSE,
 #'              verbose = FALSE)
 #'
@@ -29,7 +30,8 @@
 #' @param zoom        a positive value specifying the amount of zooming.
 #' @param resolution  resolution of the artwork in pixels per row/column. Increasing the resolution increases the quality of the artwork but also increases the computation time exponentially.
 #' @param variations  an integer (vector) specifying the variations to be included in the flame. The default \code{NULL} includes a random number of variations. See the details section for more information about possible variations.
-#' @param blend       logical. Whether to blend the variations (\code{TRUE}) or pick a unique variation in each iteration (\code{FALSE}).
+#' @param blend       logical. Whether to blend the variations (\code{TRUE}) or pick a unique variation in each iteration (\code{FALSE}). \code{blend = FALSE} significantly speeds up the computation time if you include many variations.
+#' @param display     a character indicating how to display the flame. \code{colored} (the default) displays colors according to which function they originate from. \code{logdensity} plots a gradient using the log density of the pixel count.
 #' @param post        logical. Whether to apply a post transformation in each iteration.
 #' @param final       logical. Whether to apply a final transformation in each iteration.
 #' @param extra       logical. Whether to apply an additional post transformation after the final transformation. Only has an effect when \code{final = TRUE}.
@@ -115,8 +117,10 @@
 canvas_flame <- function(colors, background = "#fafafa",
                          iterations = 1000000, zoom = 1, resolution = 1000,
                          variations = NULL, blend = TRUE,
+                         display = c("colored", "logdensity"),
                          post = FALSE, final = FALSE, extra = FALSE,
                          verbose = FALSE) {
+  display <- match.arg(display)
   .checkUserInput(
     resolution = resolution, background = background
   )
@@ -127,19 +131,28 @@ canvas_flame <- function(colors, background = "#fafafa",
   if (is.null(variations)) {
     user <- TRUE
     v <- 0:(noVariations - 1)
-    variations <- sample(x = v[-c(32, 35, 36, 37)], size = sample(2:10, size = 1), replace = FALSE)
+    variations <- sample(x = v[-c(32, 35, 36, 37)], size = sample(2:5, size = 1), replace = FALSE)
   } else if (min(variations) < 0 || max(variations) > (noVariations - 1)) {
     stop("'variations' must be between 0 and ", (noVariations - 1))
   }
   if (verbose) {
-    cat("\nVariation:", paste(varNames[variations + 1], collapse = " + "), "\n")
+    cat("\nVariation:\t", paste(varNames[variations + 1], collapse = " + "), "\n")
     catp <- if (post) "Post transformation" else NULL
     catc <- if (final) "Final transformation" else NULL
     cate <- if (extra) "Additional post transformation" else NULL
-    cat("Effect:", paste(c("Affine transformation", catp, catc, cate), collapse = " + "), "\n")
+    cat("Effect:\t\t", paste(c("Affine transformation", catp, catc, cate), collapse = " + "), "\n")
+    catd <- if (display == "logdensity") "Log-Density" else "Colored"
+    cat("Rendering:\t", catd, "\n")
   }
   nvariations <- length(variations)
-  nfunc <- sample(1:10, size = 1)
+  if (display == "logdensity") {
+    nfunc <- sample(x = 3:20, size = 1)
+    color_mat <- matrix(stats::runif(nfunc * 3), nrow = nfunc, ncol = 3)
+  } else {
+    nfunc <- sample(x = 3:20, size = 1)
+    colors <- sample(x = colors, size = nfunc, replace = TRUE)
+    color_mat <- matrix(t(grDevices::col2rgb(colors) / 255), nrow = length(colors), ncol = 3)
+  }
   w_i <- stats::runif(nfunc, 0, 1)
   if (user) {
     v_ij <- matrix(1, nrow = nfunc, ncol = nvariations)
@@ -171,7 +184,7 @@ canvas_flame <- function(colors, background = "#fafafa",
     iterations = iterations,
     functions = 0:(nfunc - 1),
     variations = variations,
-    point = stats::runif(2, -1, 1),
+    point = c(stats::runif(2, -1, 1), stats::runif(3, 0, 1)),
     w_i = w_i / sum(w_i),
     mat_coef = matrix(stats::runif(nfunc * 6, min = -1, max = 1), nrow = nfunc, ncol = 6),
     blend_variations = blend,
@@ -182,7 +195,8 @@ canvas_flame <- function(colors, background = "#fafafa",
     transform_f = final,
     f_coef = stats::runif(6, min = -1, max = 1),
     transform_e = extra,
-    e_coef = stats::runif(6, min = -1, max = 1)
+    e_coef = stats::runif(6, min = -1, max = 1),
+    colors = color_mat
   )
   df <- df[!is.infinite(df[["x"]]) & !is.infinite(df[["y"]]), ]
   df <- df[!is.na(df[["x"]]) & !is.na(df[["y"]]), ]
@@ -196,7 +210,7 @@ canvas_flame <- function(colors, background = "#fafafa",
   ybins <- seq(center[2] - spany, center[2] + spany, length.out = resolution + 1)
   canvas <- color_flame(
     canvas = matrix(0, nrow = resolution + 1, ncol = resolution + 1),
-    x = df[["x"]], y = df[["y"]], binsx = xbins, binsy = ybins
+    x = df[["x"]], y = df[["y"]], binsx = xbins, binsy = ybins, rep(1, nrow(df))
   )
   if (length(which(canvas > 0)) < 1) {
     stop("No points are drawn on the canvas")
@@ -204,9 +218,33 @@ canvas_flame <- function(colors, background = "#fafafa",
   full_canvas <- .unraster(canvas, c("x", "y", "z"))
   full_canvas$z[full_canvas$z != 0] <- log(full_canvas$z[full_canvas$z != 0], base = 1.2589)
   full_canvas$z[full_canvas$z == 0] <- NA
-  artwork <- ggplot2::ggplot(data = full_canvas, mapping = ggplot2::aes(x = x, y = y, fill = z)) +
-    ggplot2::geom_raster(interpolate = TRUE) +
-    ggplot2::scale_fill_gradientn(colors = colors, na.value = background)
+  if (display == "logdensity") {
+    artwork <- ggplot2::ggplot(data = full_canvas, mapping = ggplot2::aes(x = x, y = y, fill = z)) +
+      ggplot2::geom_raster(interpolate = TRUE) +
+      ggplot2::scale_fill_gradientn(colors = colors, na.value = background)
+  } else {
+    inda <- which(canvas > 0)
+    scaling <- (log(canvas[inda]) / canvas[inda])
+    red <- color_flame(
+      canvas = matrix(0, nrow = resolution + 1, ncol = resolution + 1),
+      x = df[["x"]], y = df[["y"]], binsx = xbins, binsy = ybins, c = df[["c1"]]
+    )
+    red[inda] <- red[inda] * scaling
+    green <- color_flame(
+      canvas = matrix(0, nrow = resolution + 1, ncol = resolution + 1),
+      x = df[["x"]], y = df[["y"]], binsx = xbins, binsy = ybins, c = df[["c2"]]
+    )
+    green[inda] <- green[inda] * scaling
+    blue <- color_flame(
+      canvas = matrix(0, nrow = resolution + 1, ncol = resolution + 1),
+      x = df[["x"]], y = df[["y"]], binsx = xbins, binsy = ybins, c = df[["c3"]]
+    )
+    blue[inda] <- blue[inda] * scaling
+    full_canvas$col <- grDevices::rgb(red, green, blue, maxColorValue = max(c(c(red), c(blue), c(green)), na.rm = TRUE))
+    full_canvas$col[which(is.na(full_canvas[["z"]]))] <- background
+    artwork <- ggplot2::ggplot(data = full_canvas, mapping = ggplot2::aes(x = x, y = y)) +
+      ggplot2::geom_raster(interpolate = TRUE, fill = full_canvas$col)
+  }
   artwork <- theme_canvas(artwork, background = background)
   return(artwork)
 }
