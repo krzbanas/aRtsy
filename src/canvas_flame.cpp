@@ -399,12 +399,14 @@ int cfindInterval(double v, const Rcpp::NumericVector& x) {
 }
 
 // [[Rcpp::export]]
-arma::mat color_flame(arma::mat canvas,
-                      Rcpp::DoubleVector x,
-                      Rcpp::DoubleVector y,
-                      Rcpp::DoubleVector binsx,
-                      Rcpp::DoubleVector binsy,
-                      Rcpp::DoubleVector c) {
+arma::cube color_flame(arma::cube canvas,
+                       Rcpp::DoubleVector binsx,
+                       Rcpp::DoubleVector binsy,
+                       Rcpp::DoubleVector x,
+                       Rcpp::DoubleVector y,
+                       Rcpp::DoubleVector c1,
+                       Rcpp::DoubleVector c2,
+                       Rcpp::DoubleVector c3) {
   for (int i = 0; i < x.length(); i++) {
     Rcpp::checkUserInterrupt();
     int indx = cfindInterval(x[i], binsx);
@@ -415,7 +417,10 @@ arma::mat color_flame(arma::mat canvas,
     if ((indy == 0) | (indy == binsy.length())) {
       continue;
     }
-    canvas(indx, indy) = canvas(indx, indy) + c[i];
+    canvas(indx, indy, 0) = canvas(indx, indy, 0) + 1;
+    canvas(indx, indy, 1) = canvas(indx, indy, 1) + c1[i];
+    canvas(indx, indy, 2) = canvas(indx, indy, 2) + c2[i];
+    canvas(indx, indy, 3) = canvas(indx, indy, 3) + c3[i];
   }
   return canvas;
 }

@@ -187,17 +187,17 @@ canvas_flame <- function(colors, background = "#000000",
   }
   center <- c(stats::median(df[["x"]]), stats::median(df[["y"]]))
   spanx <- diff(stats::quantile(df[["x"]], probs = c(0.1, 0.9))) * (1 / zoom)
-  xbins <- seq(center[1] - spanx, center[1] + spanx, length.out = resolution + 1)
   spany <- diff(stats::quantile(df[["y"]], probs = c(0.1, 0.9))) * (1 / zoom)
-  ybins <- seq(center[2] - spany, center[2] + spany, length.out = resolution + 1)
-  canvas <- color_flame(
-    canvas = matrix(0, nrow = resolution + 1, ncol = resolution + 1),
-    x = df[["x"]], y = df[["y"]], binsx = xbins, binsy = ybins, rep(1, nrow(df))
+  canvas <- color_flame( # 1 = alpha, 2 = red, 3 = green, 5 = blue
+    canvas = array(0, dim = c(resolution + 1, resolution + 1, 4)),
+    binsx = seq(center[1] - spanx, center[1] + spanx, length.out = resolution + 1),
+    binsy = seq(center[2] - spany, center[2] + spany, length.out = resolution + 1),
+    x = df[["x"]], y = df[["y"]], c1 = df[["c1"]], c2 = df[["c2"]], c3 = df[["c3"]]
   )
-  if (length(which(canvas > 0)) < 1) {
+  if (length(which(canvas[, , 1] > 0)) < 1) {
     stop("No points are drawn on the canvas")
   }
-  full_canvas <- .unraster(canvas, c("x", "y", "z"))
+  full_canvas <- .unraster(canvas[, , 1], c("x", "y", "z"))
   full_canvas$z[full_canvas$z != 0] <- log(full_canvas$z[full_canvas$z != 0], base = 1.2589)
   full_canvas$z[full_canvas$z == 0] <- NA
   if (display == "logdensity") {
@@ -205,28 +205,16 @@ canvas_flame <- function(colors, background = "#000000",
       ggplot2::geom_raster(interpolate = TRUE) +
       ggplot2::scale_fill_gradientn(colors = colors, na.value = background)
   } else {
-    inda <- which(canvas > 0)
-    scaling <- (log(canvas[inda]) / canvas[inda])
-    red <- color_flame(
-      canvas = matrix(0, nrow = resolution + 1, ncol = resolution + 1),
-      x = df[["x"]], y = df[["y"]], binsx = xbins, binsy = ybins, c = df[["c1"]]
-    )
-    red[inda] <- red[inda] * scaling
-    green <- color_flame(
-      canvas = matrix(0, nrow = resolution + 1, ncol = resolution + 1),
-      x = df[["x"]], y = df[["y"]], binsx = xbins, binsy = ybins, c = df[["c2"]]
-    )
-    green[inda] <- green[inda] * scaling
-    blue <- color_flame(
-      canvas = matrix(0, nrow = resolution + 1, ncol = resolution + 1),
-      x = df[["x"]], y = df[["y"]], binsx = xbins, binsy = ybins, c = df[["c3"]]
-    )
-    blue[inda] <- blue[inda] * scaling
-    maxColorValue <- max(c(c(red), c(blue), c(green)), na.rm = TRUE)
+    inda <- which(canvas[, , 1] > 0)
+    scaling <- log(canvas[, , 1][inda]) / canvas[, , 1][inda]
+    canvas[, , 2][inda] <- canvas[, , 2][inda] * scaling
+    canvas[, , 3][inda] <- canvas[, , 3][inda] * scaling
+    canvas[, , 4][inda] <- canvas[, , 4][inda] * scaling
+    maxColorValue <- max(c(c(canvas[, , 2]), c(canvas[, , 3]), c(canvas[, , 4])), na.rm = TRUE)
     if (maxColorValue == 0) {
       stop("No points are drawn on the canvas")
     }
-    full_canvas$col <- grDevices::rgb(red, green, blue, maxColorValue = max(c(c(red), c(blue), c(green)), na.rm = TRUE))
+    full_canvas$col <- grDevices::rgb(red = canvas[, , 2], green = canvas[, , 3], blue = canvas[, , 4], maxColorValue = maxColorValue)
     full_canvas$col[which(is.na(full_canvas[["z"]]))] <- background
     artwork <- ggplot2::ggplot(data = full_canvas, mapping = ggplot2::aes(x = x, y = y)) +
       ggplot2::geom_raster(interpolate = TRUE, fill = full_canvas$col)
