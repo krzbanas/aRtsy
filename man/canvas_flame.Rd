@@ -4,7 +4,7 @@
 \alias{canvas_flame}
 \title{Draw a Fractal Flame}
 \usage{
-canvas_flame(colors, background = "#fafafa",
+canvas_flame(colors, background = "#000000",
              iterations = 1000000, zoom = 1, resolution = 1000,
              variations = NULL, blend = TRUE,
              display = c("colored", "logdensity"),
@@ -24,7 +24,7 @@ canvas_flame(colors, background = "#fafafa",
 
 \item{variations}{an integer (vector) specifying the variations to be included in the flame. The default \code{NULL} includes a random number of variations. See the details section for more information about possible variations.}
 
-\item{blend}{logical. Whether to blend the variations (\code{TRUE}) or pick a unique variation in each iteration (\code{FALSE}). \code{blend = FALSE} significantly speeds up the computation time if you include many variations.}
+\item{blend}{logical. Whether to blend the variations (\code{TRUE}) or pick a unique variation in each iteration (\code{FALSE}). \code{blend = FALSE} significantly speeds up the computation time.}
 
 \item{display}{a character indicating how to display the flame. \code{colored} (the default) displays colors according to which function they originate from. \code{logdensity} plots a gradient using the log density of the pixel count.}
 
@@ -102,7 +102,7 @@ The \code{variation} argument can be used to include specific variations into th
 set.seed(2)
 
 # Simple example
-canvas_flame(colors = colorPalette("origami"))
+canvas_flame(colors = c("dodgerblue", "green"))
 
 # Advanced example (no-blend sine and spherical variations)
 canvas_flame(colors = colorPalette("origami"), variations = c(1, 2), blend = FALSE)

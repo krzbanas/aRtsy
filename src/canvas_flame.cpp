@@ -348,7 +348,6 @@ Rcpp::DataFrame iterate_flame(int iterations,
   Rcpp::DoubleVector c1(npoints);
   Rcpp::DoubleVector c2(npoints);
   Rcpp::DoubleVector c3(npoints);
-  Rcpp::DoubleVector alpha(npoints);
   Rcpp::DoubleVector p(5);
   for (int iter = 0; iter < iterations; iter++) {
     Rcpp::checkUserInterrupt();
@@ -382,17 +381,16 @@ Rcpp::DataFrame iterate_flame(int iterations,
     if (iter > 19) {
       x[iter - 20] = point[0];
       y[iter - 20] = point[1];
-	  c1[iter - 20] = point[2];
-	  c2[iter - 20] = point[3];
-	  c3[iter - 20] = point[4];
+      c1[iter - 20] = point[2];
+      c2[iter - 20] = point[3];
+      c3[iter - 20] = point[4];
     }
   }
   Rcpp::DataFrame flame = Rcpp::DataFrame::create(Rcpp::Named("x") = x,
                                                   Rcpp::Named("y") = y,
                                                   Rcpp::Named("c1") = c1,
                                                   Rcpp::Named("c2") = c2,
-                                                  Rcpp::Named("c3") = c3,
-                                                  Rcpp::Named("alpha") = alpha);
+                                                  Rcpp::Named("c3") = c3);
   return flame;
 }
 

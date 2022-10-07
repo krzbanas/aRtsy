@@ -17,7 +17,7 @@
 #'
 #' @description This function implements the fractal flame algorithm.
 #'
-#' @usage canvas_flame(colors, background = "#fafafa",
+#' @usage canvas_flame(colors, background = "#000000",
 #'              iterations = 1000000, zoom = 1, resolution = 1000,
 #'              variations = NULL, blend = TRUE,
 #'              display = c("colored", "logdensity"),
@@ -30,7 +30,7 @@
 #' @param zoom        a positive value specifying the amount of zooming.
 #' @param resolution  resolution of the artwork in pixels per row/column. Increasing the resolution increases the quality of the artwork but also increases the computation time exponentially.
 #' @param variations  an integer (vector) specifying the variations to be included in the flame. The default \code{NULL} includes a random number of variations. See the details section for more information about possible variations.
-#' @param blend       logical. Whether to blend the variations (\code{TRUE}) or pick a unique variation in each iteration (\code{FALSE}). \code{blend = FALSE} significantly speeds up the computation time if you include many variations.
+#' @param blend       logical. Whether to blend the variations (\code{TRUE}) or pick a unique variation in each iteration (\code{FALSE}). \code{blend = FALSE} significantly speeds up the computation time.
 #' @param display     a character indicating how to display the flame. \code{colored} (the default) displays colors according to which function they originate from. \code{logdensity} plots a gradient using the log density of the pixel count.
 #' @param post        logical. Whether to apply a post transformation in each iteration.
 #' @param final       logical. Whether to apply a final transformation in each iteration.
@@ -106,7 +106,7 @@
 #' set.seed(2)
 #'
 #' # Simple example
-#' canvas_flame(colors = colorPalette("origami"))
+#' canvas_flame(colors = c("dodgerblue", "green"))
 #'
 #' # Advanced example (no-blend sine and spherical variations)
 #' canvas_flame(colors = colorPalette("origami"), variations = c(1, 2), blend = FALSE)
@@ -114,7 +114,7 @@
 #'
 #' @export
 
-canvas_flame <- function(colors, background = "#fafafa",
+canvas_flame <- function(colors, background = "#000000",
                          iterations = 1000000, zoom = 1, resolution = 1000,
                          variations = NULL, blend = TRUE,
                          display = c("colored", "logdensity"),
@@ -162,24 +162,6 @@ canvas_flame <- function(colors, background = "#fafafa",
   for (i in 1:nrow(v_ij)) {
     v_ij[i, ] <- v_ij[i, ] / sum(v_ij[i, ])
   }
-  v_params <- c(
-    stats::runif(1, 0, 1), stats::runif(1, -1, 0), stats::runif(1, 1, 10), # blob.high, blob.low, blob.waves
-    stats::runif(1, 0, 1), stats::runif(1, 0, 1), stats::runif(1, 0, 1), stats::runif(1, 0, 1), # padj.a, pdj.b, pdj.c, pdj.d
-    stats::runif(1, 0, 1), # rings2.val
-    stats::runif(1, 1, pi), stats::runif(1, 0, 1), # perspective.angle, perspective.dist
-    stats::runif(1, 1, 5), stats::runif(1, 0, 10), # juliaN.power, juliaN.dist
-    stats::runif(1, 1, 5), stats::runif(1, 0, 10), # juliaScope.power, juliaScope.dist
-    stats::runif(1, 1, pi), stats::runif(1, 1, 5), # radialBlur.angle, v_36
-    sample(1:10, size = 1), stats::runif(1, 1, pi), stats::runif(1, 1, 5), # pie.slices, pie.rotation, pie.thickness
-    stats::runif(1, 1, 4), 2 * pi / sample(3:10, size = 1), sample(2:10, size = 1), stats::runif(1, 0, 1), # ngon.power, ngon.sides, ngon.corners, ngon.circle
-    stats::runif(1, 0, 1), stats::runif(1, 0, 1), # curl.c1, curl.c2
-    stats::runif(1, 2, 50), stats::runif(1, 2, 50), # rectangles.x, rectangles.y
-    stats::runif(1, 0, 100), # v_41
-    stats::runif(1, 0, 10), # v_44
-    stats::runif(1, 0, 10), # v_45
-    stats::runif(1, 0, 10), # v_46
-    stats::runif(1, 0, 10) # v_47
-  )
   df <- iterate_flame(
     iterations = iterations,
     functions = 0:(nfunc - 1),
@@ -189,7 +171,7 @@ canvas_flame <- function(colors, background = "#fafafa",
     mat_coef = matrix(stats::runif(nfunc * 6, min = -1, max = 1), nrow = nfunc, ncol = 6),
     blend_variations = blend,
     v_ij = v_ij,
-    v_params = v_params,
+    v_params = .getVariationParameters(),
     transform_p = post,
     p_coef = matrix(stats::runif(nfunc * 6, min = -1, max = 1), nrow = nfunc, ncol = 6),
     transform_f = final,
@@ -240,6 +222,10 @@ canvas_flame <- function(colors, background = "#fafafa",
       x = df[["x"]], y = df[["y"]], binsx = xbins, binsy = ybins, c = df[["c3"]]
     )
     blue[inda] <- blue[inda] * scaling
+    maxColorValue <- max(c(c(red), c(blue), c(green)), na.rm = TRUE)
+    if (maxColorValue == 0) {
+      stop("No points are drawn on the canvas")
+    }
     full_canvas$col <- grDevices::rgb(red, green, blue, maxColorValue = max(c(c(red), c(blue), c(green)), na.rm = TRUE))
     full_canvas$col[which(is.na(full_canvas[["z"]]))] <- background
     artwork <- ggplot2::ggplot(data = full_canvas, mapping = ggplot2::aes(x = x, y = y)) +
@@ -250,56 +236,31 @@ canvas_flame <- function(colors, background = "#fafafa",
 }
 
 .getVariationNames <- function() {
-  x <- c(
-    "Linear",
-    "Sine",
-    "Spherical",
-    "Swirl",
-    "Horsehoe",
-    "Polar",
-    "Handkerchief",
-    "Heart",
-    "Disc",
-    "Spiral",
-    "Hyperbolic",
-    "Diamond",
-    "Ex",
-    "Julia",
-    "Bent",
-    "Waves",
-    "Fisheye",
-    "Popcorn",
-    "Exponential",
-    "Power",
-    "Cosine",
-    "Rings",
-    "Fan",
-    "Blob",
-    "PDJ",
-    "Fan2",
-    "Rings2",
-    "Eyefish",
-    "Bubble",
-    "Cylinder",
-    "Perspective",
-    "Noise",
-    "JuliaN",
-    "JuliaScope",
-    "Blur",
-    "Gaussian",
-    "RadialBlur",
-    "Pie",
-    "Ngon",
-    "Curl",
-    "Rectangles",
-    "Arch",
-    "Tangent",
-    "Square",
-    "Rays",
-    "Blade",
-    "Secant",
-    "Twintrian",
-    "Cross"
-  )
-  return(x)
+  return(c(
+    "Linear", "Sine", "Spherical", "Swirl", "Horsehoe", "Polar", "Handkerchief",
+    "Heart", "Disc", "Spiral", "Hyperbolic", "Diamond", "Ex", "Julia", "Bent",
+    "Waves", "Fisheye", "Popcorn", "Exponential", "Power", "Cosine", "Rings",
+    "Fan", "Blob", "PDJ", "Fan2", "Rings2", "Eyefish", "Bubble", "Cylinder",
+    "Perspective", "Noise", "JuliaN", "JuliaScope", "Blur", "Gaussian",
+    "RadialBlur", "Pie", "Ngon", "Curl", "Rectangles", "Arch", "Tangent",
+    "Square", "Rays", "Blade", "Secant", "Twintrian", "Cross"
+  ))
+}
+
+.getVariationParameters <- function() {
+  return(c(
+    stats::runif(1, 0, 1), stats::runif(1, -1, 0), stats::runif(1, 1, 10), # blob.high, blob.low, blob.waves
+    stats::runif(4, 0, 1), # padj.a, pdj.b, pdj.c, pdj.d
+    stats::runif(1, 0, 1), # rings2.val
+    stats::runif(1, 1, pi), stats::runif(1, 0, 1), # perspective.angle, perspective.dist
+    stats::runif(1, 1, 5), stats::runif(1, 0, 10), # juliaN.power, juliaN.dist
+    stats::runif(1, 1, 5), stats::runif(1, 0, 10), # juliaScope.power, juliaScope.dist
+    stats::runif(1, 1, pi), stats::runif(1, 1, 5), # radialBlur.angle, v_36
+    sample(1:10, size = 1), stats::runif(1, 1, pi), stats::runif(1, 1, 5), # pie.slices, pie.rotation, pie.thickness
+    stats::runif(1, 1, 4), 2 * pi / sample(3:10, size = 1), sample(2:10, size = 1), stats::runif(1, 0, 1), # ngon.power, ngon.sides, ngon.corners, ngon.circle
+    stats::runif(1, 0, 1), stats::runif(1, 0, 1), # curl.c1, curl.c2
+    stats::runif(1, 2, 50), stats::runif(1, 2, 50), # rectangles.x, rectangles.y
+    stats::runif(1, 0, 100), # v_41
+    stats::runif(4, 0, 10) # v_44, # v_45, # v_46, # v_47
+  ))
 }
