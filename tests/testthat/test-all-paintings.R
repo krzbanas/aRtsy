@@ -194,7 +194,7 @@ test_that("canvas_mesh()", {
 })
 
 test_that("canvas_flame()", {
-  set.seed(1)
-  artwork <- canvas_flame(colors = "white", iterations = 10)
+  set.seed(2)
+  artwork <- canvas_flame(colors = c("dodgerblue", "green"), iterations = 10000)
   expect_equal(!is.null(artwork), TRUE)
 })
