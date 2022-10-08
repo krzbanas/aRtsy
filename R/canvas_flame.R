@@ -195,7 +195,7 @@ canvas_flame <- function(colors, background = "#000000",
     binsy = seq(center[2] - spany, center[2] + spany, length.out = resolution + 1),
     x = df[, 1], y = df[, 2], c1 = df[, 3], c2 = df[, 4], c3 = df[, 5]
   )
-  if (length(which(canvas[, , 1] > 0)) < 1) {
+  if (length(which(canvas[, , 1] > 0)) <= 1) {
     stop("No points are drawn on the canvas")
   }
   full_canvas <- .unraster(canvas[, , 1], c("x", "y", "z"))
