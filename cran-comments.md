@@ -1,7 +1,7 @@
-## aRtsy version 0.1.9
-This is a submission for aRtsy version 0.1.9. In this version I have:
+## aRtsy version 0.2.0
+This is a submission for aRtsy version 0.2.0. In this version I have:
 
-* Added one new function.
+* Fixed warnings `warning: use of bitwise '&' with boolean operands [-Wbitwise-instead-of-logical]` indicated by CRAN checks.
 
 ## Test environments
 * Windows install, (on github actions) R release
