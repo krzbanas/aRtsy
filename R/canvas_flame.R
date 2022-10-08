@@ -150,7 +150,7 @@ canvas_flame <- function(colors, background = "#000000",
     color_mat <- matrix(stats::runif(nfunc * 3), nrow = nfunc, ncol = 3)
   } else {
     nfunc <- sample(x = 3:max(10, length(colors)), size = 1)
-    colors <- sample(x = colors, size = nfunc, replace = TRUE)
+    colors <- c(colors, sample(x = colors, size = nfunc, replace = TRUE))
     color_mat <- matrix(t(grDevices::col2rgb(colors) / 255), nrow = length(colors), ncol = 3)
   }
   w_i <- stats::runif(nfunc, 0, 1)
