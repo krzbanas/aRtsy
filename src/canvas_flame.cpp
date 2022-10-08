@@ -294,14 +294,14 @@ arma::mat iterate_flame(arma::mat points,
                         Rcpp::DoubleVector e_coef,
                         arma::mat colors) {
   int nvariations = variations.length();
-  Rcpp::DoubleVector tmp(2), ch(1);
+  Rcpp::DoubleVector tmp(2), ch(1), i(1);
   double x, y, c1, c2, c3;
   for (int iter = 1; iter < iterations; iter++) {
     if ((iter % 100) == 0) {
       Rcpp::checkUserInterrupt();
     }
     // Pick an affine function to use
-    Rcpp::NumericVector i = Rcpp::sample(functions, 1, false, w_i);
+    i = Rcpp::sample(functions, 1, false, w_i);
     // Apply the affine function to the point
     x = mat_coef(i[0], 0) * points(iter - 1, 0) + mat_coef(i[0], 1) * points(iter - 1, 1) + mat_coef(i[0], 2);
     y = mat_coef(i[0], 3) * points(iter - 1, 0) + mat_coef(i[0], 4) * points(iter - 1, 1) + mat_coef(i[0], 5);
@@ -311,7 +311,7 @@ arma::mat iterate_flame(arma::mat points,
     c3 = (c3 + colors(i[0], 2)) / 2;
     // // Apply the variation(s) to the point
     if (blend_variations) {
-      tmp = {0, 0};
+      tmp.fill(0);
       for (int j = 0; j < nvariations; j++) {
         tmp += v_ij(i[0], j) * variation(x, y, variations[j], mat_coef(i[0], 0), mat_coef(i[0], 1), mat_coef(i[0], 2), mat_coef(i[0], 3), mat_coef(i[0], 4), mat_coef(i[0], 5), v_params);
       }
