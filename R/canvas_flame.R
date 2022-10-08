@@ -162,7 +162,6 @@ canvas_flame <- function(colors, background = "#000000",
   for (i in 1:nrow(v_ij)) {
     v_ij[i, ] <- v_ij[i, ] / sum(v_ij[i, ])
   }
-  s1 <- Sys.time()
   df <- iterate_flame(
     iterations = iterations,
     functions = 0:(nfunc - 1),
@@ -181,8 +180,6 @@ canvas_flame <- function(colors, background = "#000000",
     e_coef = stats::runif(6, min = -1, max = 1),
     colors = color_mat
   )
-  s2 <- Sys.time()
-  print(s2 - s1)
   df <- df[-(1:20), ]
   df <- df[!is.infinite(df[, 1]) & !is.infinite(df[, 2]), ]
   df <- df[!is.na(df[, 1]) & !is.na(df[, 2]), ]
