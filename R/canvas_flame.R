@@ -162,6 +162,7 @@ canvas_flame <- function(colors, background = "#000000",
   for (i in 1:nrow(v_ij)) {
     v_ij[i, ] <- v_ij[i, ] / sum(v_ij[i, ])
   }
+  s1 <- Sys.time()
   df <- iterate_flame(
     iterations = iterations,
     functions = 0:(nfunc - 1),
@@ -180,19 +181,22 @@ canvas_flame <- function(colors, background = "#000000",
     e_coef = stats::runif(6, min = -1, max = 1),
     colors = color_mat
   )
-  df <- df[!is.infinite(df[["x"]]) & !is.infinite(df[["y"]]), ]
-  df <- df[!is.na(df[["x"]]) & !is.na(df[["y"]]), ]
+  s2 <- Sys.time()
+  print(s2 - s1)
+  df <- df[-(1:20), ]
+  df <- df[!is.infinite(df[, 1]) & !is.infinite(df[, 2]), ]
+  df <- df[!is.na(df[, 1]) & !is.na(df[, 2]), ]
   if (nrow(df) == 0) {
     stop("The algorithm did not converge")
   }
-  center <- c(stats::median(df[["x"]]), stats::median(df[["y"]]))
-  spanx <- diff(stats::quantile(df[["x"]], probs = c(0.1, 0.9))) * (1 / zoom)
-  spany <- diff(stats::quantile(df[["y"]], probs = c(0.1, 0.9))) * (1 / zoom)
+  center <- c(stats::median(df[, 1]), stats::median(df[, 2]))
+  spanx <- diff(stats::quantile(df[, 1], probs = c(0.1, 0.9))) * (1 / zoom)
+  spany <- diff(stats::quantile(df[, 2], probs = c(0.1, 0.9))) * (1 / zoom)
   canvas <- color_flame( # 1 = alpha, 2 = red, 3 = green, 5 = blue
     canvas = array(0, dim = c(resolution + 1, resolution + 1, 4)),
     binsx = seq(center[1] - spanx, center[1] + spanx, length.out = resolution + 1),
     binsy = seq(center[2] - spany, center[2] + spany, length.out = resolution + 1),
-    x = df[["x"]], y = df[["y"]], c1 = df[["c1"]], c2 = df[["c2"]], c3 = df[["c3"]]
+    x = df[, 1], y = df[, 2], c1 = df[, 3], c2 = df[, 4], c3 = df[, 5]
   )
   if (length(which(canvas[, , 1] > 0)) < 1) {
     stop("No points are drawn on the canvas")
