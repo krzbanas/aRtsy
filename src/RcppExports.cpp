@@ -83,15 +83,15 @@ BEGIN_RCPP
 END_RCPP
 }
 // iterate_flame
-arma::mat iterate_flame(int iterations, Rcpp::DoubleVector functions, Rcpp::DoubleVector variations, arma::rowvec point, Rcpp::DoubleVector w_i, arma::mat mat_coef, bool blend_variations, arma::mat v_ij, Rcpp::DoubleVector v_params, bool transform_p, arma::mat p_coef, bool transform_f, Rcpp::DoubleVector f_coef, bool transform_e, Rcpp::DoubleVector e_coef, arma::mat colors);
-RcppExport SEXP _aRtsy_iterate_flame(SEXP iterationsSEXP, SEXP functionsSEXP, SEXP variationsSEXP, SEXP pointSEXP, SEXP w_iSEXP, SEXP mat_coefSEXP, SEXP blend_variationsSEXP, SEXP v_ijSEXP, SEXP v_paramsSEXP, SEXP transform_pSEXP, SEXP p_coefSEXP, SEXP transform_fSEXP, SEXP f_coefSEXP, SEXP transform_eSEXP, SEXP e_coefSEXP, SEXP colorsSEXP) {
+arma::mat iterate_flame(arma::mat points, int iterations, Rcpp::DoubleVector functions, Rcpp::DoubleVector variations, Rcpp::DoubleVector w_i, arma::mat mat_coef, bool blend_variations, arma::mat v_ij, Rcpp::DoubleVector v_params, bool transform_p, arma::mat p_coef, bool transform_f, Rcpp::DoubleVector f_coef, bool transform_e, Rcpp::DoubleVector e_coef, arma::mat colors);
+RcppExport SEXP _aRtsy_iterate_flame(SEXP pointsSEXP, SEXP iterationsSEXP, SEXP functionsSEXP, SEXP variationsSEXP, SEXP w_iSEXP, SEXP mat_coefSEXP, SEXP blend_variationsSEXP, SEXP v_ijSEXP, SEXP v_paramsSEXP, SEXP transform_pSEXP, SEXP p_coefSEXP, SEXP transform_fSEXP, SEXP f_coefSEXP, SEXP transform_eSEXP, SEXP e_coefSEXP, SEXP colorsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::mat >::type points(pointsSEXP);
     Rcpp::traits::input_parameter< int >::type iterations(iterationsSEXP);
     Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type functions(functionsSEXP);
     Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type variations(variationsSEXP);
-    Rcpp::traits::input_parameter< arma::rowvec >::type point(pointSEXP);
     Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type w_i(w_iSEXP);
     Rcpp::traits::input_parameter< arma::mat >::type mat_coef(mat_coefSEXP);
     Rcpp::traits::input_parameter< bool >::type blend_variations(blend_variationsSEXP);
@@ -104,7 +104,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< bool >::type transform_e(transform_eSEXP);
     Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type e_coef(e_coefSEXP);
     Rcpp::traits::input_parameter< arma::mat >::type colors(colorsSEXP);
-    rcpp_result_gen = Rcpp::wrap(iterate_flame(iterations, functions, variations, point, w_i, mat_coef, blend_variations, v_ij, v_params, transform_p, p_coef, transform_f, f_coef, transform_e, e_coef, colors));
+    rcpp_result_gen = Rcpp::wrap(iterate_flame(points, iterations, functions, variations, w_i, mat_coef, blend_variations, v_ij, v_params, transform_p, p_coef, transform_f, f_coef, transform_e, e_coef, colors));
     return rcpp_result_gen;
 END_RCPP
 }

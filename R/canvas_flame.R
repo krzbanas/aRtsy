@@ -162,11 +162,13 @@ canvas_flame <- function(colors, background = "#000000",
   for (i in 1:nrow(v_ij)) {
     v_ij[i, ] <- v_ij[i, ] / sum(v_ij[i, ])
   }
-  df <- iterate_flame(
+  points <- matrix(NA, nrow = iterations, ncol = 5)
+  points[1, ] <- c(stats::runif(2, -1, 1), stats::runif(3, 0, 1))
+  df <- iterate_flame( # 1 = x, 2 = y, 3 = red, 4 = green, 5 = blue
+    points = points,
     iterations = iterations,
     functions = 0:(nfunc - 1),
     variations = variations,
-    point = c(stats::runif(2, -1, 1), stats::runif(3, 0, 1)),
     w_i = w_i / sum(w_i),
     mat_coef = matrix(stats::runif(nfunc * 6, min = -1, max = 1), nrow = nfunc, ncol = 6),
     blend_variations = blend,
@@ -189,13 +191,13 @@ canvas_flame <- function(colors, background = "#000000",
   center <- c(stats::median(df[, 1]), stats::median(df[, 2]))
   spanx <- diff(stats::quantile(df[, 1], probs = c(0.1, 0.9))) * (1 / zoom)
   spany <- diff(stats::quantile(df[, 2], probs = c(0.1, 0.9))) * (1 / zoom)
-  canvas <- color_flame( # 1 = alpha, 2 = red, 3 = green, 5 = blue
+  canvas <- color_flame( # 1 = alpha, 2 = red, 3 = green, 4 = blue
     canvas = array(0, dim = c(resolution + 1, resolution + 1, 4)), df = df,
     binsx = seq(center[1] - spanx, center[1] + spanx, length.out = resolution + 1),
     binsy = seq(center[2] - spany, center[2] + spany, length.out = resolution + 1)
   )
   if (length(which(canvas[, , 1] > 0)) <= 1) {
-    stop("No points are drawn on the canvas")
+    stop("Too few points are drawn on the canvas")
   }
   full_canvas <- .unraster(canvas[, , 1], c("x", "y", "z"))
   full_canvas[["z"]][full_canvas[["z"]] != 0] <- log(full_canvas[["z"]][full_canvas[["z"]] != 0], base = 1.2589)

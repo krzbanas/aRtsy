@@ -277,10 +277,10 @@ Rcpp::DoubleVector variation(double x,
 }
 
 // [[Rcpp::export]]
-arma::mat iterate_flame(int iterations,
+arma::mat iterate_flame(arma::mat points,
+                        int iterations,
                         Rcpp::DoubleVector functions,
                         Rcpp::DoubleVector variations,
-                        arma::rowvec point,
                         Rcpp::DoubleVector w_i,
                         arma::mat mat_coef,
                         bool blend_variations,
@@ -294,9 +294,7 @@ arma::mat iterate_flame(int iterations,
                         Rcpp::DoubleVector e_coef,
                         arma::mat colors) {
   int nvariations = variations.length();
-  arma::mat points(iterations, 5);
-  points.row(0) = point;
-  Rcpp::DoubleVector tmp(2);
+  Rcpp::DoubleVector tmp(2), ch(1);
   double x, y, c1, c2, c3;
   for (int iter = 1; iter < iterations; iter++) {
     if ((iter % 100) == 0) {
@@ -313,40 +311,36 @@ arma::mat iterate_flame(int iterations,
     c3 = (c3 + colors(i[0], 2)) / 2;
     // // Apply the variation(s) to the point
     if (blend_variations) {
-      tmp.fill(0);
+      tmp = {0, 0};
       for (int j = 0; j < nvariations; j++) {
-        if (v_ij(i[0], j) == 0) {
-          continue;
-        }
         tmp += v_ij(i[0], j) * variation(x, y, variations[j], mat_coef(i[0], 0), mat_coef(i[0], 1), mat_coef(i[0], 2), mat_coef(i[0], 3), mat_coef(i[0], 4), mat_coef(i[0], 5), v_params);
       }
     } else {
       // Sampling from variations according to their weights
-      Rcpp::NumericVector v_j = Rcpp::as<Rcpp::NumericVector>(Rcpp::wrap(v_ij.row(i[0])));
-      Rcpp::NumericVector ch = Rcpp::sample(variations, 1, false, v_j);
+      ch = Rcpp::sample(variations, 1, false, Rcpp::as<Rcpp::NumericVector>(Rcpp::wrap(v_ij.row(i[0]))));
       tmp = variation(x, y, ch[0], mat_coef(i[0], 0), mat_coef(i[0], 1), mat_coef(i[0], 2), mat_coef(i[0], 3), mat_coef(i[0], 4), mat_coef(i[0], 5), v_params);
     }
     x = tmp[0];
     y = tmp[1];
     // Apply a post transformation
     if (transform_p) {
-       tmp[0] = p_coef(i[0], 0) * x + p_coef(i[0], 1) * y + p_coef(i[0], 2);
-       tmp[1] = p_coef(i[0], 3) * x + p_coef(i[0], 4) * y + p_coef(i[0], 5);
-       x = tmp[0];
-       y = tmp[1];
+      tmp[0] = p_coef(i[0], 0) * x + p_coef(i[0], 1) * y + p_coef(i[0], 2);
+      tmp[1] = p_coef(i[0], 3) * x + p_coef(i[0], 4) * y + p_coef(i[0], 5);
+      x = tmp[0];
+      y = tmp[1];
     }
     // Apply a final transformation
     if (transform_f) {
-       tmp[0] = f_coef[0] * x + f_coef[1] * y + f_coef[2];
-       tmp[1] = f_coef[3] * x + f_coef[4] * y + f_coef[5];
-       x = tmp[0];
-       y = tmp[1];
+      tmp[0] = f_coef[0] * x + f_coef[1] * y + f_coef[2];
+      tmp[1] = f_coef[3] * x + f_coef[4] * y + f_coef[5];
+      x = tmp[0];
+      y = tmp[1];
       // Apply an additional post transformation
       if (transform_e) {
-       tmp[0] = e_coef[0] * x + e_coef[1] * y + e_coef[2];
-       tmp[1] = e_coef[3] * x + e_coef[4] * y + e_coef[5];
-       x = tmp[0];
-       y = tmp[1];
+        tmp[0] = e_coef[0] * x + e_coef[1] * y + e_coef[2];
+        tmp[1] = e_coef[3] * x + e_coef[4] * y + e_coef[5];
+        x = tmp[0];
+        y = tmp[1];
       }
     }
     points(iter, 0) = x;
