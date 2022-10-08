@@ -190,10 +190,9 @@ canvas_flame <- function(colors, background = "#000000",
   spanx <- diff(stats::quantile(df[, 1], probs = c(0.1, 0.9))) * (1 / zoom)
   spany <- diff(stats::quantile(df[, 2], probs = c(0.1, 0.9))) * (1 / zoom)
   canvas <- color_flame( # 1 = alpha, 2 = red, 3 = green, 5 = blue
-    canvas = array(0, dim = c(resolution + 1, resolution + 1, 4)),
+    canvas = array(0, dim = c(resolution + 1, resolution + 1, 4)), df = df,
     binsx = seq(center[1] - spanx, center[1] + spanx, length.out = resolution + 1),
-    binsy = seq(center[2] - spany, center[2] + spany, length.out = resolution + 1),
-    x = df[, 1], y = df[, 2], c1 = df[, 3], c2 = df[, 4], c3 = df[, 5]
+    binsy = seq(center[2] - spany, center[2] + spany, length.out = resolution + 1)
   )
   if (length(which(canvas[, , 1] > 0)) <= 1) {
     stop("No points are drawn on the canvas")

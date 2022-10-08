@@ -364,27 +364,24 @@ int cfi(double v, const Rcpp::NumericVector& x) {
 
 // [[Rcpp::export]]
 arma::cube color_flame(arma::cube canvas,
+                       arma::mat df,
                        Rcpp::DoubleVector binsx,
-                       Rcpp::DoubleVector binsy,
-                       Rcpp::DoubleVector x,
-                       Rcpp::DoubleVector y,
-                       Rcpp::DoubleVector c1,
-                       Rcpp::DoubleVector c2,
-                       Rcpp::DoubleVector c3) {
-  for (int i = 0; i < x.length(); i++) {
+                       Rcpp::DoubleVector binsy) {
+  int n = df.n_rows;
+  for (int i = 0; i < n; i++) {
     Rcpp::checkUserInterrupt();
-    int indx = cfi(x[i], binsx);
+    int indx = cfi(df(i, 0), binsx);
     if ((indx == 0) | (indx == binsx.length())) {
       continue;
     }
-    int indy = cfi(y[i], binsy);
+    int indy = cfi(df(i, 1), binsy);
     if ((indy == 0) | (indy == binsy.length())) {
       continue;
     }
     canvas(indy, indx, 0) = canvas(indy, indx, 0) + 1;
-    canvas(indy, indx, 1) = canvas(indy, indx, 1) + c1[i];
-    canvas(indy, indx, 2) = canvas(indy, indx, 2) + c2[i];
-    canvas(indy, indx, 3) = canvas(indy, indx, 3) + c3[i];
+    canvas(indy, indx, 1) = canvas(indy, indx, 1) + df(i, 2);
+    canvas(indy, indx, 2) = canvas(indy, indx, 2) + df(i, 3);
+    canvas(indy, indx, 3) = canvas(indy, indx, 3) + df(i, 4);
   }
   return canvas;
 }

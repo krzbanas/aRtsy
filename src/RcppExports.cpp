@@ -109,20 +109,16 @@ BEGIN_RCPP
 END_RCPP
 }
 // color_flame
-arma::cube color_flame(arma::cube canvas, Rcpp::DoubleVector binsx, Rcpp::DoubleVector binsy, Rcpp::DoubleVector x, Rcpp::DoubleVector y, Rcpp::DoubleVector c1, Rcpp::DoubleVector c2, Rcpp::DoubleVector c3);
-RcppExport SEXP _aRtsy_color_flame(SEXP canvasSEXP, SEXP binsxSEXP, SEXP binsySEXP, SEXP xSEXP, SEXP ySEXP, SEXP c1SEXP, SEXP c2SEXP, SEXP c3SEXP) {
+arma::cube color_flame(arma::cube canvas, arma::mat df, Rcpp::DoubleVector binsx, Rcpp::DoubleVector binsy);
+RcppExport SEXP _aRtsy_color_flame(SEXP canvasSEXP, SEXP dfSEXP, SEXP binsxSEXP, SEXP binsySEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< arma::cube >::type canvas(canvasSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type df(dfSEXP);
     Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type binsx(binsxSEXP);
     Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type binsy(binsySEXP);
-    Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type x(xSEXP);
-    Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type y(ySEXP);
-    Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type c1(c1SEXP);
-    Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type c2(c2SEXP);
-    Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type c3(c3SEXP);
-    rcpp_result_gen = Rcpp::wrap(color_flame(canvas, binsx, binsy, x, y, c1, c2, c3));
+    rcpp_result_gen = Rcpp::wrap(color_flame(canvas, df, binsx, binsy));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -395,7 +391,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_aRtsy_get_collatz_sequence", (DL_FUNC) &_aRtsy_get_collatz_sequence, 1},
     {"_aRtsy_draw_collatz", (DL_FUNC) &_aRtsy_draw_collatz, 4},
     {"_aRtsy_iterate_flame", (DL_FUNC) &_aRtsy_iterate_flame, 16},
-    {"_aRtsy_color_flame", (DL_FUNC) &_aRtsy_color_flame, 8},
+    {"_aRtsy_color_flame", (DL_FUNC) &_aRtsy_color_flame, 4},
     {"_aRtsy_iterate_flow", (DL_FUNC) &_aRtsy_iterate_flow, 8},
     {"_aRtsy_iterate_maze", (DL_FUNC) &_aRtsy_iterate_maze, 3},
     {"_aRtsy_iterate_mesh", (DL_FUNC) &_aRtsy_iterate_mesh, 7},
