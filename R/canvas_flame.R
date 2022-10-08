@@ -103,7 +103,7 @@
 #'
 #' @examples
 #' \donttest{
-#' set.seed(2)
+#' set.seed(3)
 #'
 #' # Simple example
 #' canvas_flame(colors = c("dodgerblue", "green"))
