@@ -100,16 +100,16 @@ Rcpp::DoubleVector variation(Rcpp::DoubleVector p,
     x[0] = sqrt(r) * cos(theta / 2 + Omega);
     x[1] = sqrt(r) * sin(theta / 2 + Omega);
   } else if (i == 14) { // Bent
-    if ((p[0] >= 0) & (p[1] >= 0)) {
+    if ((p[0] >= 0) && (p[1] >= 0)) {
       x[0] = p[0];
       x[1] = p[1];
-    } else if ((p[0] < 0) & (p[1] >= 0)) {
+    } else if ((p[0] < 0) && (p[1] >= 0)) {
       x[0] = 2 * p[0];
       x[1] = p[1];
-    } else if ((p[0] >= 0) & (p[1] < 0)) {
+    } else if ((p[0] >= 0) && (p[1] < 0)) {
       x[0] = p[0];
       x[1] = p[1] / 2;
-    } else if ((p[0] < 0) & (p[1] < 0)) {
+    } else if ((p[0] < 0) && (p[1] < 0)) {
       x[0] = 2 * p[0];
       x[1] = p[1] / 2;
     }
