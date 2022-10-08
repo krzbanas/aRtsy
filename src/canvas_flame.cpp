@@ -289,31 +289,21 @@ Rcpp::DoubleVector variation(Rcpp::DoubleVector p,
 }
 
 Rcpp::DoubleVector posttransform(Rcpp::DoubleVector p,
-                         double alpha,
-                         double beta,
-                         double gamma,
-                         double delta,
-                         double epsilon,
-                         double zeta) {
+                                 double alpha,
+                                 double beta,
+                                 double gamma,
+                                 double delta,
+                                 double epsilon,
+                                 double zeta) {
   Rcpp::DoubleVector x = p;
   x[0] = alpha * p[0] + beta * p[1] + gamma;
   x[1] = delta * p[0] + epsilon * p[1] + zeta;
   return x;
 }
 
-Rcpp::NumericVector get_variation_weights(arma::mat v_ij,
-                                          Rcpp::NumericVector i) {
-  int n = v_ij.n_cols;
-  Rcpp::NumericVector v_j(n);
-  for (int iter = 0; iter < n; iter++) {
-    v_j[iter] = v_ij(i[0], iter);
-  }
-  return v_j;
-}
-
 Rcpp::DoubleVector update_colors(Rcpp::DoubleVector p,
-                                  arma::mat colors,
-                                  int i) {
+                                 arma::mat colors,
+                                 int i) {
   Rcpp::DoubleVector x = p;
   x[2] = (p[2] + colors(i, 0)) / 2;
   x[3] = (p[3] + colors(i, 1)) / 2;
@@ -362,7 +352,7 @@ Rcpp::DataFrame iterate_flame(int iterations,
         newpoint += v_ij(i[0], j) * variation(p, variations[j], mat_coef(i[0], 0), mat_coef(i[0], 1), mat_coef(i[0], 2), mat_coef(i[0], 3), mat_coef(i[0], 4), mat_coef(i[0], 5), v_params);
       }
     } else {
-      Rcpp::NumericVector v_j = get_variation_weights(v_ij, i[0]);
+      Rcpp::NumericVector v_j = Rcpp::as<Rcpp::NumericVector>(Rcpp::wrap(v_ij.row(i[0])));
       Rcpp::NumericVector ch = Rcpp::sample(variations, 1, false, v_j);
       newpoint = variation(p, ch[0], mat_coef(i[0], 0), mat_coef(i[0], 1), mat_coef(i[0], 2), mat_coef(i[0], 3), mat_coef(i[0], 4), mat_coef(i[0], 5), v_params);
     }
