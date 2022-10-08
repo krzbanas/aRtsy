@@ -206,11 +206,11 @@ canvas_flame <- function(colors, background = "#000000",
       ggplot2::scale_fill_gradientn(colors = colors, na.value = background)
   } else {
     canvas <- .scaleColorChannels(canvas)
-    maxColorValue <- max(c(c(canvas[, , 2]), c(canvas[, , 3]), c(canvas[, , 4])), na.rm = TRUE)
-    if (maxColorValue == 0) {
+    maxVal <- max(c(1, c(canvas[, , 2]), c(canvas[, , 3]), c(canvas[, , 4])))
+    if (maxVal == 0) {
       stop("No points are drawn on the canvas")
     }
-    full_canvas[["col"]] <- grDevices::rgb(red = canvas[, , 2], green = canvas[, , 3], blue = canvas[, , 4], maxColorValue = maxColorValue)
+    full_canvas[["col"]] <- grDevices::rgb(red = canvas[, , 2], green = canvas[, , 3], blue = canvas[, , 4], maxColorValue = maxVal)
     full_canvas[["col"]][which(is.na(full_canvas[["z"]]))] <- background
     artwork <- ggplot2::ggplot(data = full_canvas, mapping = ggplot2::aes(x = x, y = y)) +
       ggplot2::geom_raster(interpolate = TRUE, fill = full_canvas[["col"]])

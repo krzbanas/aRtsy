@@ -299,7 +299,7 @@ arma::mat iterate_flame(int iterations,
   Rcpp::DoubleVector tmp(2);
   double x, y, c1, c2, c3;
   for (int iter = 1; iter < iterations; iter++) {
-    if ((iter % 1000) == 0) {
+    if ((iter % 100) == 0) {
       Rcpp::checkUserInterrupt();
     }
     // Pick an affine function to use
@@ -371,11 +371,11 @@ arma::cube color_flame(arma::cube canvas,
   for (int i = 0; i < n; i++) {
     Rcpp::checkUserInterrupt();
     int indx = cfi(df(i, 0), binsx);
-    if ((indx == 0) | (indx == binsx.length())) {
+    if ((indx == 0) || (indx == binsx.length())) {
       continue;
     }
     int indy = cfi(df(i, 1), binsy);
-    if ((indy == 0) | (indy == binsy.length())) {
+    if ((indy == 0) || (indy == binsy.length())) {
       continue;
     }
     canvas(indy, indx, 0) = canvas(indy, indx, 0) + 1;
