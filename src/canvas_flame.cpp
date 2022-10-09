@@ -413,7 +413,7 @@ arma::cube iterate_flame(arma::cube canvas,
       if ((indx > 0) && (indx < resolution)) {
         indy = (y * resolution / (2 * edge)) + resolution / 2;
         if ((indy > 0) && (indy < resolution)) {
-          canvas(indx, indy, 0) = canvas(indx, indy, 0) + 1;
+          ++canvas(indx, indy, 0);
           canvas(indx, indy, 1) = canvas(indx, indy, 1) + c1;
           canvas(indx, indy, 2) = canvas(indx, indy, 2) + c2;
           canvas(indx, indy, 3) = canvas(indx, indy, 3) + c3;
