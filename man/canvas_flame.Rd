@@ -5,7 +5,7 @@
 \title{Draw a Fractal Flame}
 \usage{
 canvas_flame(colors, background = "#000000",
-             iterations = 1000000, zoom = 1.25, resolution = 1000,
+             iterations = 1000000, zoom = 1, resolution = 1000,
              variations = NULL, blend = TRUE, weighted = FALSE,
              display = c("colored", "logdensity"),
              post = FALSE, final = FALSE, extra = FALSE,

@@ -18,7 +18,7 @@
 #' @description This function implements the fractal flame algorithm.
 #'
 #' @usage canvas_flame(colors, background = "#000000",
-#'              iterations = 1000000, zoom = 1.25, resolution = 1000,
+#'              iterations = 1000000, zoom = 1, resolution = 1000,
 #'              variations = NULL, blend = TRUE, weighted = FALSE,
 #'              display = c("colored", "logdensity"),
 #'              post = FALSE, final = FALSE, extra = FALSE,
@@ -116,7 +116,7 @@
 #' @export
 
 canvas_flame <- function(colors, background = "#000000",
-                         iterations = 1000000, zoom = 1.25, resolution = 1000,
+                         iterations = 1000000, zoom = 1, resolution = 1000,
                          variations = NULL, blend = TRUE, weighted = FALSE,
                          display = c("colored", "logdensity"),
                          post = FALSE, final = FALSE, extra = FALSE,
