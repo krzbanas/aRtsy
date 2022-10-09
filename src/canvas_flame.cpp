@@ -293,39 +293,39 @@ arma::mat iterate_flame(arma::mat points,
                         bool transform_e,
                         Rcpp::DoubleVector e_coef,
                         arma::mat colors) {
-  int nvariations = variations.length();
-  Rcpp::DoubleVector tmp(2), ch(1), i(1);
+  int i, j;
   double x, y, c1, c2, c3;
+  Rcpp::DoubleVector tmp(2);
   for (int iter = 1; iter < iterations; iter++) {
     if ((iter % 100) == 0) {
       Rcpp::checkUserInterrupt();
     }
-    // Pick an affine function to use
-    i = Rcpp::sample(functions, 1, false, w_i);
-    // Apply the affine function to the point
-    x = mat_coef(i[0], 0) * points(iter - 1, 0) + mat_coef(i[0], 1) * points(iter - 1, 1) + mat_coef(i[0], 2);
-    y = mat_coef(i[0], 3) * points(iter - 1, 0) + mat_coef(i[0], 4) * points(iter - 1, 1) + mat_coef(i[0], 5);
-    // Update color channels
-    c1 = (c1 + colors(i[0], 0)) / 2;
-    c2 = (c2 + colors(i[0], 1)) / 2;
-    c3 = (c3 + colors(i[0], 2)) / 2;
-    // // Apply the variation(s) to the point
+    // Pick an affine function to use according to their weights
+    i = Rcpp::sample(functions, 1, false, w_i)[0];
+    // Apply the affine function to the current point
+    x = mat_coef(i, 0) * points(iter - 1, 0) + mat_coef(i, 1) * points(iter - 1, 1) + mat_coef(i, 2);
+    y = mat_coef(i, 3) * points(iter - 1, 0) + mat_coef(i, 4) * points(iter - 1, 1) + mat_coef(i, 5);
+    // Update color channels for the current iterations
+    c1 = (c1 + colors(i, 0)) / 2;
+    c2 = (c2 + colors(i, 1)) / 2;
+    c3 = (c3 + colors(i, 2)) / 2;
+    // Apply the variation(s) to the point
     if (blend_variations) {
       tmp.fill(0);
-      for (int j = 0; j < nvariations; j++) {
-        tmp += v_ij(i[0], j) * variation(x, y, variations[j], mat_coef(i[0], 0), mat_coef(i[0], 1), mat_coef(i[0], 2), mat_coef(i[0], 3), mat_coef(i[0], 4), mat_coef(i[0], 5), v_params);
+      for (int j = 0; j < variations.length(); j++) {
+        tmp += v_ij(i, j) * variation(x, y, variations[j], mat_coef(i, 0), mat_coef(i, 1), mat_coef(i, 2), mat_coef(i, 3), mat_coef(i, 4), mat_coef(i, 5), v_params);
       }
     } else {
       // Sampling from variations according to their weights
-      ch = Rcpp::sample(variations, 1, false, Rcpp::as<Rcpp::NumericVector>(Rcpp::wrap(v_ij.row(i[0]))));
-      tmp = variation(x, y, ch[0], mat_coef(i[0], 0), mat_coef(i[0], 1), mat_coef(i[0], 2), mat_coef(i[0], 3), mat_coef(i[0], 4), mat_coef(i[0], 5), v_params);
+      j = Rcpp::sample(variations, 1, false, Rcpp::as<Rcpp::NumericVector>(Rcpp::wrap(v_ij.row(i))))[0];
+      tmp = variation(x, y, j, mat_coef(i, 0), mat_coef(i, 1), mat_coef(i, 2), mat_coef(i, 3), mat_coef(i, 4), mat_coef(i, 5), v_params);
     }
     x = tmp[0];
     y = tmp[1];
     // Apply a post transformation
     if (transform_p) {
-      tmp[0] = p_coef(i[0], 0) * x + p_coef(i[0], 1) * y + p_coef(i[0], 2);
-      tmp[1] = p_coef(i[0], 3) * x + p_coef(i[0], 4) * y + p_coef(i[0], 5);
+      tmp[0] = p_coef(i, 0) * x + p_coef(i, 1) * y + p_coef(i, 2);
+      tmp[1] = p_coef(i, 3) * x + p_coef(i, 4) * y + p_coef(i, 5);
       x = tmp[0];
       y = tmp[1];
     }
