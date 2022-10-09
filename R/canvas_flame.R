@@ -162,39 +162,24 @@ canvas_flame <- function(colors, background = "#000000",
   for (i in 1:nrow(v_ij)) {
     v_ij[i, ] <- v_ij[i, ] / sum(v_ij[i, ])
   }
-  points <- matrix(NA, nrow = iterations, ncol = 5)
-  points[1, ] <- c(stats::runif(2, -1, 1), stats::runif(3, 0, 1))
-  df <- iterate_flame( # 1 = x, 2 = y, 3 = red, 4 = green, 5 = blue
-    points = points,
-    iterations = iterations,
+  canvas <- iterate_flame( # 1 = x, 2 = y, 3 = red, 4 = green, 5 = blue
+    canvas = array(0, dim = c(resolution + 1, resolution + 1, 4)), iterations = iterations,
+    resolution = resolution,
+    edge = 2 * (1 / zoom),
+    blend = blend,
+    post = post,
+    final = final,
+    extra = extra,
+    colors = color_mat,
     functions = 0:(nfunc - 1),
+    funcWeights = w_i / sum(w_i),
+    funcPars = matrix(stats::runif(nfunc * 6, min = -1, max = 1), nrow = nfunc, ncol = 6),
     variations = variations,
-    w_i = w_i / sum(w_i),
-    mat_coef = matrix(stats::runif(nfunc * 6, min = -1, max = 1), nrow = nfunc, ncol = 6),
-    blend_variations = blend,
-    v_ij = v_ij,
-    v_params = .getVariationParameters(),
-    transform_p = post,
-    p_coef = matrix(stats::runif(nfunc * 6, min = -1, max = 1), nrow = nfunc, ncol = 6),
-    transform_f = final,
-    f_coef = stats::runif(6, min = -1, max = 1),
-    transform_e = extra,
-    e_coef = stats::runif(6, min = -1, max = 1),
-    colors = color_mat
-  )
-  df <- df[-(1:20), ]
-  df <- df[!is.infinite(df[, 1]) & !is.infinite(df[, 2]), ]
-  df <- df[!is.na(df[, 1]) & !is.na(df[, 2]), ]
-  if (nrow(df) == 0) {
-    stop("The algorithm did not converge")
-  }
-  center <- c(stats::median(df[, 1]), stats::median(df[, 2]))
-  spanx <- diff(stats::quantile(df[, 1], probs = c(0.1, 0.9))) * (1 / zoom)
-  spany <- diff(stats::quantile(df[, 2], probs = c(0.1, 0.9))) * (1 / zoom)
-  canvas <- color_flame( # 1 = alpha, 2 = red, 3 = green, 4 = blue
-    canvas = array(0, dim = c(resolution + 1, resolution + 1, 4)), df = df,
-    binsx = seq(center[1] - spanx, center[1] + spanx, length.out = resolution + 1),
-    binsy = seq(center[2] - spany, center[2] + spany, length.out = resolution + 1)
+    varWeights = v_ij,
+    varParams = .getVariationParameters(),
+    postPars = matrix(stats::runif(nfunc * 6, min = -1, max = 1), nrow = nfunc, ncol = 6),
+    finalPars = stats::runif(6, min = -1, max = 1),
+    extraPars = stats::runif(6, min = -1, max = 1)
   )
   if (length(which(canvas[, , 1] > 0)) <= 1) {
     stop("Too few points are drawn on the canvas")

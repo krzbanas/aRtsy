@@ -277,105 +277,89 @@ Rcpp::DoubleVector variation(double x,
 }
 
 // [[Rcpp::export]]
-arma::mat iterate_flame(arma::mat points,
-                        int iterations,
-                        Rcpp::DoubleVector functions,
-                        Rcpp::DoubleVector variations,
-                        Rcpp::DoubleVector w_i,
-                        arma::mat mat_coef,
-                        bool blend_variations,
-                        arma::mat v_ij,
-                        Rcpp::DoubleVector v_params,
-                        bool transform_p,
-                        arma::mat p_coef,
-                        bool transform_f,
-                        Rcpp::DoubleVector f_coef,
-                        bool transform_e,
-                        Rcpp::DoubleVector e_coef,
-                        arma::mat colors) {
-  int i, j;
-  double x, y, c1, c2, c3;
+arma::cube iterate_flame(arma::cube canvas,
+                         int iterations,
+                         int resolution,
+                         int edge,
+                         bool blend,
+                         bool post,
+                         bool final,
+                         bool extra,
+                         arma::mat colors,
+                         Rcpp::DoubleVector functions,
+                         Rcpp::DoubleVector funcWeights,
+                         arma::mat funcPars,
+                         Rcpp::DoubleVector variations,
+                         arma::mat varWeights,
+                         Rcpp::DoubleVector varParams,
+                         arma::mat postPars,
+                         Rcpp::DoubleVector finalPars,
+                         Rcpp::DoubleVector extraPars) {
+  int i, j, indx, indy;
+  double x, y, xprev = R::runif(-1, 1), yprev = R::runif(-1, 1), c1 = R::runif(0, 1), c2 = R::runif(0, 1), c3 = R::runif(0, 1);
   Rcpp::DoubleVector tmp(2);
   for (int iter = 1; iter < iterations; iter++) {
     if ((iter % 100) == 0) {
       Rcpp::checkUserInterrupt();
     }
     // Pick an affine function to use according to their weights
-    i = Rcpp::sample(functions, 1, false, w_i)[0];
+    i = Rcpp::sample(functions, 1, false, funcWeights)[0];
     // Apply the affine function to the current point
-    x = mat_coef(i, 0) * points(iter - 1, 0) + mat_coef(i, 1) * points(iter - 1, 1) + mat_coef(i, 2);
-    y = mat_coef(i, 3) * points(iter - 1, 0) + mat_coef(i, 4) * points(iter - 1, 1) + mat_coef(i, 5);
-    // Update color channels for the current iterations
-    c1 = (c1 + colors(i, 0)) / 2;
-    c2 = (c2 + colors(i, 1)) / 2;
-    c3 = (c3 + colors(i, 2)) / 2;
+    x = funcPars(i, 0) * xprev + funcPars(i, 1) * yprev + funcPars(i, 2);
+    y = funcPars(i, 3) * xprev + funcPars(i, 4) * yprev + funcPars(i, 5);
     // Apply the variation(s) to the point
-    if (blend_variations) {
+    if (blend) {
       tmp.fill(0);
       for (int j = 0; j < variations.length(); j++) {
-        tmp += v_ij(i, j) * variation(x, y, variations[j], mat_coef(i, 0), mat_coef(i, 1), mat_coef(i, 2), mat_coef(i, 3), mat_coef(i, 4), mat_coef(i, 5), v_params);
+        tmp += varWeights(i, j) * variation(x, y, variations[j], funcPars(i, 0), funcPars(i, 1), funcPars(i, 2), funcPars(i, 3), funcPars(i, 4), funcPars(i, 5), varParams);
       }
     } else {
       // Sampling from variations according to their weights
-      j = Rcpp::sample(variations, 1, false, Rcpp::as<Rcpp::NumericVector>(Rcpp::wrap(v_ij.row(i))))[0];
-      tmp = variation(x, y, j, mat_coef(i, 0), mat_coef(i, 1), mat_coef(i, 2), mat_coef(i, 3), mat_coef(i, 4), mat_coef(i, 5), v_params);
+      j = Rcpp::sample(variations, 1, false, Rcpp::as<Rcpp::NumericVector>(Rcpp::wrap(varWeights.row(i))))[0];
+      tmp = variation(x, y, j, funcPars(i, 0), funcPars(i, 1), funcPars(i, 2), funcPars(i, 3), funcPars(i, 4), funcPars(i, 5), varParams);
     }
     x = tmp[0];
     y = tmp[1];
     // Apply a post transformation
-    if (transform_p) {
-      tmp[0] = p_coef(i, 0) * x + p_coef(i, 1) * y + p_coef(i, 2);
-      tmp[1] = p_coef(i, 3) * x + p_coef(i, 4) * y + p_coef(i, 5);
+    if (post) {
+      tmp[0] = postPars(i, 0) * x + postPars(i, 1) * y + postPars(i, 2);
+      tmp[1] = postPars(i, 3) * x + postPars(i, 4) * y + postPars(i, 5);
       x = tmp[0];
       y = tmp[1];
     }
     // Apply a final transformation
-    if (transform_f) {
-      tmp[0] = f_coef[0] * x + f_coef[1] * y + f_coef[2];
-      tmp[1] = f_coef[3] * x + f_coef[4] * y + f_coef[5];
+    if (final) {
+      tmp[0] = finalPars[0] * x + finalPars[1] * y + finalPars[2];
+      tmp[1] = finalPars[3] * x + finalPars[4] * y + finalPars[5];
       x = tmp[0];
       y = tmp[1];
       // Apply an additional post transformation
-      if (transform_e) {
-        tmp[0] = e_coef[0] * x + e_coef[1] * y + e_coef[2];
-        tmp[1] = e_coef[3] * x + e_coef[4] * y + e_coef[5];
+      if (extra) {
+        tmp[0] = extraPars[0] * x + extraPars[1] * y + extraPars[2];
+        tmp[1] = extraPars[3] * x + extraPars[4] * y + extraPars[5];
         x = tmp[0];
         y = tmp[1];
       }
     }
-    points(iter, 0) = x;
-    points(iter, 1) = y;
-    points(iter, 2) = c1;
-    points(iter, 3) = c2;
-    points(iter, 4) = c3;
-  }
-  return points;
-}
-
-int cfi(double v, const Rcpp::NumericVector& x) {
-  return std::distance(x.begin(), std::upper_bound(x.begin(), x.end(), v));
-}
-
-// [[Rcpp::export]]
-arma::cube color_flame(arma::cube canvas,
-                       arma::mat df,
-                       Rcpp::DoubleVector binsx,
-                       Rcpp::DoubleVector binsy) {
-  int n = df.n_rows;
-  for (int i = 0; i < n; i++) {
-    Rcpp::checkUserInterrupt();
-    int indx = cfi(df(i, 0), binsx);
-    if ((indx == 0) || (indx == binsx.length())) {
-      continue;
+    // Update color channels for the current iteration
+    c1 = (c1 + colors(i, 0)) / 2;
+    c2 = (c2 + colors(i, 1)) / 2;
+    c3 = (c3 + colors(i, 2)) / 2;
+    // Color the four channels
+    if (iter > 20) {
+      indx = (x * resolution / (2 * edge)) + resolution / 2;
+      if ((indx > 0) && (indx < resolution)) {
+        indy = (y * resolution / (2 * edge)) + resolution / 2;
+        if ((indy > 0) && (indy < resolution)) {
+          canvas(indy, indx, 0) = canvas(indy, indx, 0) + 1;
+          canvas(indy, indx, 1) = canvas(indy, indx, 1) + c1;
+          canvas(indy, indx, 2) = canvas(indy, indx, 2) + c2;
+          canvas(indy, indx, 3) = canvas(indy, indx, 3) + c3;
+        }
+      }
     }
-    int indy = cfi(df(i, 1), binsy);
-    if ((indy == 0) || (indy == binsy.length())) {
-      continue;
-    }
-    canvas(indy, indx, 0) = canvas(indy, indx, 0) + 1;
-    canvas(indy, indx, 1) = canvas(indy, indx, 1) + df(i, 2);
-    canvas(indy, indx, 2) = canvas(indy, indx, 2) + df(i, 3);
-    canvas(indy, indx, 3) = canvas(indy, indx, 3) + df(i, 4);
+    xprev = x;
+    yprev = y;
   }
   return canvas;
 }
