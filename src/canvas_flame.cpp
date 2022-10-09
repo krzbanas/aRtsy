@@ -22,77 +22,91 @@
 
 // [[Rcpp::depends(RcppArmadillo)]]
 
-Rcpp::DoubleVector variation(double x,
-                             double y,
-                             int i,
-                             double a,
-                             double b,
-                             double c,
-                             double d,
-                             double e,
-                             double f,
-                             Rcpp::DoubleVector pparams) {;
-  Rcpp::DoubleVector p(2);
+void transform(double& x,
+               double& y,
+               const double a,
+               const double b,
+               const double c,
+               const double d,
+               const double e,
+               const double f) {
+  double newx = a * x + b * y + c;
+  double newy = d * x + e * y + f;
+  x = newx;
+  y = newy;
+}
+
+void variation(double& x,
+               double& y,
+               const int i,
+               const double a,
+               const double b,
+               const double c,
+               const double d,
+               const double e,
+               const double f,
+               const Rcpp::DoubleVector pparams) {;
+  double newx, newy;
   if (i == 0) { // Linear
-    p[0] = x;
-    p[1] = y;
+    newx = x;
+    newy = y;
   } else if (i == 1) { // Sine
-    p[0] = sin(x);
-    p[1] = sin(y);
+    newx = sin(x);
+    newy = sin(y);
   } else if (i == 2) { // Sperical
     double r = sqrt(pow(x, 2) + pow(y, 2));
-    p[0] = x / pow(r, 2);
-    p[1] = y / pow(r, 2);
+    newx = x / pow(r, 2);
+    newy = y / pow(r, 2);
   } else if (i == 3) { // Swirl
     double r = sqrt(pow(x, 2) + pow(y, 2));
-    p[0] = x * sin(pow(r, 2)) - y * cos(pow(r, 2));
-    p[1] = x * cos(pow(r, 2)) + y * sin(pow(r, 2));
+    newx = x * sin(pow(r, 2)) - y * cos(pow(r, 2));
+    newy = x * cos(pow(r, 2)) + y * sin(pow(r, 2));
   } else if (i == 4) { // Horsehoe
     double r = sqrt(pow(x, 2) + pow(y, 2));
-    p[0] = (1 / r) * ((x - y) * (x + y));
-    p[1] = (1 / r) * (2 * x * y);
+    newx = (1 / r) * ((x - y) * (x + y));
+    newy = (1 / r) * (2 * x * y);
   } else if (i == 5) { // Polar
     double r = sqrt(pow(x, 2) + pow(y, 2));
     double theta = atan(x / y);
-    p[0] = theta / M_PI;
-    p[1] = r - 1;
+    newx = theta / M_PI;
+    newy = r - 1;
   } else if (i == 6) { // Handkerchief
     double r = sqrt(pow(x, 2) + pow(y, 2));
     double theta = atan(x / y);
-    p[0] = r * sin(theta + r);
-    p[1] = r * cos(theta - r);
+    newx = r * sin(theta + r);
+    newy = r * cos(theta - r);
   } else if (i == 7) { // Heart
     double theta = atan(x / y);
     double r = sqrt(pow(x, 2) + pow(y, 2));
-    p[0] = r * sin(theta * r);
-    p[1] = r * (-cos(theta * r));
+    newx = r * sin(theta * r);
+    newy = r * (-cos(theta * r));
   } else if (i == 8) { // Disc
     double r = sqrt(pow(x, 2) + pow(y, 2));
     double theta = atan(x / y);
-    p[0] = theta / M_PI * sin(M_PI * r);
-    p[1] = theta / M_PI * cos(M_PI * r);
+    newx = theta / M_PI * sin(M_PI * r);
+    newy = theta / M_PI * cos(M_PI * r);
   } else if (i == 9) { // Spiral
     double r = sqrt(pow(x, 2) + pow(y, 2));
     double theta = atan(x / y);
-    p[0] = 1 / r * (cos(theta) + sin(r));
-    p[1] = 1 / r * (sin(theta) + cos(r));
+    newx = 1 / r * (cos(theta) + sin(r));
+    newy = 1 / r * (sin(theta) + cos(r));
   } else if (i == 10) { // Hyperbolic
     double r = sqrt(pow(x, 2) + pow(y, 2));
     double theta = atan(x / y);
-    p[0] = sin(theta) / r;
-    p[1] = r * cos(theta);
+    newx = sin(theta) / r;
+    newy = r * cos(theta);
   } else if (i == 11) { // Diamond
     double r = sqrt(pow(x, 2) + pow(y, 2));
     double theta = atan(x / y);
-    p[0] = sin(theta) * cos(r);
-    p[1] = cos(theta) * sin(r);
+    newx = sin(theta) * cos(r);
+    newy = cos(theta) * sin(r);
   } else if (i == 12) { // Ex
     double r = sqrt(pow(x, 2) + pow(y, 2));
     double theta = atan(x / y);
     double p0 = sin(theta + r);
     double p1 = cos(theta - r);
-    p[0] = r * (pow(p0, 3) + pow(p1, 3));
-    p[1] = r * (pow(p0, 3) - pow(p1, 3));
+    newx = r * (pow(p0, 3) + pow(p1, 3));
+    newy = r * (pow(p0, 3) - pow(p1, 3));
   } else if (i == 13) { // Julia
     double r = sqrt(pow(x, 2) + pow(y, 2));
     double theta = atan(x / y);
@@ -103,118 +117,118 @@ Rcpp::DoubleVector variation(double x,
     } else {
       Omega = M_PI;
     }
-    p[0] = sqrt(r) * cos(theta / 2 + Omega);
-    p[1] = sqrt(r) * sin(theta / 2 + Omega);
+    newx = sqrt(r) * cos(theta / 2 + Omega);
+    newy = sqrt(r) * sin(theta / 2 + Omega);
   } else if (i == 14) { // Bent
     if ((x >= 0) && (y >= 0)) {
-      p[0] = x;
-      p[1] = y;
+      newx = x;
+      newy = y;
     } else if ((x < 0) && (y >= 0)) {
-      p[0] = 2 * x;
-      p[1] = y;
+      newx = 2 * x;
+      newy = y;
     } else if ((x >= 0) && (y < 0)) {
-      p[0] = x;
-      p[1] = y / 2;
+      newx = x;
+      newy = y / 2;
     } else if ((x < 0) && (y < 0)) {
-      p[0] = 2 * x;
-      p[1] = y / 2;
+      newx = 2 * x;
+      newy = y / 2;
     }
   } else if (i == 15) { // Waves
-    p[0] = x + b * sin(y / pow(c, 2));
-    p[1] = y + e * sin(x / pow(f, 2));
+    newx = x + b * sin(y / pow(c, 2));
+    newy = y + e * sin(x / pow(f, 2));
   } else if (i == 16) { // Fisheye
     double r = sqrt(pow(x, 2) + pow(y, 2));
-    p[0] = (2 / (r + 1)) * y;
-    p[1] = (2 / (r + 1)) * x;
+    newx = (2 / (r + 1)) * y;
+    newy = (2 / (r + 1)) * x;
   } else if (i == 17) { // Popcorn
-    p[0] = x + c * sin(tan(3 * y));
-    p[1] = y + f * sin(tan(3 * x));
+    newx = x + c * sin(tan(3 * y));
+    newy = y + f * sin(tan(3 * x));
   } else if (i == 18) { // Exponential
-    p[0] = exp(x - 1) * cos(M_PI * y);
-    p[1] = exp(x - 1) * sin(M_PI * y);
+    newx = exp(x - 1) * cos(M_PI * y);
+    newy = exp(x - 1) * sin(M_PI * y);
   } else if (i == 19) { // Power
     double r = sqrt(pow(x, 2) + pow(y, 2));
     double theta = atan(x / y);
-    p[0] = pow(r, sin(theta)) * cos(theta);
-    p[1] = pow(r, sin(theta)) * sin(theta);
+    newx = pow(r, sin(theta)) * cos(theta);
+    newy = pow(r, sin(theta)) * sin(theta);
   } else if (i == 20) { // Cosine
-    p[0] = cos(M_PI * x) * cosh(y);
-    p[1] = -(sin(M_PI * x) * sinh(y));
+    newx = cos(M_PI * x) * cosh(y);
+    newy = -(sin(M_PI * x) * sinh(y));
   } else if (i == 21) { // Rings
     double r = sqrt(pow(x, 2) + pow(y, 2));
     double theta = atan(x / y);
     double first = fmod(r + pow(c, 2), 2 * pow(c, 2)) - pow(c, 2) + r * (1 - pow(c, 2));
-    p[0] = first * cos(theta);
-    p[1] = first * sin(theta);
+    newx = first * cos(theta);
+    newy = first * sin(theta);
   } else if (i == 22) { // Fan
     double r = sqrt(pow(x, 2) + pow(y, 2));
     double theta = atan(x / y);
     double t = M_PI * pow(c, 2);
     if (fmod(theta + f, t) > (t / 2)) {
-      p[0] = r * cos(theta - (t/2));
-      p[1] = r * sin(theta - (t/2));
+      newx = r * cos(theta - (t/2));
+      newy = r * sin(theta - (t/2));
     } else {
-      p[0] = r * cos(theta + (t/2));;
-      p[1] = r * sin(theta + (t/2));
+      newx = r * cos(theta + (t/2));;
+      newy = r * sin(theta + (t/2));
     }
   } else if (i == 23) { // Blob
     double r = sqrt(pow(x, 2) + pow(y, 2));
     double theta = atan(x / y);
     double first = r * (pparams[1] + ((pparams[0] - pparams[1])/ 2) * (sin(pparams[2] * theta) + 1));
-    p[0] = first * cos(theta);
-    p[1] = first * sin(theta);
+    newx = first * cos(theta);
+    newy = first * sin(theta);
   } else if (i == 24) { // PDJ
-    p[0] = sin(pparams[3] * y) - cos(pparams[4] * x);
-    p[1] = sin(pparams[5] * x) - cos(pparams[6] * y);
+    newx = sin(pparams[3] * y) - cos(pparams[4] * x);
+    newy = sin(pparams[5] * x) - cos(pparams[6] * y);
   } else if (i == 25) { // Fan2
     double r = sqrt(pow(x, 2) + pow(y, 2));
     double theta = atan(x / y);
-    Rcpp::DoubleVector fanresult = variation(x, y, 22, a, b, c, d, e, f, pparams);
-    double p1 = M_PI * pow(fanresult[0], 2);
-    double p2 = fanresult[1];
+    variation(x, y, 22, a, b, c, d, e, f, pparams);
+    double p1 = M_PI * pow(x, 2);
+    double p2 = y;
     double t = theta + p2 - p1 * trunc((2 * theta * p2) / p1);
     if (t > (p1 / 2)) {
-      p[0] = r * sin(theta - (p1 / 2));
-      p[1] = r * cos(theta - (p1 / 2));
+      newx = r * sin(theta - (p1 / 2));
+      newy = r * cos(theta - (p1 / 2));
     } else {
-      p[0] = r * sin(theta + (p1 / 2));
-      p[1] = r * cos(theta + (p1 / 2));
+      newx = r * sin(theta + (p1 / 2));
+      newy = r * cos(theta + (p1 / 2));
     }
   } else if (i == 26) { // Rings2
     double r = sqrt(pow(x, 2) + pow(y, 2));
     double theta = atan(x / y);
     double pp = pow(pparams[7], 2);
     double t = r - 2 * pp * trunc((r + pp) / (2 * pp)) + r * (1 - pp);
-    p[0] = t * sin(theta);
-    p[1] = t * cos(theta);
+    newx = t * sin(theta);
+    newy = t * cos(theta);
   } else if (i == 27) { // Eyefish
     double r = sqrt(pow(x, 2) + pow(y, 2));
-    p[0] = (2 / (r + 1)) * x;
-    p[1] = (2 / (r + 1)) * y;
+    newx = (2 / (r + 1)) * x;
+    newy = (2 / (r + 1)) * y;
   } else if (i == 28) { // Bubble
     double r = sqrt(pow(x, 2) + pow(y, 2));
-    p[0] = (4 / (pow(r, 2) + 4)) * x;
-    p[1] = (4 / (pow(r, 2) + 4)) * y;	
+    newx = (4 / (pow(r, 2) + 4)) * x;
+    newy = (4 / (pow(r, 2) + 4)) * y;	
   } else if (i == 29) { // Cylinder
-    p[0] = sin(x);
-    p[1] = y;
+    newx = sin(x);
+    newy = y;
   } else if (i == 30) { // Perspective
     double first = (pparams[9] / (pparams[9] - y * sin(pparams[8])));
-    p[0] = first * x;
-    p[1] = first * (y * cos(pparams[8]));
+    newx = first * x;
+    newy = first * (y * cos(pparams[8]));
   } else if (i == 31) { // Noise
     double Psi1 = R::runif(0, 1);
     double Psi2 = R::runif(0, 1);
-    p[0] = Psi1 * (x * cos(2 * M_PI * Psi2));
-    p[1] = Psi1 * (y * sin(2 * M_PI * Psi2));
+    newx = Psi1 * (x * cos(2 * M_PI * Psi2));
+    newy = Psi1 * (y * sin(2 * M_PI * Psi2));
   } else if (i == 32) { // JuliaN
     double r = sqrt(pow(x, 2) + pow(y, 2));
     double phi = atan(y / x);
     double Psi = R::runif(0, 1);
     double p3 = trunc(fabs(pparams[11]) * Psi);
     double t = (phi + 2 * M_PI * p3) / pparams[11];
-    p[0] = pow(r, pparams[11] / pparams[10]) * cos(t);
-    p[1] = pow(r, pparams[11] / pparams[10]) * sin(t);
+    newx = pow(r, pparams[11] / pparams[10]) * cos(t);
+    newy = pow(r, pparams[11] / pparams[10]) * sin(t);
   } else if (i == 33) { // JuliaScope
     double r = sqrt(pow(x, 2) + pow(y, 2));
     double phi = atan(y / x);
@@ -222,21 +236,21 @@ Rcpp::DoubleVector variation(double x,
     int Lambda = floor(R::runif(0, 2));
     double p3 = trunc(fabs(pparams[12] * Psi));
     double t = (Lambda * phi + 2 * M_PI * p3) / pparams[12];
-    p[0] = pow(r, pparams[13] / pparams[12]) * cos(t);
-    p[1] = pow(r, pparams[13] / pparams[12]) * sin(t);
+    newx = pow(r, pparams[13] / pparams[12]) * cos(t);
+    newy = pow(r, pparams[13] / pparams[12]) * sin(t);
   } else if (i == 34) { // Blur
     double Psi1 = R::runif(0, 1);
     double Psi2 = R::runif(0, 1);
-    p[0] = Psi1 * cos(2 * M_PI * Psi2);
-    p[1] = Psi1 * sin(2 * M_PI * Psi2);
+    newx = Psi1 * cos(2 * M_PI * Psi2);
+    newy = Psi1 * sin(2 * M_PI * Psi2);
   } else if (i == 35) { // Gaussian
     double Psi1 = R::runif(0, 1);
     double Psi2 = R::runif(0, 1);
     double Psi3 = R::runif(0, 1);
     double Psi4 = R::runif(0, 1);
     double Psi5 = R::runif(0, 1);
-    p[0] = (Psi1 + Psi2 + Psi3 + Psi4 - 2) * cos(2 * M_PI * Psi5);
-    p[1] = (Psi1 + Psi2 + Psi3 + Psi4 - 2) * sin(2 * M_PI * Psi5);
+    newx = (Psi1 + Psi2 + Psi3 + Psi4 - 2) * cos(2 * M_PI * Psi5);
+    newy = (Psi1 + Psi2 + Psi3 + Psi4 - 2) * sin(2 * M_PI * Psi5);
   } else if (i == 36) { // RadialBlur
     double r = sqrt(pow(x, 2) + pow(y, 2));
     double phi = atan(y / x);
@@ -248,16 +262,16 @@ Rcpp::DoubleVector variation(double x,
     double t1 = pparams[15] * (Psi1 + Psi2 + Psi3 + Psi4 - 2);
     double t2 = phi + t1 * sin(p1);
     double t3 = t1 * cos(p1) - 1;
-    p[0] = (1 / pparams[15]) * (r * cos(t2) + t3 * x);
-    p[1] = (1 / pparams[15]) * (r * sin(t2) + t3 * y);
+    newx = (1 / pparams[15]) * (r * cos(t2) + t3 * x);
+    newy = (1 / pparams[15]) * (r * sin(t2) + t3 * y);
   } else if (i == 37) { // Pie
     double Psi1 = R::runif(0, 1);
     double Psi2 = R::runif(0, 1);
     double Psi3 = R::runif(0, 1);
     double t1 = trunc(Psi1 * pparams[16] + 0.5);
     double t2 = pparams[17] + ((2 * M_PI) / pparams[16]) * (t1 + Psi2 * pparams[17]);
-    p[0] = Psi3 * cos(t2);
-    p[1] = Psi3 * sin(t2);
+    newx = Psi3 * cos(t2);
+    newy = Psi3 * sin(t2);
   } else if (i == 38) { // Ngon
     double r = sqrt(pow(x, 2) + pow(y, 2));
     double phi = atan(y / x);
@@ -269,56 +283,57 @@ Rcpp::DoubleVector variation(double x,
       t4 = t3 - pparams[19];
     }
     double k = (pparams[20] * ((1 / cos(t4) - 1) + pparams[21]) + pparams[22]) / pow(r, pparams[18]);
-    p[0] = k * x;
-    p[1] = k * y;
+    newx = k * x;
+    newy = k * y;
   } else if (i == 39) { // Curl
     double t1 = 1 + pparams[23] * x + pparams[24] * (pow(x, 2) - pow(y, 2));
     double t2 = pparams[23] * y + 2 * pparams[24] * x * y;
     double first = 1 / (pow(t1, 2) + pow(t2, 2));
-    p[0] = first * (x * t1 + y * t2);
-    p[1] = first * (y * t1 - x * t2);
+    newx = first * (x * t1 + y * t2);
+    newy = first * (y * t1 - x * t2);
   } else if (i == 40) { // Rectangles
-    p[0] = (2 * floor(x / pparams[25]) + 1) * pparams[25] - x;
-    p[1] = (2 * floor(y / pparams[26]) + 1) * pparams[26] - y;
+    newx = (2 * floor(x / pparams[25]) + 1) * pparams[25] - x;
+    newy = (2 * floor(y / pparams[26]) + 1) * pparams[26] - y;
   } else if (i == 41) { // Arch
     double Psi = R::runif(0, 1);
-    p[0] = sin(Psi * M_PI * pparams[27]);
-    p[1] = pow(sin(Psi * M_PI * pparams[27]), 2) / cos(Psi * M_PI * pparams[27]);
+    newx = sin(Psi * M_PI * pparams[27]);
+    newy = pow(sin(Psi * M_PI * pparams[27]), 2) / cos(Psi * M_PI * pparams[27]);
   } else if (i == 42) { // Tangent
-    p[0] = sin(x) / cos(y);
-    p[1] = tan(y);
+    newx = sin(x) / cos(y);
+    newy = tan(y);
   } else if (i == 43) { // Square
     double Psi1 = R::runif(0, 1);
     double Psi2 = R::runif(0, 1);
-    p[0] = Psi1 - 0.5;
-    p[1] = Psi2 - 0.5;
+    newx = Psi1 - 0.5;
+    newy = Psi2 - 0.5;
   } else if (i == 44) { // Rays
     double r = sqrt(pow(x, 2) + pow(y, 2));
     double Psi = R::runif(0, 1);
     double first = (pparams[28] * tan(Psi * M_PI * pparams[28])) / pow(r, 2);
-    p[0] = first * cos(x);
-    p[1] = first * sin(x);
+    newx = first * cos(x);
+    newy = first * sin(x);
   } else if (i == 45) { // Rays
     double r = sqrt(pow(x, 2) + pow(y, 2));
     double Psi = R::runif(0, 1);
-    p[0] = x * (cos(Psi * r * pparams[29]) + sin(Psi * r * pparams[29]));
-    p[1] = x * (cos(Psi * r * pparams[29]) - sin(Psi * r * pparams[29]));
+    newx = x * (cos(Psi * r * pparams[29]) + sin(Psi * r * pparams[29]));
+    newy = x * (cos(Psi * r * pparams[29]) - sin(Psi * r * pparams[29]));
   } else if (i == 46) { // Secant
     double r = sqrt(pow(x, 2) + pow(y, 2));
-    p[0] = x;
-    p[1] = 1 / (pparams[30] * cos(pparams[30] * r));
+    newx = x;
+    newy = 1 / (pparams[30] * cos(pparams[30] * r));
   } else if (i == 47) { // Twintrian
     double r = sqrt(pow(x, 2) + pow(y, 2));
     double Psi = R::runif(0, 1);
     double t = log10(pow(sin(Psi * r * pparams[31]), 2)) + cos(Psi * r * pparams[31]);
-    p[0] = x * t;
-    p[1] = x * (t - M_PI * sin(Psi * r * pparams[31]));
+    newx = x * t;
+    newy = x * (t - M_PI * sin(Psi * r * pparams[31]));
   } else if (i == 48) { // Cross
     double first = sqrt(1 / pow(pow(x, 2) - pow(y, 2), 2));
-    p[0] = first * x;
-    p[1] = first * y;
+    newx = first * x;
+    newy = first * y;
   }
-  return p;
+  x = newx;
+  y = newy;
 }
 
 // [[Rcpp::export]]
@@ -342,8 +357,7 @@ arma::cube iterate_flame(arma::cube canvas,
                          Rcpp::DoubleVector finalPars,
                          Rcpp::DoubleVector extraPars) {
   int i, j, indx, indy, nvar = variations.length(), nfunc = functions.length();
-  double x, y, xprev = R::runif(-1, 1), yprev = R::runif(-1, 1), c1 = R::runif(0, 1), c2 = R::runif(0, 1), c3 = R::runif(0, 1);
-  Rcpp::DoubleVector tmp(2);
+  double xc, yc, xp, yp, x = R::runif(-1, 1), y = R::runif(-1, 1), c1 = R::runif(0, 1), c2 = R::runif(0, 1), c3 = R::runif(0, 1);
   for (int iter = 1; iter < iterations; iter++) {
     if ((iter % 100) == 0) {
       Rcpp::checkUserInterrupt();
@@ -355,43 +369,38 @@ arma::cube iterate_flame(arma::cube canvas,
       i = floor(R::runif(0, nfunc));
     }
     // Apply the affine function to the current point
-    x = funcPars(i, 0) * xprev + funcPars(i, 1) * yprev + funcPars(i, 2);
-    y = funcPars(i, 3) * xprev + funcPars(i, 4) * yprev + funcPars(i, 5);
+    transform(x, y, funcPars(i, 0), funcPars(i, 1), funcPars(i, 2), funcPars(i, 3), funcPars(i, 4), funcPars(i, 5));
     // Apply the variation(s) to the point
     if (blend) {
-      tmp.fill(0);
+      xc = 0;
+      yc = 0;
       for (int j = 0; j < nvar; j++) {
-        tmp += varWeights(i, j) * variation(x, y, variations[j], funcPars(i, 0), funcPars(i, 1), funcPars(i, 2), funcPars(i, 3), funcPars(i, 4), funcPars(i, 5), varParams);
+        xp = x;
+        yp = y;
+        variation(xp, yp, variations[j], funcPars(i, 0), funcPars(i, 1), funcPars(i, 2), funcPars(i, 3), funcPars(i, 4), funcPars(i, 5), varParams);
+        xc += varWeights(i, j) * xp;
+        yc += varWeights(i, j) * yp;
       }
+      x = xc;
+      y = yc;
     } else {
       if (weighted) {
         j = Rcpp::sample(variations, 1, false, Rcpp::as<Rcpp::NumericVector>(Rcpp::wrap(varWeights.row(i))))[0];
       } else {
         j = floor(R::runif(0, nvar));
       }
-      tmp = variation(x, y, variations[j], funcPars(i, 0), funcPars(i, 1), funcPars(i, 2), funcPars(i, 3), funcPars(i, 4), funcPars(i, 5), varParams);
+      variation(x, y, variations[j], funcPars(i, 0), funcPars(i, 1), funcPars(i, 2), funcPars(i, 3), funcPars(i, 4), funcPars(i, 5), varParams);
     }
-    x = tmp[0];
-    y = tmp[1];
     // Apply a post transformation
     if (post) {
-      tmp[0] = postPars(i, 0) * x + postPars(i, 1) * y + postPars(i, 2);
-      tmp[1] = postPars(i, 3) * x + postPars(i, 4) * y + postPars(i, 5);
-      x = tmp[0];
-      y = tmp[1];
+      transform(x, y, postPars(i, 0), postPars(i, 1), postPars(i, 2), postPars(i, 3), postPars(i, 4), postPars(i, 5));
     }
     // Apply a final transformation
     if (final) {
-      tmp[0] = finalPars[0] * x + finalPars[1] * y + finalPars[2];
-      tmp[1] = finalPars[3] * x + finalPars[4] * y + finalPars[5];
-      x = tmp[0];
-      y = tmp[1];
+      transform(x, y, finalPars[0], finalPars[1], finalPars[2], finalPars[3], finalPars[4], finalPars[5]);
       // Apply an additional post transformation
       if (extra) {
-        tmp[0] = extraPars[0] * x + extraPars[1] * y + extraPars[2];
-        tmp[1] = extraPars[3] * x + extraPars[4] * y + extraPars[5];
-        x = tmp[0];
-        y = tmp[1];
+        transform(x, y, extraPars[0], extraPars[1], extraPars[2], extraPars[3], extraPars[4], extraPars[5]);
       }
     }
     // Update color channels for the current iteration
@@ -411,8 +420,6 @@ arma::cube iterate_flame(arma::cube canvas,
         }
       }
     }
-    xprev = x;
-    yprev = y;
   }
   return canvas;
 }
