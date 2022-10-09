@@ -21,22 +21,20 @@
 #'              iterations = 1000000, zoom = 1, resolution = 1000,
 #'              variations = NULL, blend = TRUE, weighted = FALSE,
 #'              display = c("colored", "logdensity"),
-#'              post = FALSE, final = FALSE, extra = FALSE,
-#'              verbose = FALSE)
+#'              post = FALSE, final = FALSE, extra = FALSE)
 #'
 #' @param colors      a string or character vector specifying the color(s) used for the artwork.
 #' @param background  a character specifying the color used for the background.
 #' @param iterations  a positive integer specifying the number of iterations of the algorithm.
 #' @param zoom        a positive value specifying the amount of zooming.
 #' @param resolution  resolution of the artwork in pixels per row/column. Increasing the resolution increases the quality of the artwork but also increases the computation time exponentially.
-#' @param variations  an integer (vector) specifying the variations to be included in the flame. The default \code{NULL} mixes two random variations. See the details section for more information about possible variations.
+#' @param variations  an integer (vector) specifying the variations to be included in the flame. The default \code{NULL} includes no variations. See the details section for more information about possible variations.
 #' @param blend       logical. Whether to blend the variations (\code{TRUE}) or pick a unique variation in each iteration (\code{FALSE}). \code{blend = TRUE} significantly increases computation time.
 #' @param weighted    logical. Whether to weigh the functions and the variations (\code{TRUE}) or pick a unique function and equally weigh all variations in each iteration (\code{FALSE}). \code{weighted = TRUE} significantly increases the computation time.
 #' @param display     a character indicating how to display the flame. \code{colored} (the default) displays colors according to which function they originate from. \code{logdensity} plots a gradient using the log density of the pixel count.
 #' @param post        logical. Whether to apply a post transformation in each iteration.
 #' @param final       logical. Whether to apply a final transformation in each iteration.
 #' @param extra       logical. Whether to apply an additional post transformation after the final transformation. Only has an effect when \code{final = TRUE}.
-#' @param verbose     logical. Whether to print information.
 #'
 #' @details           The \code{variation} argument can be used to include specific variations into the flame. See the appendix in the references for examples of all variations. Possible variations are:
 #'
@@ -106,7 +104,7 @@
 #' \donttest{
 #' set.seed(3)
 #'
-#' # Simple example
+#' # Simple example, no variation applied
 #' canvas_flame(colors = c("dodgerblue", "green"))
 #'
 #' # Advanced example (no-blend sine and spherical variations)
@@ -119,8 +117,7 @@ canvas_flame <- function(colors, background = "#000000",
                          iterations = 1000000, zoom = 1, resolution = 1000,
                          variations = NULL, blend = TRUE, weighted = FALSE,
                          display = c("colored", "logdensity"),
-                         post = FALSE, final = FALSE, extra = FALSE,
-                         verbose = FALSE) {
+                         post = FALSE, final = FALSE, extra = FALSE) {
   display <- match.arg(display)
   .checkUserInput(
     resolution = resolution, background = background
@@ -128,22 +125,10 @@ canvas_flame <- function(colors, background = "#000000",
   iterations <- iterations + 20
   varNames <- .getVariationNames()
   noVariations <- length(varNames)
-  user <- FALSE
   if (is.null(variations)) {
-    user <- TRUE
-    v <- 0:(noVariations - 1)
-    variations <- sample(x = v[-c(32, 35, 36, 37)], size = 2, replace = FALSE)
+    variations <- numeric()
   } else if (min(variations) < 0 || max(variations) > (noVariations - 1)) {
     stop("'variations' must be between 0 and ", (noVariations - 1))
-  }
-  if (verbose) {
-    cat("\nVariation:\t", paste(varNames[variations + 1], collapse = " + "), "\n")
-    catp <- if (post) "Post transformation" else NULL
-    catc <- if (final) "Final transformation" else NULL
-    cate <- if (extra) "Additional post transformation" else NULL
-    cat("Effect:\t\t", paste(c("Affine transformation", catp, catc, cate), collapse = " + "), "\n")
-    catd <- if (display == "logdensity") "Log-Density" else "Colored"
-    cat("Rendering:\t", catd, "\n")
   }
   nvariations <- length(variations)
   if (display == "logdensity") {
@@ -155,11 +140,7 @@ canvas_flame <- function(colors, background = "#000000",
     color_mat <- matrix(t(grDevices::col2rgb(colors) / 255), nrow = length(colors), ncol = 3)
   }
   w_i <- stats::runif(nfunc, 0, 1)
-  if (user) {
-    v_ij <- matrix(1, nrow = nfunc, ncol = nvariations)
-  } else {
-    v_ij <- matrix(stats::runif(nfunc * nvariations, min = 0, max = 1), nrow = nfunc, ncol = nvariations)
-  }
+  v_ij <- matrix(stats::runif(nfunc * nvariations, min = 0, max = 1), nrow = nfunc, ncol = nvariations)
   for (i in 1:nrow(v_ij)) {
     v_ij[i, ] <- v_ij[i, ] / sum(v_ij[i, ])
   }

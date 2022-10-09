@@ -8,8 +8,7 @@ canvas_flame(colors, background = "#000000",
              iterations = 1000000, zoom = 1, resolution = 1000,
              variations = NULL, blend = TRUE, weighted = FALSE,
              display = c("colored", "logdensity"),
-             post = FALSE, final = FALSE, extra = FALSE,
-             verbose = FALSE)
+             post = FALSE, final = FALSE, extra = FALSE)
 }
 \arguments{
 \item{colors}{a string or character vector specifying the color(s) used for the artwork.}
@@ -22,7 +21,7 @@ canvas_flame(colors, background = "#000000",
 
 \item{resolution}{resolution of the artwork in pixels per row/column. Increasing the resolution increases the quality of the artwork but also increases the computation time exponentially.}
 
-\item{variations}{an integer (vector) specifying the variations to be included in the flame. The default \code{NULL} mixes two random variations. See the details section for more information about possible variations.}
+\item{variations}{an integer (vector) specifying the variations to be included in the flame. The default \code{NULL} includes no variations. See the details section for more information about possible variations.}
 
 \item{blend}{logical. Whether to blend the variations (\code{TRUE}) or pick a unique variation in each iteration (\code{FALSE}). \code{blend = TRUE} significantly increases computation time.}
 
@@ -35,8 +34,6 @@ canvas_flame(colors, background = "#000000",
 \item{final}{logical. Whether to apply a final transformation in each iteration.}
 
 \item{extra}{logical. Whether to apply an additional post transformation after the final transformation. Only has an effect when \code{final = TRUE}.}
-
-\item{verbose}{logical. Whether to print information.}
 }
 \value{
 A \code{ggplot} object containing the artwork.
@@ -103,7 +100,7 @@ The \code{variation} argument can be used to include specific variations into th
 \donttest{
 set.seed(3)
 
-# Simple example
+# Simple example, no variation applied
 canvas_flame(colors = c("dodgerblue", "green"))
 
 # Advanced example (no-blend sine and spherical variations)
