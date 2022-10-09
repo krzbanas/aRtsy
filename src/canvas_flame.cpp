@@ -33,9 +33,6 @@ Rcpp::DoubleVector variation(double x,
                              double f,
                              Rcpp::DoubleVector pparams) {;
   Rcpp::DoubleVector p(2);
-  double r = sqrt(pow(x, 2) + pow(y, 2));
-  double theta = atan(x / y);
-  double phi = atan(y / x);
   if (i == 0) { // Linear
     p[0] = x;
     p[1] = y;
@@ -43,41 +40,62 @@ Rcpp::DoubleVector variation(double x,
     p[0] = sin(x);
     p[1] = sin(y);
   } else if (i == 2) { // Sperical
+    double r = sqrt(pow(x, 2) + pow(y, 2));
     p[0] = x / pow(r, 2);
     p[1] = y / pow(r, 2);
   } else if (i == 3) { // Swirl
+    double r = sqrt(pow(x, 2) + pow(y, 2));
     p[0] = x * sin(pow(r, 2)) - y * cos(pow(r, 2));
     p[1] = x * cos(pow(r, 2)) + y * sin(pow(r, 2));
   } else if (i == 4) { // Horsehoe
+    double r = sqrt(pow(x, 2) + pow(y, 2));
     p[0] = (1 / r) * ((x - y) * (x + y));
     p[1] = (1 / r) * (2 * x * y);
   } else if (i == 5) { // Polar
+    double r = sqrt(pow(x, 2) + pow(y, 2));
+    double theta = atan(x / y);
     p[0] = theta / M_PI;
     p[1] = r - 1;
   } else if (i == 6) { // Handkerchief
+    double r = sqrt(pow(x, 2) + pow(y, 2));
+    double theta = atan(x / y);
     p[0] = r * sin(theta + r);
     p[1] = r * cos(theta - r);
   } else if (i == 7) { // Heart
+    double theta = atan(x / y);
+    double r = sqrt(pow(x, 2) + pow(y, 2));
     p[0] = r * sin(theta * r);
     p[1] = r * (-cos(theta * r));
   } else if (i == 8) { // Disc
+    double r = sqrt(pow(x, 2) + pow(y, 2));
+    double theta = atan(x / y);
     p[0] = theta / M_PI * sin(M_PI * r);
     p[1] = theta / M_PI * cos(M_PI * r);
   } else if (i == 9) { // Spiral
+    double r = sqrt(pow(x, 2) + pow(y, 2));
+    double theta = atan(x / y);
     p[0] = 1 / r * (cos(theta) + sin(r));
     p[1] = 1 / r * (sin(theta) + cos(r));
   } else if (i == 10) { // Hyperbolic
+    double r = sqrt(pow(x, 2) + pow(y, 2));
+    double theta = atan(x / y);
     p[0] = sin(theta) / r;
     p[1] = r * cos(theta);
   } else if (i == 11) { // Diamond
+    double r = sqrt(pow(x, 2) + pow(y, 2));
+    double theta = atan(x / y);
     p[0] = sin(theta) * cos(r);
     p[1] = cos(theta) * sin(r);
   } else if (i == 12) { // Ex
+    double r = sqrt(pow(x, 2) + pow(y, 2));
+    double theta = atan(x / y);
     double p0 = sin(theta + r);
     double p1 = cos(theta - r);
     p[0] = r * (pow(p0, 3) + pow(p1, 3));
     p[1] = r * (pow(p0, 3) - pow(p1, 3));
   } else if (i == 13) { // Julia
+    double r = sqrt(pow(x, 2) + pow(y, 2));
+    double theta = atan(x / y);
     double s = R::runif(0, 1);
     double Omega;
     if (s < 0.5) {
@@ -105,6 +123,7 @@ Rcpp::DoubleVector variation(double x,
     p[0] = x + b * sin(y / pow(c, 2));
     p[1] = y + e * sin(x / pow(f, 2));
   } else if (i == 16) { // Fisheye
+    double r = sqrt(pow(x, 2) + pow(y, 2));
     p[0] = (2 / (r + 1)) * y;
     p[1] = (2 / (r + 1)) * x;
   } else if (i == 17) { // Popcorn
@@ -114,16 +133,22 @@ Rcpp::DoubleVector variation(double x,
     p[0] = exp(x - 1) * cos(M_PI * y);
     p[1] = exp(x - 1) * sin(M_PI * y);
   } else if (i == 19) { // Power
+    double r = sqrt(pow(x, 2) + pow(y, 2));
+    double theta = atan(x / y);
     p[0] = pow(r, sin(theta)) * cos(theta);
     p[1] = pow(r, sin(theta)) * sin(theta);
   } else if (i == 20) { // Cosine
     p[0] = cos(M_PI * x) * cosh(y);
     p[1] = -(sin(M_PI * x) * sinh(y));
   } else if (i == 21) { // Rings
+    double r = sqrt(pow(x, 2) + pow(y, 2));
+    double theta = atan(x / y);
     double first = fmod(r + pow(c, 2), 2 * pow(c, 2)) - pow(c, 2) + r * (1 - pow(c, 2));
     p[0] = first * cos(theta);
     p[1] = first * sin(theta);
   } else if (i == 22) { // Fan
+    double r = sqrt(pow(x, 2) + pow(y, 2));
+    double theta = atan(x / y);
     double t = M_PI * pow(c, 2);
     if (fmod(theta + f, t) > (t / 2)) {
       p[0] = r * cos(theta - (t/2));
@@ -133,6 +158,8 @@ Rcpp::DoubleVector variation(double x,
       p[1] = r * sin(theta + (t/2));
     }
   } else if (i == 23) { // Blob
+    double r = sqrt(pow(x, 2) + pow(y, 2));
+    double theta = atan(x / y);
     double first = r * (pparams[1] + ((pparams[0] - pparams[1])/ 2) * (sin(pparams[2] * theta) + 1));
     p[0] = first * cos(theta);
     p[1] = first * sin(theta);
@@ -140,6 +167,8 @@ Rcpp::DoubleVector variation(double x,
     p[0] = sin(pparams[3] * y) - cos(pparams[4] * x);
     p[1] = sin(pparams[5] * x) - cos(pparams[6] * y);
   } else if (i == 25) { // Fan2
+    double r = sqrt(pow(x, 2) + pow(y, 2));
+    double theta = atan(x / y);
     Rcpp::DoubleVector fanresult = variation(x, y, 22, a, b, c, d, e, f, pparams);
     double p1 = M_PI * pow(fanresult[0], 2);
     double p2 = fanresult[1];
@@ -152,14 +181,18 @@ Rcpp::DoubleVector variation(double x,
       p[1] = r * cos(theta + (p1 / 2));
     }
   } else if (i == 26) { // Rings2
+    double r = sqrt(pow(x, 2) + pow(y, 2));
+    double theta = atan(x / y);
     double pp = pow(pparams[7], 2);
     double t = r - 2 * pp * trunc((r + pp) / (2 * pp)) + r * (1 - pp);
     p[0] = t * sin(theta);
     p[1] = t * cos(theta);
   } else if (i == 27) { // Eyefish
+    double r = sqrt(pow(x, 2) + pow(y, 2));
     p[0] = (2 / (r + 1)) * x;
     p[1] = (2 / (r + 1)) * y;
   } else if (i == 28) { // Bubble
+    double r = sqrt(pow(x, 2) + pow(y, 2));
     p[0] = (4 / (pow(r, 2) + 4)) * x;
     p[1] = (4 / (pow(r, 2) + 4)) * y;	
   } else if (i == 29) { // Cylinder
@@ -175,12 +208,16 @@ Rcpp::DoubleVector variation(double x,
     p[0] = Psi1 * (x * cos(2 * M_PI * Psi2));
     p[1] = Psi1 * (y * sin(2 * M_PI * Psi2));
   } else if (i == 32) { // JuliaN
+    double r = sqrt(pow(x, 2) + pow(y, 2));
+    double phi = atan(y / x);
     double Psi = R::runif(0, 1);
     double p3 = trunc(fabs(pparams[11]) * Psi);
     double t = (phi + 2 * M_PI * p3) / pparams[11];
     p[0] = pow(r, pparams[11] / pparams[10]) * cos(t);
     p[1] = pow(r, pparams[11] / pparams[10]) * sin(t);
   } else if (i == 33) { // JuliaScope
+    double r = sqrt(pow(x, 2) + pow(y, 2));
+    double phi = atan(y / x);
     double Psi = R::runif(0, 1);
     int Lambda = floor(R::runif(0, 2));
     double p3 = trunc(fabs(pparams[12] * Psi));
@@ -201,6 +238,8 @@ Rcpp::DoubleVector variation(double x,
     p[0] = (Psi1 + Psi2 + Psi3 + Psi4 - 2) * cos(2 * M_PI * Psi5);
     p[1] = (Psi1 + Psi2 + Psi3 + Psi4 - 2) * sin(2 * M_PI * Psi5);
   } else if (i == 36) { // RadialBlur
+    double r = sqrt(pow(x, 2) + pow(y, 2));
+    double phi = atan(y / x);
     double Psi1 = R::runif(0, 1);
     double Psi2 = R::runif(0, 1);
     double Psi3 = R::runif(0, 1);
@@ -220,6 +259,8 @@ Rcpp::DoubleVector variation(double x,
     p[0] = Psi3 * cos(t2);
     p[1] = Psi3 * sin(t2);
   } else if (i == 38) { // Ngon
+    double r = sqrt(pow(x, 2) + pow(y, 2));
+    double phi = atan(y / x);
     double t3 = phi - pparams[19] * floor(phi / pparams[19]);
     double t4;
     if (t3 > (pparams[19] / 2)) {
@@ -252,18 +293,22 @@ Rcpp::DoubleVector variation(double x,
     p[0] = Psi1 - 0.5;
     p[1] = Psi2 - 0.5;
   } else if (i == 44) { // Rays
+    double r = sqrt(pow(x, 2) + pow(y, 2));
     double Psi = R::runif(0, 1);
     double first = (pparams[28] * tan(Psi * M_PI * pparams[28])) / pow(r, 2);
     p[0] = first * cos(x);
     p[1] = first * sin(x);
   } else if (i == 45) { // Rays
+    double r = sqrt(pow(x, 2) + pow(y, 2));
     double Psi = R::runif(0, 1);
     p[0] = x * (cos(Psi * r * pparams[29]) + sin(Psi * r * pparams[29]));
     p[1] = x * (cos(Psi * r * pparams[29]) - sin(Psi * r * pparams[29]));
   } else if (i == 46) { // Secant
+    double r = sqrt(pow(x, 2) + pow(y, 2));
     p[0] = x;
     p[1] = 1 / (pparams[30] * cos(pparams[30] * r));
   } else if (i == 47) { // Twintrian
+    double r = sqrt(pow(x, 2) + pow(y, 2));
     double Psi = R::runif(0, 1);
     double t = log10(pow(sin(Psi * r * pparams[31]), 2)) + cos(Psi * r * pparams[31]);
     p[0] = x * t;
