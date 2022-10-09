@@ -341,7 +341,7 @@ arma::cube iterate_flame(arma::cube canvas,
                          arma::mat postPars,
                          Rcpp::DoubleVector finalPars,
                          Rcpp::DoubleVector extraPars) {
-  int i, j, indx, indy;
+  int i, j, indx, indy, nvar = variations.length(), nfunc = functions.length();
   double x, y, xprev = R::runif(-1, 1), yprev = R::runif(-1, 1), c1 = R::runif(0, 1), c2 = R::runif(0, 1), c3 = R::runif(0, 1);
   Rcpp::DoubleVector tmp(2);
   for (int iter = 1; iter < iterations; iter++) {
@@ -352,7 +352,7 @@ arma::cube iterate_flame(arma::cube canvas,
     if (weighted) {
       i = Rcpp::sample(functions, 1, false, funcWeights)[0];
     } else {
-      i = floor(R::runif(0, functions.length()));
+      i = floor(R::runif(0, nfunc));
     }
     // Apply the affine function to the current point
     x = funcPars(i, 0) * xprev + funcPars(i, 1) * yprev + funcPars(i, 2);
@@ -360,14 +360,14 @@ arma::cube iterate_flame(arma::cube canvas,
     // Apply the variation(s) to the point
     if (blend) {
       tmp.fill(0);
-      for (int j = 0; j < variations.length(); j++) {
+      for (int j = 0; j < nvar; j++) {
         tmp += varWeights(i, j) * variation(x, y, variations[j], funcPars(i, 0), funcPars(i, 1), funcPars(i, 2), funcPars(i, 3), funcPars(i, 4), funcPars(i, 5), varParams);
       }
     } else {
       if (weighted) {
         j = Rcpp::sample(variations, 1, false, Rcpp::as<Rcpp::NumericVector>(Rcpp::wrap(varWeights.row(i))))[0];
       } else {
-        j = floor(R::runif(0, varWeights.n_cols));
+        j = floor(R::runif(0, nvar));
       }
       tmp = variation(x, y, variations[j], funcPars(i, 0), funcPars(i, 1), funcPars(i, 2), funcPars(i, 3), funcPars(i, 4), funcPars(i, 5), varParams);
     }
