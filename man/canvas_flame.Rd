@@ -5,8 +5,8 @@
 \title{Draw a Fractal Flame}
 \usage{
 canvas_flame(colors, background = "#000000",
-             iterations = 1000000, zoom = 1, resolution = 1000,
-             variations = NULL, blend = TRUE,
+             iterations = 1000000, zoom = 1.25, resolution = 1000,
+             variations = NULL, blend = TRUE, weighted = FALSE,
              display = c("colored", "logdensity"),
              post = FALSE, final = FALSE, extra = FALSE,
              verbose = FALSE)
@@ -22,9 +22,11 @@ canvas_flame(colors, background = "#000000",
 
 \item{resolution}{resolution of the artwork in pixels per row/column. Increasing the resolution increases the quality of the artwork but also increases the computation time exponentially.}
 
-\item{variations}{an integer (vector) specifying the variations to be included in the flame. The default \code{NULL} includes a random number of variations. See the details section for more information about possible variations.}
+\item{variations}{an integer (vector) specifying the variations to be included in the flame. The default \code{NULL} mixes two random variations. See the details section for more information about possible variations.}
 
-\item{blend}{logical. Whether to blend the variations (\code{TRUE}) or pick a unique variation in each iteration (\code{FALSE}). \code{blend = FALSE} significantly speeds up the computation time.}
+\item{blend}{logical. Whether to blend the variations (\code{TRUE}) or pick a unique variation in each iteration (\code{FALSE}). \code{blend = TRUE} significantly increases computation time.}
+
+\item{weighted}{logical. Whether to weigh the functions and the variations (\code{TRUE}) or pick a unique function and equally weigh all variations in each iteration (\code{FALSE}). \code{weighted = TRUE} significantly increases the computation time.}
 
 \item{display}{a character indicating how to display the flame. \code{colored} (the default) displays colors according to which function they originate from. \code{logdensity} plots a gradient using the log density of the pixel count.}
 

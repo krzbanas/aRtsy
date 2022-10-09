@@ -18,8 +18,8 @@
 #' @description This function implements the fractal flame algorithm.
 #'
 #' @usage canvas_flame(colors, background = "#000000",
-#'              iterations = 1000000, zoom = 1, resolution = 1000,
-#'              variations = NULL, blend = TRUE,
+#'              iterations = 1000000, zoom = 1.25, resolution = 1000,
+#'              variations = NULL, blend = TRUE, weighted = FALSE,
 #'              display = c("colored", "logdensity"),
 #'              post = FALSE, final = FALSE, extra = FALSE,
 #'              verbose = FALSE)
@@ -29,8 +29,9 @@
 #' @param iterations  a positive integer specifying the number of iterations of the algorithm.
 #' @param zoom        a positive value specifying the amount of zooming.
 #' @param resolution  resolution of the artwork in pixels per row/column. Increasing the resolution increases the quality of the artwork but also increases the computation time exponentially.
-#' @param variations  an integer (vector) specifying the variations to be included in the flame. The default \code{NULL} includes a random number of variations. See the details section for more information about possible variations.
-#' @param blend       logical. Whether to blend the variations (\code{TRUE}) or pick a unique variation in each iteration (\code{FALSE}). \code{blend = FALSE} significantly speeds up the computation time.
+#' @param variations  an integer (vector) specifying the variations to be included in the flame. The default \code{NULL} mixes two random variations. See the details section for more information about possible variations.
+#' @param blend       logical. Whether to blend the variations (\code{TRUE}) or pick a unique variation in each iteration (\code{FALSE}). \code{blend = TRUE} significantly increases computation time.
+#' @param weighted    logical. Whether to weigh the functions and the variations (\code{TRUE}) or pick a unique function and equally weigh all variations in each iteration (\code{FALSE}). \code{weighted = TRUE} significantly increases the computation time.
 #' @param display     a character indicating how to display the flame. \code{colored} (the default) displays colors according to which function they originate from. \code{logdensity} plots a gradient using the log density of the pixel count.
 #' @param post        logical. Whether to apply a post transformation in each iteration.
 #' @param final       logical. Whether to apply a final transformation in each iteration.
@@ -115,8 +116,8 @@
 #' @export
 
 canvas_flame <- function(colors, background = "#000000",
-                         iterations = 1000000, zoom = 1, resolution = 1000,
-                         variations = NULL, blend = TRUE,
+                         iterations = 1000000, zoom = 1.25, resolution = 1000,
+                         variations = NULL, blend = TRUE, weighted = FALSE,
                          display = c("colored", "logdensity"),
                          post = FALSE, final = FALSE, extra = FALSE,
                          verbose = FALSE) {
@@ -131,7 +132,7 @@ canvas_flame <- function(colors, background = "#000000",
   if (is.null(variations)) {
     user <- TRUE
     v <- 0:(noVariations - 1)
-    variations <- sample(x = v[-c(32, 35, 36, 37)], size = sample(2:5, size = 1), replace = FALSE)
+    variations <- sample(x = v[-c(32, 35, 36, 37)], size = 2, replace = FALSE)
   } else if (min(variations) < 0 || max(variations) > (noVariations - 1)) {
     stop("'variations' must be between 0 and ", (noVariations - 1))
   }
@@ -167,6 +168,7 @@ canvas_flame <- function(colors, background = "#000000",
     resolution = resolution,
     edge = 2 * (1 / zoom),
     blend = blend,
+    weighted = weighted,
     post = post,
     final = final,
     extra = extra,

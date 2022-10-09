@@ -282,6 +282,7 @@ arma::cube iterate_flame(arma::cube canvas,
                          int resolution,
                          int edge,
                          bool blend,
+                         bool weighted,
                          bool post,
                          bool final,
                          bool extra,
@@ -303,7 +304,11 @@ arma::cube iterate_flame(arma::cube canvas,
       Rcpp::checkUserInterrupt();
     }
     // Pick an affine function to use according to their weights
-    i = Rcpp::sample(functions, 1, false, funcWeights)[0];
+    if (weighted) {
+      i = Rcpp::sample(functions, 1, false, funcWeights)[0];
+    } else {
+      i = floor(R::runif(0, functions.length()));
+    }
     // Apply the affine function to the current point
     x = funcPars(i, 0) * xprev + funcPars(i, 1) * yprev + funcPars(i, 2);
     y = funcPars(i, 3) * xprev + funcPars(i, 4) * yprev + funcPars(i, 5);
@@ -314,9 +319,12 @@ arma::cube iterate_flame(arma::cube canvas,
         tmp += varWeights(i, j) * variation(x, y, variations[j], funcPars(i, 0), funcPars(i, 1), funcPars(i, 2), funcPars(i, 3), funcPars(i, 4), funcPars(i, 5), varParams);
       }
     } else {
-      // Sampling from variations according to their weights
-      j = Rcpp::sample(variations, 1, false, Rcpp::as<Rcpp::NumericVector>(Rcpp::wrap(varWeights.row(i))))[0];
-      tmp = variation(x, y, j, funcPars(i, 0), funcPars(i, 1), funcPars(i, 2), funcPars(i, 3), funcPars(i, 4), funcPars(i, 5), varParams);
+      if (weighted) {
+        j = Rcpp::sample(variations, 1, false, Rcpp::as<Rcpp::NumericVector>(Rcpp::wrap(varWeights.row(i))))[0];
+      } else {
+        j = floor(R::runif(0, varWeights.n_cols));
+      }
+      tmp = variation(x, y, variations[j], funcPars(i, 0), funcPars(i, 1), funcPars(i, 2), funcPars(i, 3), funcPars(i, 4), funcPars(i, 5), varParams);
     }
     x = tmp[0];
     y = tmp[1];
@@ -351,10 +359,10 @@ arma::cube iterate_flame(arma::cube canvas,
       if ((indx > 0) && (indx < resolution)) {
         indy = (y * resolution / (2 * edge)) + resolution / 2;
         if ((indy > 0) && (indy < resolution)) {
-          canvas(indy, indx, 0) = canvas(indy, indx, 0) + 1;
-          canvas(indy, indx, 1) = canvas(indy, indx, 1) + c1;
-          canvas(indy, indx, 2) = canvas(indy, indx, 2) + c2;
-          canvas(indy, indx, 3) = canvas(indy, indx, 3) + c3;
+          canvas(indx, indy, 0) = canvas(indx, indy, 0) + 1;
+          canvas(indx, indy, 1) = canvas(indx, indy, 1) + c1;
+          canvas(indx, indy, 2) = canvas(indx, indy, 2) + c2;
+          canvas(indx, indy, 3) = canvas(indx, indy, 3) + c3;
         }
       }
     }
