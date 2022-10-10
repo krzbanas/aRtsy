@@ -6,7 +6,7 @@
 \usage{
 canvas_flame(colors, background = "#000000",
              iterations = 1000000, zoom = 1, resolution = 1000,
-             variations = NULL, blend = TRUE, weighted = FALSE,
+             variations = 0, blend = TRUE, weighted = FALSE,
              display = c("colored", "logdensity"),
              post = FALSE, final = FALSE, extra = FALSE)
 }
@@ -21,7 +21,7 @@ canvas_flame(colors, background = "#000000",
 
 \item{resolution}{resolution of the artwork in pixels per row/column. Increasing the resolution increases the quality of the artwork but also increases the computation time exponentially.}
 
-\item{variations}{an integer (vector) specifying the variations to be included in the flame. The default \code{NULL} includes no variations. See the details section for more information about possible variations.}
+\item{variations}{an integer (vector) specifying the variations to be included in the flame. The default \code{0} includes only a linear variation. See the details section for more information about possible variations.}
 
 \item{blend}{logical. Whether to blend the variations (\code{TRUE}) or pick a unique variation in each iteration (\code{FALSE}). \code{blend = TRUE} significantly increases computation time.}
 
@@ -100,8 +100,8 @@ The \code{variation} argument can be used to include specific variations into th
 \donttest{
 set.seed(3)
 
-# Simple example, no variation applied, relatively few iterations
-canvas_flame(colors = c("dodgerblue", "green"))
+# Simple example, linear variation, relatively few iterations
+canvas_flame(colors = c("dodgerblue", "green"), variations = 0)
 
 # Advanced example (no-blend, weighted, sine and spherical variations)
 canvas_flame(colors = colorPalette("origami"), variations = c(1, 2),

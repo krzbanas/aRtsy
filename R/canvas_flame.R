@@ -19,7 +19,7 @@
 #'
 #' @usage canvas_flame(colors, background = "#000000",
 #'              iterations = 1000000, zoom = 1, resolution = 1000,
-#'              variations = NULL, blend = TRUE, weighted = FALSE,
+#'              variations = 0, blend = TRUE, weighted = FALSE,
 #'              display = c("colored", "logdensity"),
 #'              post = FALSE, final = FALSE, extra = FALSE)
 #'
@@ -28,7 +28,7 @@
 #' @param iterations  a positive integer specifying the number of iterations of the algorithm.
 #' @param zoom        a positive value specifying the amount of zooming.
 #' @param resolution  resolution of the artwork in pixels per row/column. Increasing the resolution increases the quality of the artwork but also increases the computation time exponentially.
-#' @param variations  an integer (vector) specifying the variations to be included in the flame. The default \code{NULL} includes no variations. See the details section for more information about possible variations.
+#' @param variations  an integer (vector) specifying the variations to be included in the flame. The default \code{0} includes only a linear variation. See the details section for more information about possible variations.
 #' @param blend       logical. Whether to blend the variations (\code{TRUE}) or pick a unique variation in each iteration (\code{FALSE}). \code{blend = TRUE} significantly increases computation time.
 #' @param weighted    logical. Whether to weigh the functions and the variations (\code{TRUE}) or pick a unique function and equally weigh all variations in each iteration (\code{FALSE}). \code{weighted = TRUE} significantly increases the computation time.
 #' @param display     a character indicating how to display the flame. \code{colored} (the default) displays colors according to which function they originate from. \code{logdensity} plots a gradient using the log density of the pixel count.
@@ -104,8 +104,8 @@
 #' \donttest{
 #' set.seed(3)
 #'
-#' # Simple example, no variation applied, relatively few iterations
-#' canvas_flame(colors = c("dodgerblue", "green"))
+#' # Simple example, linear variation, relatively few iterations
+#' canvas_flame(colors = c("dodgerblue", "green"), variations = 0)
 #'
 #' # Advanced example (no-blend, weighted, sine and spherical variations)
 #' canvas_flame(colors = colorPalette("origami"), variations = c(1, 2),
@@ -119,7 +119,7 @@
 
 canvas_flame <- function(colors, background = "#000000",
                          iterations = 1000000, zoom = 1, resolution = 1000,
-                         variations = NULL, blend = TRUE, weighted = FALSE,
+                         variations = 0, blend = TRUE, weighted = FALSE,
                          display = c("colored", "logdensity"),
                          post = FALSE, final = FALSE, extra = FALSE) {
   display <- match.arg(display)
@@ -127,14 +127,9 @@ canvas_flame <- function(colors, background = "#000000",
     resolution = resolution, background = background
   )
   iterations <- iterations + 20
-  varNames <- .getVariationNames()
-  noVariations <- length(varNames)
-  if (is.null(variations)) {
-    variations <- numeric()
-  } else if (min(variations) < 0 || max(variations) > (noVariations - 1)) {
-    stop("'variations' must be between 0 and ", (noVariations - 1))
+  if (!all(variations %% 1 == 0) || min(variations) < 0 || max(variations) > 48) {
+    stop("all 'variations' must be an integer in the range of 0 to 48")
   }
-  nvariations <- length(variations)
   if (display == "logdensity") {
     nfunc <- sample(x = 3:10, size = 1)
     color_mat <- matrix(stats::runif(nfunc * 3), nrow = nfunc, ncol = 3)
@@ -144,7 +139,7 @@ canvas_flame <- function(colors, background = "#000000",
     color_mat <- matrix(t(grDevices::col2rgb(colors) / 255), nrow = length(colors), ncol = 3)
   }
   w_i <- stats::runif(nfunc, 0, 1)
-  v_ij <- matrix(stats::runif(nfunc * nvariations, min = 0, max = 1), nrow = nfunc, ncol = nvariations)
+  v_ij <- matrix(stats::runif(nfunc * length(variations), min = 0, max = 1), nrow = nfunc, ncol = length(variations))
   for (i in 1:nrow(v_ij)) {
     v_ij[i, ] <- v_ij[i, ] / sum(v_ij[i, ])
   }
@@ -191,18 +186,6 @@ canvas_flame <- function(colors, background = "#000000",
   }
   artwork <- theme_canvas(artwork, background = background)
   return(artwork)
-}
-
-.getVariationNames <- function() {
-  return(c(
-    "Linear", "Sine", "Spherical", "Swirl", "Horsehoe", "Polar", "Handkerchief",
-    "Heart", "Disc", "Spiral", "Hyperbolic", "Diamond", "Ex", "Julia", "Bent",
-    "Waves", "Fisheye", "Popcorn", "Exponential", "Power", "Cosine", "Rings",
-    "Fan", "Blob", "PDJ", "Fan2", "Rings2", "Eyefish", "Bubble", "Cylinder",
-    "Perspective", "Noise", "JuliaN", "JuliaScope", "Blur", "Gaussian",
-    "RadialBlur", "Pie", "Ngon", "Curl", "Rectangles", "Arch", "Tangent",
-    "Square", "Rays", "Blade", "Secant", "Twintrian", "Cross"
-  ))
 }
 
 .getVariationParameters <- function() {

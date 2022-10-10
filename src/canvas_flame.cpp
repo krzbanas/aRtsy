@@ -353,6 +353,7 @@ arma::cube iterate_flame(arma::cube canvas,
                          Rcpp::DoubleVector extraPars) {
   int i, j, indx, indy, nvar = variations.length(), nfunc = functions.length();
   double xc, yc, xp, yp, x = R::runif(-1, 1), y = R::runif(-1, 1), c1 = R::runif(0, 1), c2 = R::runif(0, 1), c3 = R::runif(0, 1);
+  bool vary = !((nvar == 1) && (variations[0] == 0));
   for (int iter = 1; iter < iterations; iter++) {
     if ((iter % 100) == 0) {
       Rcpp::checkUserInterrupt();
@@ -365,7 +366,7 @@ arma::cube iterate_flame(arma::cube canvas,
     }
     // Apply the affine function to the current point
     transform(x, y, funcPars(i, 0), funcPars(i, 1), funcPars(i, 2), funcPars(i, 3), funcPars(i, 4), funcPars(i, 5));
-    if (nvar != 0) {
+    if (vary) {
       // Apply the variation(s) to the point
       if (blend) {
         xc = 0, yc = 0;
