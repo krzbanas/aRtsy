@@ -108,7 +108,7 @@ canvas_flame(colors = colorPalette("origami"), variations = c(1, 2),
              blend = FALSE, weighted = TRUE, iterations = 5e6)
 
 # More iterations give better images
-# canvas_flame(colors = c("red", "blue"), iterations = 1e8)
+canvas_flame(colors = c("red", "blue"), iterations = 1e8)
 }
 
 }
