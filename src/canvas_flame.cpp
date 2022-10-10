@@ -16,8 +16,8 @@
 #include <RcppArmadillo.h>
 // [[Rcpp::depends(RcppArmadillo)]]
 
-void transform(double& x,
-               double& y,
+void transform(double &x,
+               double &y,
                const double a,
                const double b,
                const double c,
@@ -30,8 +30,8 @@ void transform(double& x,
   y = newy;
 }
 
-void variation(double& x,
-               double& y,
+void variation(double &x,
+               double &y,
                const int i,
                const double a,
                const double b,

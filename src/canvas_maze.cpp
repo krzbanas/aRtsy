@@ -48,9 +48,9 @@ Rcpp::DataFrame mazeNeighbors(int x,
 }
 
 Rcpp::DataFrame selectNeighbors(Rcpp::NumericVector x, 
-                              Rcpp::NumericVector y,
-                              Rcpp::NumericVector vx,
-                              Rcpp::NumericVector vy) {
+                                Rcpp::NumericVector y,
+                                Rcpp::NumericVector vx,
+                                Rcpp::NumericVector vy) {
   Rcpp::NumericVector nx;
   Rcpp::NumericVector ny;
   for (int i = 0; i < x.length(); i++) {

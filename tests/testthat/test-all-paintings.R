@@ -45,7 +45,7 @@ test_that("canvas_ant()", {
 
 test_that("canvas_planet()", {
   set.seed(1)
-  artwork <- canvas_planet(colors = c("black", "white"))
+  artwork <- canvas_planet(colors = c("black", "white"), iterations = 10)
   expect_equal(!is.null(artwork), TRUE)
 })
 

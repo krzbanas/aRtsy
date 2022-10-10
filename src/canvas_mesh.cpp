@@ -13,8 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#include <RcppArmadillo.h>
-// [[Rcpp::depends(RcppArmadillo)]]
+#include <Rcpp.h>
 
 Rcpp::IntegerVector int_seq(int &first, int &last) {
   Rcpp::IntegerVector y(abs(last - first) + 1);
