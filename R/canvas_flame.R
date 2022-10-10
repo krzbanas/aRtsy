@@ -27,8 +27,8 @@
 #' @param background  a character specifying the color used for the background.
 #' @param iterations  a positive integer specifying the number of iterations of the algorithm.
 #' @param zoom        a positive value specifying the amount of zooming.
-#' @param resolution  resolution of the artwork in pixels per row/column. Increasing the resolution increases the quality of the artwork but also increases the computation time exponentially.
-#' @param variations  an integer (vector) specifying the variations to be included in the flame. The default \code{0} includes only a linear variation. See the details section for more information about possible variations.
+#' @param resolution  resolution of the artwork in pixels per row/column. Increasing the resolution does not increases the computation time of this algorithm.
+#' @param variations  an integer (vector) specifying the variations to be included in the flame. The default \code{0} includes only a linear variation. Including multiple variations increases the computation time. See the details section for more information about possible variations.
 #' @param blend       logical. Whether to blend the variations (\code{TRUE}) or pick a unique variation in each iteration (\code{FALSE}). \code{blend = TRUE} significantly increases computation time.
 #' @param weighted    logical. Whether to weigh the functions and the variations (\code{TRUE}) or pick a unique function and equally weigh all variations in each iteration (\code{FALSE}). \code{weighted = TRUE} significantly increases the computation time.
 #' @param display     a character indicating how to display the flame. \code{colored} (the default) displays colors according to which function they originate from. \code{logdensity} plots a gradient using the log density of the pixel count.

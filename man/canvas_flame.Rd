@@ -19,9 +19,9 @@ canvas_flame(colors, background = "#000000",
 
 \item{zoom}{a positive value specifying the amount of zooming.}
 
-\item{resolution}{resolution of the artwork in pixels per row/column. Increasing the resolution increases the quality of the artwork but also increases the computation time exponentially.}
+\item{resolution}{resolution of the artwork in pixels per row/column. Increasing the resolution does not increases the computation time of this algorithm.}
 
-\item{variations}{an integer (vector) specifying the variations to be included in the flame. The default \code{0} includes only a linear variation. See the details section for more information about possible variations.}
+\item{variations}{an integer (vector) specifying the variations to be included in the flame. The default \code{0} includes only a linear variation. Including multiple variations increases the computation time. See the details section for more information about possible variations.}
 
 \item{blend}{logical. Whether to blend the variations (\code{TRUE}) or pick a unique variation in each iteration (\code{FALSE}). \code{blend = TRUE} significantly increases computation time.}
 
