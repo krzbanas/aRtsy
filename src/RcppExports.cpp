@@ -12,19 +12,15 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
 // draw_ant
-arma::mat draw_ant(arma::mat X, int iters, int ncolors, int x, int y, std::vector<int> dx, std::vector<int> dy);
-RcppExport SEXP _aRtsy_draw_ant(SEXP XSEXP, SEXP itersSEXP, SEXP ncolorsSEXP, SEXP xSEXP, SEXP ySEXP, SEXP dxSEXP, SEXP dySEXP) {
+arma::mat draw_ant(arma::mat directions, int iterations, int resolution);
+RcppExport SEXP _aRtsy_draw_ant(SEXP directionsSEXP, SEXP iterationsSEXP, SEXP resolutionSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::mat >::type X(XSEXP);
-    Rcpp::traits::input_parameter< int >::type iters(itersSEXP);
-    Rcpp::traits::input_parameter< int >::type ncolors(ncolorsSEXP);
-    Rcpp::traits::input_parameter< int >::type x(xSEXP);
-    Rcpp::traits::input_parameter< int >::type y(ySEXP);
-    Rcpp::traits::input_parameter< std::vector<int> >::type dx(dxSEXP);
-    Rcpp::traits::input_parameter< std::vector<int> >::type dy(dySEXP);
-    rcpp_result_gen = Rcpp::wrap(draw_ant(X, iters, ncolors, x, y, dx, dy));
+    Rcpp::traits::input_parameter< arma::mat >::type directions(directionsSEXP);
+    Rcpp::traits::input_parameter< int >::type iterations(iterationsSEXP);
+    Rcpp::traits::input_parameter< int >::type resolution(resolutionSEXP);
+    rcpp_result_gen = Rcpp::wrap(draw_ant(directions, iterations, resolution));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -374,7 +370,7 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_aRtsy_draw_ant", (DL_FUNC) &_aRtsy_draw_ant, 7},
+    {"_aRtsy_draw_ant", (DL_FUNC) &_aRtsy_draw_ant, 3},
     {"_aRtsy_iterate_chladni", (DL_FUNC) &_aRtsy_iterate_chladni, 3},
     {"_aRtsy_draw_circlemap", (DL_FUNC) &_aRtsy_draw_circlemap, 6},
     {"_aRtsy_get_collatz_sequence", (DL_FUNC) &_aRtsy_get_collatz_sequence, 1},
