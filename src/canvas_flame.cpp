@@ -368,17 +368,14 @@ arma::cube iterate_flame(arma::cube canvas,
     if (nvar != 0) {
       // Apply the variation(s) to the point
       if (blend) {
-        xc = 0;
-        yc = 0;
+        xc = 0, yc = 0;
         for (int j = 0; j < nvar; j++) {
-          xp = x;
-          yp = y;
+          xp = x, yp = y;
           variation(xp, yp, variations[j], funcPars(i, 0), funcPars(i, 1), funcPars(i, 2), funcPars(i, 3), funcPars(i, 4), funcPars(i, 5), varParams);
           xc += varWeights(i, j) * xp;
           yc += varWeights(i, j) * yp;
         }
-        x = xc;
-        y = yc;
+        x = xc, y = yc;
       } else {
         if (weighted) {
           j = Rcpp::sample(variations, 1, false, Rcpp::as<Rcpp::NumericVector>(Rcpp::wrap(varWeights.row(i))))[0];

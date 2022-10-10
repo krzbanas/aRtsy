@@ -104,15 +104,15 @@
 #' \donttest{
 #' set.seed(3)
 #'
-#' # Simple example, no variation applied
-#' canvas_flame(colors = c("dodgerblue", "green"), iterations = 1e7)
+#' # Simple example, no variation applied, relatively few iterations
+#' canvas_flame(colors = c("dodgerblue", "green"))
 #'
 #' # Advanced example (no-blend, weighted, sine and spherical variations)
 #' canvas_flame(colors = colorPalette("origami"), variations = c(1, 2),
-#'              blend = FALSE, weighted = TRUE, iterations = 5e6)
+#'              blend = FALSE, weighted = TRUE, iterations = 1e7)
 #' 
-#' # More iterations give better images
-#' canvas_flame(colors = c("red", "blue"), iterations = 1e8)
+#' # More iterations give much better images
+#' canvas_flame(colors = c("red", "blue"), iterations = 1e8, variations = c(2, 5, 23, 27))
 #' }
 #'
 #' @export
