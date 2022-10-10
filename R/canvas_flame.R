@@ -211,8 +211,8 @@ canvas_flame <- function(colors, background = "#000000",
     stats::runif(4, 0, 1), # padj.a, pdj.b, pdj.c, pdj.d
     stats::runif(1, 0, 1), # rings2.val
     stats::runif(1, 1, pi), stats::runif(1, 0, 1), # perspective.angle, perspective.dist
-    stats::runif(1, 1, 5), stats::runif(1, 0, 10), # juliaN.power, juliaN.dist
-    stats::runif(1, 1, 5), stats::runif(1, 0, 10), # juliaScope.power, juliaScope.dist
+    stats::runif(1, 1, 5), stats::runif(1, 0, 1), # juliaN.power, juliaN.dist
+    stats::runif(1, 1, 5), stats::runif(1, 0, 1), # juliaScope.power, juliaScope.dist
     stats::runif(1, 1, pi), stats::runif(1, 1, 5), # radialBlur.angle, v_36
     sample(1:10, size = 1), stats::runif(1, 1, pi), stats::runif(1, 1, 5), # pie.slices, pie.rotation, pie.thickness
     stats::runif(1, 1, 4), 2 * pi / sample(3:10, size = 1), sample(2:10, size = 1), stats::runif(1, 0, 1), # ngon.power, ngon.sides, ngon.corners, ngon.circle
