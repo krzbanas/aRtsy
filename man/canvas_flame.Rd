@@ -101,10 +101,14 @@ The \code{variation} argument can be used to include specific variations into th
 set.seed(3)
 
 # Simple example, no variation applied
-canvas_flame(colors = c("dodgerblue", "green"))
+canvas_flame(colors = c("dodgerblue", "green"), iterations = 1e7)
 
-# Advanced example (no-blend sine and spherical variations)
-canvas_flame(colors = colorPalette("origami"), variations = c(1, 2), blend = FALSE)
+# Advanced example (no-blend, weighted, sine and spherical variations)
+canvas_flame(colors = colorPalette("origami"), variations = c(1, 2),
+             blend = FALSE, weighted = TRUE, iterations = 5e6)
+
+# More iterations give better images
+# canvas_flame(colors = c("red", "blue"), iterations = 1e8)
 }
 
 }
