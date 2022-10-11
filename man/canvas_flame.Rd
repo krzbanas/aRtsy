@@ -8,7 +8,7 @@ canvas_flame(colors, background = "#000000", iterations = 1000000,
              variations = 0, symmetry = 0, blend = TRUE, weighted = FALSE,
              post = FALSE, final = FALSE, extra = FALSE,
              display = c("colored", "logdensity"),
-             zoom = 1, resolution = 1000)
+             zoom = 1, resolution = 1000, gamma = 1)
 }
 \arguments{
 \item{colors}{a string or character vector specifying the color(s) used for the artwork.}
@@ -36,6 +36,8 @@ canvas_flame(colors, background = "#000000", iterations = 1000000,
 \item{zoom}{a positive value specifying the amount of zooming.}
 
 \item{resolution}{resolution of the artwork in pixels per row/column. Increasing the resolution does not increases the computation time of this algorithm.}
+
+\item{gamma}{a numeric value specifying the gamma correction (only used when \code{display == "colored"}). Larger values result in brighter images and vice versa.}
 }
 \value{
 A \code{ggplot} object containing the artwork.

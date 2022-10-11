@@ -21,7 +21,7 @@
 #'              variations = 0, symmetry = 0, blend = TRUE, weighted = FALSE,
 #'              post = FALSE, final = FALSE, extra = FALSE,
 #'              display = c("colored", "logdensity"),
-#'              zoom = 1, resolution = 1000)
+#'              zoom = 1, resolution = 1000, gamma = 1)
 #'
 #' @param colors      a string or character vector specifying the color(s) used for the artwork.
 #' @param background  a character specifying the color used for the background.
@@ -36,6 +36,7 @@
 #' @param display     a character indicating how to display the flame. \code{colored} (the default) displays colors according to which function they originate from. \code{logdensity} plots a gradient using the log density of the pixel count.
 #' @param zoom        a positive value specifying the amount of zooming.
 #' @param resolution  resolution of the artwork in pixels per row/column. Increasing the resolution does not increases the computation time of this algorithm.
+#' @param gamma       a numeric value specifying the gamma correction (only used when \code{display == "colored"}). Larger values result in brighter images and vice versa.
 #'
 #' @details           The \code{variation} argument can be used to include specific variations into the flame. See the appendix in the references for examples of all variations. Possible variations are:
 #'
@@ -140,7 +141,7 @@ canvas_flame <- function(colors, background = "#000000", iterations = 1000000,
                          variations = 0, symmetry = 0, blend = TRUE, weighted = FALSE,
                          post = FALSE, final = FALSE, extra = FALSE,
                          display = c("colored", "logdensity"),
-                         zoom = 1, resolution = 1000) {
+                         zoom = 1, resolution = 1000, gamma = 1) {
   display <- match.arg(display)
   .checkUserInput(
     resolution = resolution, background = background
@@ -199,6 +200,7 @@ canvas_flame <- function(colors, background = "#000000", iterations = 1000000,
       ggplot2::scale_fill_gradientn(colors = colors, na.value = background)
   } else {
     canvas <- .scaleColorChannels(canvas)
+    canvas[, , 2:4] <- canvas[, , 2:4]^(1 / gamma) # Gamma correction
     maxVal <- max(c(1, c(canvas[, , 2]), c(canvas[, , 3]), c(canvas[, , 4])))
     if (maxVal == 0) {
       stop("No points are drawn on the canvas")
