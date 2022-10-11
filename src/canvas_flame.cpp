@@ -263,20 +263,21 @@ void variation(double &x,
     double Psi2 = R::runif(0, 1);
     double Psi3 = R::runif(0, 1);
     double t1 = trunc(Psi1 * pparams[16] + 0.5);
-    double t2 = pparams[17] + ((2 * M_PI) / pparams[16]) * (t1 + Psi2 * pparams[17]);
+    double t2 = pparams[17] + ((2 * M_PI) / pparams[16]) * (t1 + Psi2 * pparams[18]);
     newx = Psi3 * cos(t2);
     newy = Psi3 * sin(t2);
   } else if (i == 38) { // Ngon
     double r = sqrt(pow(x, 2) + pow(y, 2));
     double phi = atan(y / x);
-    double t3 = phi - pparams[19] * floor(phi / pparams[19]);
+    double p2 = 2 * M_PI / pparams[20];
+    double t3 = phi - p2 * floor(phi / p2);
     double t4;
-    if (t3 > (pparams[19] / 2)) {
+    if (t3 > (p2 / 2)) {
       t4 = t3;
     } else {
-      t4 = t3 - pparams[19];
+      t4 = t3 - p2;
     }
-    double k = (pparams[20] * ((1 / cos(t4) - 1) + pparams[21]) + pparams[22]) / pow(r, pparams[18]);
+    double k = (pparams[21] * (1 / cos(t4) - 1) + pparams[22]) / pow(r, pparams[19]);
     newx = k * x;
     newy = k * y;
   } else if (i == 39) { // Curl
@@ -306,7 +307,7 @@ void variation(double &x,
     double first = (pparams[28] * tan(Psi * M_PI * pparams[28])) / pow(r, 2);
     newx = first * cos(x);
     newy = first * sin(x);
-  } else if (i == 45) { // Rays
+  } else if (i == 45) { // Blade
     double r = sqrt(pow(x, 2) + pow(y, 2));
     double Psi = R::runif(0, 1);
     newx = x * (cos(Psi * r * pparams[29]) + sin(Psi * r * pparams[29]));

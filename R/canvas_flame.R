@@ -90,9 +90,9 @@
 #'  \item{\code{47}: Twintrian}
 #'  \item{\code{48}: Cross}
 #' }
-#' 
+#'
 #' @details           The \code{symmetry} argument can be used to include symmetry into the flame. Possible options are:
-#' 
+#'
 #' \itemize{
 #'  \item{\code{0}: Linear}
 #'  \item{\code{-1}: Dihedral symmetry}
@@ -120,7 +120,7 @@
 #'
 #' # Simple example, linear variation, relatively few iterations
 #' canvas_flame(colors = c("dodgerblue", "green"), variations = 0)
-#' 
+#'
 #' # Simple example, linear variation, dihedral symmetry
 #' canvas_flame(colors = c("hotpink", "yellow"), variations = 0, symmetry = -1)
 #'
@@ -214,19 +214,21 @@ canvas_flame <- function(colors, background = "#000000", iterations = 1000000,
 
 .getVariationParameters <- function() {
   return(c(
-    stats::runif(1, 0, 1), stats::runif(1, -1, 0), stats::runif(1, 1, 10), # blob.high, blob.low, blob.waves
+    stats::runif(1, 1, 2), stats::runif(1, -2, -1), sample(3:7, size = 1), # blob.high, blob.low, blob.waves
     stats::runif(4, 0, 1), # padj.a, pdj.b, pdj.c, pdj.d
     stats::runif(1, 0, 1), # rings2.val
-    stats::runif(1, 1, pi), stats::runif(1, 0, 1), # perspective.angle, perspective.dist
-    stats::runif(1, 1, 5), stats::runif(1, 0, 1), # juliaN.power, juliaN.dist
-    stats::runif(1, 1, 5), stats::runif(1, 0, 1), # juliaScope.power, juliaScope.dist
-    stats::runif(1, 1, pi), stats::runif(1, 1, 5), # radialBlur.angle, v_36
-    sample(1:10, size = 1), stats::runif(1, 1, pi), stats::runif(1, 1, 5), # pie.slices, pie.rotation, pie.thickness
-    stats::runif(1, 1, 4), 2 * pi / sample(3:10, size = 1), sample(2:10, size = 1), stats::runif(1, 0, 1), # ngon.power, ngon.sides, ngon.corners, ngon.circle
-    stats::runif(1, 0, 1), stats::runif(1, 0, 1), # curl.c1, curl.c2
+    stats::runif(1, 10, 80), stats::runif(1, 1, 10), # perspective.angle, perspective.dist
+    stats::runif(1, 1, 5), stats::runif(1, 0.1, 1), # juliaN.power, juliaN.dist
+    stats::runif(1, 1, 5), stats::runif(1, 0.1, 1), # juliaScope.power, juliaScope.dist
+    stats::runif(1, 0, 360), stats::runif(1, 0.5, 10), # radialBlur.angle, v_36
+    sample(x = 3:8, size = 1), stats::runif(1, 1, 360), stats::runif(1, 0, 1), # pie.slices, pie.rotation, pie.thickness
+    stats::runif(1, 1, 2), sample(3:9, size = 1), sample(3:9, size = 1), stats::runif(1, 0, 1), # ngon.power, ngon.sides, ngon.corners, ngon.circle
+    stats::runif(1, -1.5, -0.5), stats::runif(1, 0.5, 1.5), # curl.c1, curl.c2
     stats::runif(1, -1, 1), stats::runif(1, -1, 1), # rectangles.x, rectangles.y
-    stats::runif(1, 0, 100), # v_41
-    stats::runif(4, 0, 10) # v_44, # v_45, # v_46, # v_47
+    stats::runif(1, -1, 1), # v_41
+    stats::runif(2, 0, 1), # v_44, # v_45
+    stats::runif(1, 1, 7), # v_46
+    stats::runif(1, 0, 10) # v_47
   ))
 }
 
