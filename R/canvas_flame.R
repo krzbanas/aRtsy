@@ -18,22 +18,21 @@
 #' @description This function implements the fractal flame algorithm.
 #'
 #' @usage canvas_flame(colors, background = "#000000", iterations = 1000000,
-#'              variations = 0, blend = TRUE, weighted = FALSE,
+#'              variations = 0, symmetry = 0, blend = TRUE, weighted = FALSE,
 #'              post = FALSE, final = FALSE, extra = FALSE,
-#'              symmetry = c("none", "dihedral", "rotation", "both"),
 #'              display = c("colored", "logdensity"),
 #'              zoom = 1, resolution = 1000)
 #'
 #' @param colors      a string or character vector specifying the color(s) used for the artwork.
 #' @param background  a character specifying the color used for the background.
 #' @param iterations  a positive integer specifying the number of iterations of the algorithm.
-#' @param variations  an integer (vector) specifying the variations to be included in the flame. The default \code{0} includes only a linear variation. Including multiple variations increases the computation time. See the details section for more information about possible variations.
-#' @param blend       logical. Whether to blend the variations (\code{TRUE}) or pick a unique variation in each iteration (\code{FALSE}). \code{blend = TRUE} significantly increases computation time.
-#' @param weighted    logical. Whether to weigh the functions and the variations (\code{TRUE}) or pick a unique function and equally weigh all variations in each iteration (\code{FALSE}). \code{weighted = TRUE} significantly increases the computation time.
+#' @param variations  an integer (vector) with a minimum of 0 and a maximum of 48 specifying the variations to be included in the flame. The default \code{0} includes only a linear variation. Including multiple variations (e.g., \code{c(1, 2, 3)}) increases the computation time. See the details section for more information about possible variations.
+#' @param symmetry    an integer with a minimum of -6 and a maximum of 6 indicating the type of symmetry to include in the flame. The default \code{0} includes no symmetry. Including symmetry increases the computation time as a function of the absolute \code{symmetry} value. See the details section for more information about possible symmetries.
+#' @param blend       logical. Whether to blend the variations (\code{TRUE}) or pick a unique variation in each iteration (\code{FALSE}). \code{blend = TRUE} increases computation time as a function of the number of included variations.
+#' @param weighted    logical. Whether to weigh the functions and the variations (\code{TRUE}) or pick a function at random and equally weigh all variations (\code{FALSE}). \code{weighted = TRUE} significantly increases the computation time.
 #' @param post        logical. Whether to apply a post transformation in each iteration.
 #' @param final       logical. Whether to apply a final transformation in each iteration.
 #' @param extra       logical. Whether to apply an additional post transformation after the final transformation. Only has an effect when \code{final = TRUE}.
-#' @param symmetry    a character indicating the type of symmetry to include in the flame. The default \code{none} includes no symmetry, \code{dihedral} mirrors the flame, \code{rotation} induces rotational symmetry and \code{both} includes both types of symmetry.
 #' @param display     a character indicating how to display the flame. \code{colored} (the default) displays colors according to which function they originate from. \code{logdensity} plots a gradient using the log density of the pixel count.
 #' @param zoom        a positive value specifying the amount of zooming.
 #' @param resolution  resolution of the artwork in pixels per row/column. Increasing the resolution does not increases the computation time of this algorithm.
@@ -91,6 +90,19 @@
 #'  \item{\code{47}: Twintrian}
 #'  \item{\code{48}: Cross}
 #' }
+#' 
+#' @details           The \code{symmetry} argument can be used to include symmetry into the flame. Possible options are:
+#' 
+#' \itemize{
+#'  \item{\code{0}: Linear}
+#'  \item{\code{-1}: Dihedral symmetry}
+#'  \item{\code{1}: Two-way rotational symmetry}
+#'  \item{\code{(-)2}: (Dihedral) Three-way rotational symmetry}
+#'  \item{\code{(-)3}: (Dihedral) Four-way rotational symmetry}
+#'  \item{\code{(-)4}: (Dihedral) Five-way rotational symmetry}
+#'  \item{\code{(-)5}: (Dihedral) Six-way rotational symmetry}
+#'  \item{\code{(-)6}: (Dihedral) Snowflake symmetry}
+#' }
 #'
 #' @return A \code{ggplot} object containing the artwork.
 #'
@@ -108,6 +120,9 @@
 #'
 #' # Simple example, linear variation, relatively few iterations
 #' canvas_flame(colors = c("dodgerblue", "green"), variations = 0)
+#' 
+#' # Simple example, linear variation, dihedral symmetry
+#' canvas_flame(colors = c("hotpink", "yellow"), variations = 0, symmetry = -1)
 #'
 #' # Advanced example (no-blend, weighted, sine and spherical variations)
 #' canvas_flame(
@@ -122,55 +137,32 @@
 #' @export
 
 canvas_flame <- function(colors, background = "#000000", iterations = 1000000,
-                         variations = 0, blend = TRUE, weighted = FALSE,
+                         variations = 0, symmetry = 0, blend = TRUE, weighted = FALSE,
                          post = FALSE, final = FALSE, extra = FALSE,
-                         symmetry = c("none", "dihedral", "rotation", "both"),
                          display = c("colored", "logdensity"),
                          zoom = 1, resolution = 1000) {
-  symmetry <- match.arg(symmetry)
   display <- match.arg(display)
   .checkUserInput(
     resolution = resolution, background = background
   )
-  iterations <- iterations + 20
-  if (!all(variations %% 1 == 0) || min(variations) < 0 || max(variations) > 48) {
-    stop("all 'variations' must be an integer in the range of 0 to 48")
+  if (is.null(variations) || !all(variations %% 1 == 0) || min(variations) < 0 || max(variations) > 48) {
+    stop("'variations' must be an integer (vector) with a minimum of 0 and a maximum of 48")
   }
+  if (is.null(symmetry) || symmetry %% 1 != 0 || symmetry < -6 || symmetry > 6) {
+    stop("'symmetry' must be an integer with a minimum of -6 and a maximum of 6")
+  }
+  iterations <- iterations + 20
   if (display == "logdensity") {
-    nfunc <- sample(x = 3:10, size = 1)
-    color_mat <- matrix(stats::runif(nfunc * 3), nrow = nfunc, ncol = 3)
+    n <- sample(x = 3:10, size = 1)
+    color_mat <- matrix(stats::runif(n * 3), nrow = n, ncol = 3)
   } else {
-    nfunc <- sample(x = 3:max(10, length(colors)), size = 1)
-    colors <- c(colors, sample(x = colors, size = nfunc, replace = TRUE))
+    n <- sample(x = 3:max(10, length(colors)), size = 1)
+    colors <- c(colors, sample(x = colors, size = n, replace = TRUE))
     color_mat <- matrix(t(grDevices::col2rgb(colors) / 255), nrow = length(colors), ncol = 3)
   }
-  funcPars <- matrix(stats::runif(nfunc * 6, min = -1, max = 1), nrow = nfunc, ncol = 6)
-  if (symmetry != "none") {
-    if (symmetry == "dihedral") {
-      mat <- matrix(rep(c(-1, 0, 0, 0, 1, 0), times = nfunc), byrow = TRUE, nrow = nfunc * 2, ncol = 6)
-      color_mat <- rbind(color_mat, color_mat)
-    } else if (symmetry == "rotation") {
-      a120 <- rep(c(cos(120), -sin(120), 0, sin(120), cos(120), 0), times = nfunc)
-      a240 <- rep(c(cos(240), -sin(240), 0, sin(240), cos(240), 0), times = nfunc)
-      mat <- matrix(c(rep(c(cos(120), -sin(120), 0, sin(120), cos(120), 0), times = nfunc), 
-                      rep(c(cos(240), -sin(240), 0, sin(240), cos(240), 0), times = nfunc)), 
-                    byrow = TRUE, nrow = nfunc * 2, ncol = 6)
-      color_mat <- rbind(color_mat, color_mat, color_mat)
-    } else {
-      a120 <- rep(c(cos(120), -sin(120), 0, sin(120), cos(120), 0), times = nfunc)
-      a240 <- rep(c(cos(240), -sin(240), 0, sin(240), cos(240), 0), times = nfunc)
-      di <- rep(c(-1, 0, 0, 0, 1, 0), times = nfunc)
-      mat <- matrix(c(rep(c(cos(120), -sin(120), 0, sin(120), cos(120), 0), times = nfunc), 
-                      rep(c(cos(240), -sin(240), 0, sin(240), cos(240), 0), times = nfunc), 
-                      rep(c(-1, 0, 0, 0, 1, 0), times = nfunc)), 
-                    byrow = TRUE, nrow = nfunc * 3, ncol = 6)
-      color_mat <- rbind(color_mat, color_mat, color_mat, color_mat)
-    }
-    funcPars <- rbind(funcPars, mat)
-    nfunc <- nrow(funcPars)
-  }
-  w_i <- stats::runif(nfunc, 0, 1)
-  v_ij <- matrix(stats::runif(nfunc * length(variations), min = 0, max = 1), nrow = nfunc, ncol = length(variations))
+  fs <- .createFunctionSystem(n, symmetry)
+  w_i <- stats::runif(n = fs[["n"]], min = 0, max = 1)
+  v_ij <- matrix(stats::runif(fs[["n"]] * length(variations), min = 0, max = 1), nrow = fs[["n"]], ncol = length(variations))
   for (i in 1:nrow(v_ij)) {
     v_ij[i, ] <- v_ij[i, ] / sum(v_ij[i, ])
   }
@@ -184,15 +176,16 @@ canvas_flame <- function(colors, background = "#000000", iterations = 1000000,
     final = final,
     extra = extra,
     colors = color_mat,
-    functions = 0:(nfunc - 1),
+    functions = 0:(fs[["n"]] - 1),
     funcWeights = w_i / sum(w_i),
-    funcPars = funcPars,
+    funcPars = fs[["parameters"]],
     variations = variations,
     varWeights = v_ij,
     varParams = .getVariationParameters(),
-    postPars = matrix(stats::runif(nfunc * 6, min = -1, max = 1), nrow = nfunc, ncol = 6),
+    postPars = matrix(stats::runif(fs[["n"]] * 6, min = -1, max = 1), nrow = fs[["n"]], ncol = 6),
     finalPars = stats::runif(6, min = -1, max = 1),
-    extraPars = stats::runif(6, min = -1, max = 1)
+    extraPars = stats::runif(6, min = -1, max = 1),
+    bsym = fs[["indicator"]]
   )
   if (length(which(canvas[, , 1] > 0)) <= 1) {
     stop("Too few points are drawn on the canvas")
@@ -244,4 +237,30 @@ canvas_flame <- function(colors, background = "#000000", iterations = 1000000,
   canvas[, , 3][hits] <- canvas[, , 3][hits] * scaling
   canvas[, , 4][hits] <- canvas[, , 4][hits] * scaling
   return(canvas)
+}
+
+.createFunctionSystem <- function(n, symmetry) {
+  parameters <- matrix(stats::runif(n * 6, min = -1, max = 1), nrow = n, ncol = 6)
+  indicator <- nrow(parameters)
+  if (symmetry != 0) {
+    if (symmetry != -1) { # Rotation functions
+      nrotations <- abs(symmetry) + 1
+      for (i in 1:(nrotations - 1)) {
+        angle <- 360 / nrotations * i
+        rotation <- matrix(rep(c(cos(angle), -sin(angle), 0, sin(angle), cos(angle), 0), times = n), byrow = TRUE, nrow = n, ncol = 6)
+        parameters <- rbind(parameters, rotation)
+      }
+      n <- nrow(parameters)
+    }
+    if (symmetry < 0) { # Dihedral function
+      dihedral <- matrix(rep(c(-1, 0, 0, 0, 1, 0), times = n), byrow = TRUE, nrow = n, ncol = 6)
+      parameters <- rbind(parameters, dihedral)
+      n <- nrow(parameters)
+    }
+  }
+  out <- list()
+  out[["n"]] <- n
+  out[["parameters"]] <- parameters
+  out[["indicator"]] <- indicator
+  return(out)
 }

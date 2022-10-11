@@ -349,7 +349,8 @@ arma::cube iterate_flame(arma::cube canvas,
                          Rcpp::DoubleVector varParams,
                          arma::mat postPars,
                          Rcpp::DoubleVector finalPars,
-                         Rcpp::DoubleVector extraPars) {
+                         Rcpp::DoubleVector extraPars,
+                         int bsym) {
   int i, j, indx, indy, nvar = variations.length(), nfunc = functions.length();
   double xc, yc, xp, yp, x = R::runif(-1, 1), y = R::runif(-1, 1), c1 = R::runif(0, 1), c2 = R::runif(0, 1), c3 = R::runif(0, 1);
   bool vary = !((nvar == 1) && (variations[0] == 0));
@@ -398,7 +399,7 @@ arma::cube iterate_flame(arma::cube canvas,
       }
     }
     // Update color channels for the current iteration
-    if (funcPars(i, 5) != 0) { // All symmetry functions have a zero as the last parameter
+    if (i < bsym) { // Do not update the color if the jump comes from a symmetry function
       c1 = (c1 + colors(i, 0)) / 2;
       c2 = (c2 + colors(i, 1)) / 2;
       c3 = (c3 + colors(i, 2)) / 2;

@@ -79,8 +79,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // iterate_flame
-arma::cube iterate_flame(arma::cube canvas, int iterations, int resolution, int edge, bool blend, bool weighted, bool post, bool final, bool extra, arma::mat colors, Rcpp::DoubleVector functions, Rcpp::DoubleVector funcWeights, arma::mat funcPars, Rcpp::DoubleVector variations, arma::mat varWeights, Rcpp::DoubleVector varParams, arma::mat postPars, Rcpp::DoubleVector finalPars, Rcpp::DoubleVector extraPars);
-RcppExport SEXP _aRtsy_iterate_flame(SEXP canvasSEXP, SEXP iterationsSEXP, SEXP resolutionSEXP, SEXP edgeSEXP, SEXP blendSEXP, SEXP weightedSEXP, SEXP postSEXP, SEXP finalSEXP, SEXP extraSEXP, SEXP colorsSEXP, SEXP functionsSEXP, SEXP funcWeightsSEXP, SEXP funcParsSEXP, SEXP variationsSEXP, SEXP varWeightsSEXP, SEXP varParamsSEXP, SEXP postParsSEXP, SEXP finalParsSEXP, SEXP extraParsSEXP) {
+arma::cube iterate_flame(arma::cube canvas, int iterations, int resolution, int edge, bool blend, bool weighted, bool post, bool final, bool extra, arma::mat colors, Rcpp::DoubleVector functions, Rcpp::DoubleVector funcWeights, arma::mat funcPars, Rcpp::DoubleVector variations, arma::mat varWeights, Rcpp::DoubleVector varParams, arma::mat postPars, Rcpp::DoubleVector finalPars, Rcpp::DoubleVector extraPars, int bsym);
+RcppExport SEXP _aRtsy_iterate_flame(SEXP canvasSEXP, SEXP iterationsSEXP, SEXP resolutionSEXP, SEXP edgeSEXP, SEXP blendSEXP, SEXP weightedSEXP, SEXP postSEXP, SEXP finalSEXP, SEXP extraSEXP, SEXP colorsSEXP, SEXP functionsSEXP, SEXP funcWeightsSEXP, SEXP funcParsSEXP, SEXP variationsSEXP, SEXP varWeightsSEXP, SEXP varParamsSEXP, SEXP postParsSEXP, SEXP finalParsSEXP, SEXP extraParsSEXP, SEXP bsymSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -103,7 +103,8 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< arma::mat >::type postPars(postParsSEXP);
     Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type finalPars(finalParsSEXP);
     Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type extraPars(extraParsSEXP);
-    rcpp_result_gen = Rcpp::wrap(iterate_flame(canvas, iterations, resolution, edge, blend, weighted, post, final, extra, colors, functions, funcWeights, funcPars, variations, varWeights, varParams, postPars, finalPars, extraPars));
+    Rcpp::traits::input_parameter< int >::type bsym(bsymSEXP);
+    rcpp_result_gen = Rcpp::wrap(iterate_flame(canvas, iterations, resolution, edge, blend, weighted, post, final, extra, colors, functions, funcWeights, funcPars, variations, varWeights, varParams, postPars, finalPars, extraPars, bsym));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -375,7 +376,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_aRtsy_draw_circlemap", (DL_FUNC) &_aRtsy_draw_circlemap, 6},
     {"_aRtsy_get_collatz_sequence", (DL_FUNC) &_aRtsy_get_collatz_sequence, 1},
     {"_aRtsy_draw_collatz", (DL_FUNC) &_aRtsy_draw_collatz, 4},
-    {"_aRtsy_iterate_flame", (DL_FUNC) &_aRtsy_iterate_flame, 19},
+    {"_aRtsy_iterate_flame", (DL_FUNC) &_aRtsy_iterate_flame, 20},
     {"_aRtsy_iterate_flow", (DL_FUNC) &_aRtsy_iterate_flow, 8},
     {"_aRtsy_iterate_maze", (DL_FUNC) &_aRtsy_iterate_maze, 3},
     {"_aRtsy_iterate_mesh", (DL_FUNC) &_aRtsy_iterate_mesh, 7},

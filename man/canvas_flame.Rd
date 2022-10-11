@@ -5,9 +5,8 @@
 \title{Draw a Fractal Flame}
 \usage{
 canvas_flame(colors, background = "#000000", iterations = 1000000,
-             variations = 0, blend = TRUE, weighted = FALSE,
+             variations = 0, symmetry = 0, blend = TRUE, weighted = FALSE,
              post = FALSE, final = FALSE, extra = FALSE,
-             symmetry = c("none", "dihedral", "rotation", "both"),
              display = c("colored", "logdensity"),
              zoom = 1, resolution = 1000)
 }
@@ -18,19 +17,19 @@ canvas_flame(colors, background = "#000000", iterations = 1000000,
 
 \item{iterations}{a positive integer specifying the number of iterations of the algorithm.}
 
-\item{variations}{an integer (vector) specifying the variations to be included in the flame. The default \code{0} includes only a linear variation. Including multiple variations increases the computation time. See the details section for more information about possible variations.}
+\item{variations}{an integer (vector) with a minimum of 0 and a maximum of 48 specifying the variations to be included in the flame. The default \code{0} includes only a linear variation. Including multiple variations (e.g., \code{c(1, 2, 3)}) increases the computation time. See the details section for more information about possible variations.}
 
-\item{blend}{logical. Whether to blend the variations (\code{TRUE}) or pick a unique variation in each iteration (\code{FALSE}). \code{blend = TRUE} significantly increases computation time.}
+\item{symmetry}{an integer with a minimum of -6 and a maximum of 6 indicating the type of symmetry to include in the flame. The default \code{0} includes no symmetry. Including symmetry increases the computation time as a function of the absolute \code{symmetry} value. See the details section for more information about possible symmetries.}
 
-\item{weighted}{logical. Whether to weigh the functions and the variations (\code{TRUE}) or pick a unique function and equally weigh all variations in each iteration (\code{FALSE}). \code{weighted = TRUE} significantly increases the computation time.}
+\item{blend}{logical. Whether to blend the variations (\code{TRUE}) or pick a unique variation in each iteration (\code{FALSE}). \code{blend = TRUE} increases computation time as a function of the number of included variations.}
+
+\item{weighted}{logical. Whether to weigh the functions and the variations (\code{TRUE}) or pick a function at random and equally weigh all variations (\code{FALSE}). \code{weighted = TRUE} significantly increases the computation time.}
 
 \item{post}{logical. Whether to apply a post transformation in each iteration.}
 
 \item{final}{logical. Whether to apply a final transformation in each iteration.}
 
 \item{extra}{logical. Whether to apply an additional post transformation after the final transformation. Only has an effect when \code{final = TRUE}.}
-
-\item{symmetry}{a character indicating the type of symmetry to include in the flame. The default \code{none} includes no symmetry, \code{dihedral} mirrors the flame, \code{rotation} induces rotational symmetry and \code{both} includes both types of symmetry.}
 
 \item{display}{a character indicating how to display the flame. \code{colored} (the default) displays colors according to which function they originate from. \code{logdensity} plots a gradient using the log density of the pixel count.}
 
@@ -98,6 +97,19 @@ The \code{variation} argument can be used to include specific variations into th
  \item{\code{47}: Twintrian}
  \item{\code{48}: Cross}
 }
+
+The \code{symmetry} argument can be used to include symmetry into the flame. Possible options are:
+
+\itemize{
+ \item{\code{0}: Linear}
+ \item{\code{-1}: Dihedral symmetry}
+ \item{\code{1}: Two-way rotational symmetry}
+ \item{\code{(-)2}: (Dihedral) Three-way rotational symmetry}
+ \item{\code{(-)3}: (Dihedral) Four-way rotational symmetry}
+ \item{\code{(-)4}: (Dihedral) Five-way rotational symmetry}
+ \item{\code{(-)5}: (Dihedral) Six-way rotational symmetry}
+ \item{\code{(-)6}: (Dihedral) Snowflake symmetry}
+}
 }
 \examples{
 \donttest{
@@ -105,6 +117,9 @@ set.seed(3)
 
 # Simple example, linear variation, relatively few iterations
 canvas_flame(colors = c("dodgerblue", "green"), variations = 0)
+
+# Simple example, linear variation, dihedral symmetry
+canvas_flame(colors = c("hotpink", "yellow"), variations = 0, symmetry = -1)
 
 # Advanced example (no-blend, weighted, sine and spherical variations)
 canvas_flame(
