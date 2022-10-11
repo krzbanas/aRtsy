@@ -398,15 +398,17 @@ arma::cube iterate_flame(arma::cube canvas,
       }
     }
     // Update color channels for the current iteration
-    c1 = (c1 + colors(i, 0)) / 2;
-    c2 = (c2 + colors(i, 1)) / 2;
-    c3 = (c3 + colors(i, 2)) / 2;
+    if (funcPars(i, 5) != 0) { // All symmetry functions have a zero as the last parameter
+      c1 = (c1 + colors(i, 0)) / 2;
+      c2 = (c2 + colors(i, 1)) / 2;
+      c3 = (c3 + colors(i, 2)) / 2;
+    }
     // Color the four channels
     if (iter > 20) {
       indx = (x * resolution / (2 * edge)) + resolution / 2;
-      if ((indx > 0) && (indx < resolution)) {
+      if ((indx >= 0) && (indx < resolution)) {
         indy = (y * resolution / (2 * edge)) + resolution / 2;
-        if ((indy > 0) && (indy < resolution)) {
+        if ((indy >= 0) && (indy < resolution)) {
           ++canvas(indx, indy, 0);
           canvas(indx, indy, 1) = canvas(indx, indy, 1) + c1;
           canvas(indx, indy, 2) = canvas(indx, indy, 2) + c2;

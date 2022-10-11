@@ -4,11 +4,12 @@
 \alias{canvas_flame}
 \title{Draw a Fractal Flame}
 \usage{
-canvas_flame(colors, background = "#000000",
-             iterations = 1000000, zoom = 1, resolution = 1000,
+canvas_flame(colors, background = "#000000", iterations = 1000000,
              variations = 0, blend = TRUE, weighted = FALSE,
+             post = FALSE, final = FALSE, extra = FALSE,
+             symmetry = c("none", "dihedral", "rotation", "both"),
              display = c("colored", "logdensity"),
-             post = FALSE, final = FALSE, extra = FALSE)
+             zoom = 1, resolution = 1000)
 }
 \arguments{
 \item{colors}{a string or character vector specifying the color(s) used for the artwork.}
@@ -17,23 +18,25 @@ canvas_flame(colors, background = "#000000",
 
 \item{iterations}{a positive integer specifying the number of iterations of the algorithm.}
 
-\item{zoom}{a positive value specifying the amount of zooming.}
-
-\item{resolution}{resolution of the artwork in pixels per row/column. Increasing the resolution does not increases the computation time of this algorithm.}
-
 \item{variations}{an integer (vector) specifying the variations to be included in the flame. The default \code{0} includes only a linear variation. Including multiple variations increases the computation time. See the details section for more information about possible variations.}
 
 \item{blend}{logical. Whether to blend the variations (\code{TRUE}) or pick a unique variation in each iteration (\code{FALSE}). \code{blend = TRUE} significantly increases computation time.}
 
 \item{weighted}{logical. Whether to weigh the functions and the variations (\code{TRUE}) or pick a unique function and equally weigh all variations in each iteration (\code{FALSE}). \code{weighted = TRUE} significantly increases the computation time.}
 
-\item{display}{a character indicating how to display the flame. \code{colored} (the default) displays colors according to which function they originate from. \code{logdensity} plots a gradient using the log density of the pixel count.}
-
 \item{post}{logical. Whether to apply a post transformation in each iteration.}
 
 \item{final}{logical. Whether to apply a final transformation in each iteration.}
 
 \item{extra}{logical. Whether to apply an additional post transformation after the final transformation. Only has an effect when \code{final = TRUE}.}
+
+\item{symmetry}{a character indicating the type of symmetry to include in the flame. The default \code{none} includes no symmetry, \code{dihedral} mirrors the flame, \code{rotation} induces rotational symmetry and \code{both} includes both types of symmetry.}
+
+\item{display}{a character indicating how to display the flame. \code{colored} (the default) displays colors according to which function they originate from. \code{logdensity} plots a gradient using the log density of the pixel count.}
+
+\item{zoom}{a positive value specifying the amount of zooming.}
+
+\item{resolution}{resolution of the artwork in pixels per row/column. Increasing the resolution does not increases the computation time of this algorithm.}
 }
 \value{
 A \code{ggplot} object containing the artwork.
