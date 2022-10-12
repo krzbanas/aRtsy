@@ -128,10 +128,11 @@
 #' # Advanced example (no-blend, weighted, sine and spherical variations)
 #' canvas_flame(
 #'   colors = colorPalette("origami"), variations = c(1, 2),
-#'   blend = FALSE, weighted = TRUE, iterations = 1e7
+#'   blend = FALSE, weighted = TRUE, iterations = 1e8
 #' )
 #'
 #' # More iterations give much better images
+#' set.seed(123)
 #' canvas_flame(colors = c("red", "blue"), iterations = 1e8, variations = c(21, 29))
 #' }
 #'
