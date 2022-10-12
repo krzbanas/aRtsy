@@ -367,40 +367,40 @@ arma::cube iterate_flame(arma::cube canvas,
     }
     // Apply the affine function to the current point
     transform(x, y, funcPars(i, 0), funcPars(i, 1), funcPars(i, 2), funcPars(i, 3), funcPars(i, 4), funcPars(i, 5));
-    if (vary) {
-      // Apply the variation(s) to the point
-      if (blend) {
-        xc = 0, yc = 0;
-        for (int j = 0; j < nvar; j++) {
-          xp = x, yp = y;
-          variation(xp, yp, variations[j], funcPars(i, 0), funcPars(i, 1), funcPars(i, 2), funcPars(i, 3), funcPars(i, 4), funcPars(i, 5), varParams);
-          xc += varWeights(i, j) * xp;
-          yc += varWeights(i, j) * yp;
-        }
-        x = xc, y = yc;
-      } else {
-        if (weighted) {
-          j = Rcpp::sample(variations, 1, false, Rcpp::as<Rcpp::NumericVector>(Rcpp::wrap(varWeights.row(i))))[0];
+    if (i < bsym) { // This is not a symmetric function
+      if (vary) {
+        // Apply the variation(s) to the point
+        if (blend) {
+          xc = 0, yc = 0;
+          for (int j = 0; j < nvar; j++) {
+            xp = x, yp = y;
+            variation(xp, yp, variations[j], funcPars(i, 0), funcPars(i, 1), funcPars(i, 2), funcPars(i, 3), funcPars(i, 4), funcPars(i, 5), varParams);
+            xc += varWeights(i, j) * xp;
+            yc += varWeights(i, j) * yp;
+          }
+          x = xc, y = yc;
         } else {
-          j = floor(R::runif(0, nvar));
+          if (weighted) {
+            j = Rcpp::sample(variations, 1, false, Rcpp::as<Rcpp::NumericVector>(Rcpp::wrap(varWeights.row(i))))[0];
+          } else {
+            j = floor(R::runif(0, nvar));
+          }
+          variation(x, y, variations[j], funcPars(i, 0), funcPars(i, 1), funcPars(i, 2), funcPars(i, 3), funcPars(i, 4), funcPars(i, 5), varParams);
         }
-        variation(x, y, variations[j], funcPars(i, 0), funcPars(i, 1), funcPars(i, 2), funcPars(i, 3), funcPars(i, 4), funcPars(i, 5), varParams);
       }
-    }
-    // Apply a post transformation
-    if (post) {
-      transform(x, y, postPars(i, 0), postPars(i, 1), postPars(i, 2), postPars(i, 3), postPars(i, 4), postPars(i, 5));
-    }
-    // Apply a final transformation
-    if (final) {
-      transform(x, y, finalPars[0], finalPars[1], finalPars[2], finalPars[3], finalPars[4], finalPars[5]);
-      // Apply an additional post transformation
-      if (extra) {
-        transform(x, y, extraPars[0], extraPars[1], extraPars[2], extraPars[3], extraPars[4], extraPars[5]);
+      // Apply a post transformation
+      if (post) {
+        transform(x, y, postPars(i, 0), postPars(i, 1), postPars(i, 2), postPars(i, 3), postPars(i, 4), postPars(i, 5));
       }
-    }
-    // Update color channels for the current iteration
-    if (i < bsym) { // Do not update the color if the jump comes from a symmetry function
+      // Apply a final transformation
+      if (final) {
+        transform(x, y, finalPars[0], finalPars[1], finalPars[2], finalPars[3], finalPars[4], finalPars[5]);
+        // Apply an additional post transformation
+        if (extra) {
+          transform(x, y, extraPars[0], extraPars[1], extraPars[2], extraPars[3], extraPars[4], extraPars[5]);
+        }
+      }
+      // Update color channels for the current iteration
       c1 = (c1 + colors(i, 0)) / 2;
       c2 = (c2 + colors(i, 1)) / 2;
       c3 = (c3 + colors(i, 2)) / 2;

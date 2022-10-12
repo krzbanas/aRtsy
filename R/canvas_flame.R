@@ -123,7 +123,7 @@
 #' canvas_flame(colors = c("dodgerblue", "green"), variations = 0)
 #'
 #' # Simple example, linear variation, dihedral symmetry
-#' canvas_flame(colors = c("hotpink", "yellow"), variations = 0, symmetry = -1)
+#' canvas_flame(colors = c("hotpink", "yellow"), variations = 0, symmetry = -1, iterations = 1e7)
 #'
 #' # Advanced example (no-blend, weighted, sine and spherical variations)
 #' canvas_flame(
@@ -132,7 +132,7 @@
 #' )
 #'
 #' # More iterations give much better images
-#' canvas_flame(colors = c("red", "blue"), iterations = 1e8, variations = c(2, 5, 23, 27))
+#' canvas_flame(colors = c("red", "blue"), iterations = 1e8, variations = c(21, 29))
 #' }
 #'
 #' @export
@@ -250,7 +250,7 @@ canvas_flame <- function(colors, background = "#000000", iterations = 1000000,
     if (symmetry != -1) { # Rotation functions
       nrotations <- abs(symmetry) + 1
       for (i in 1:(nrotations - 1)) {
-        angle <- 360 / nrotations * i
+        angle <- (2 * pi) / nrotations * i
         rotation <- matrix(rep(c(cos(angle), -sin(angle), 0, sin(angle), cos(angle), 0), times = n), byrow = TRUE, nrow = n, ncol = 6)
         parameters <- rbind(parameters, rotation)
       }

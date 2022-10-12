@@ -121,7 +121,7 @@ set.seed(3)
 canvas_flame(colors = c("dodgerblue", "green"), variations = 0)
 
 # Simple example, linear variation, dihedral symmetry
-canvas_flame(colors = c("hotpink", "yellow"), variations = 0, symmetry = -1)
+canvas_flame(colors = c("hotpink", "yellow"), variations = 0, symmetry = -1, iterations = 1e7)
 
 # Advanced example (no-blend, weighted, sine and spherical variations)
 canvas_flame(
@@ -130,7 +130,7 @@ canvas_flame(
 )
 
 # More iterations give much better images
-canvas_flame(colors = c("red", "blue"), iterations = 1e8, variations = c(2, 5, 23, 27))
+canvas_flame(colors = c("red", "blue"), iterations = 1e8, variations = c(21, 29))
 }
 
 }
