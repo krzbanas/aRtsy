@@ -36,7 +36,7 @@
 #' @param display     a character indicating how to display the flame. \code{colored} (the default) displays colors according to which function they originate from. \code{logdensity} plots a gradient using the log density of the pixel count.
 #' @param zoom        a positive value specifying the amount of zooming.
 #' @param resolution  resolution of the artwork in pixels per row/column. Increasing the resolution does not increases the computation time of this algorithm.
-#' @param gamma       a numeric value specifying the gamma correction (only used when \code{display == "colored"}). Larger values result in brighter images and vice versa.
+#' @param gamma       a numeric value specifying the gamma correction (only used when \code{display = "colored"}). Larger values result in brighter images and vice versa.
 #'
 #' @details           The \code{variation} argument can be used to include specific variations into the flame. See the appendix in the references for examples of all variations. Possible variations are:
 #'

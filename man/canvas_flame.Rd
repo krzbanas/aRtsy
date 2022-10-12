@@ -37,7 +37,7 @@ canvas_flame(colors, background = "#000000", iterations = 1000000,
 
 \item{resolution}{resolution of the artwork in pixels per row/column. Increasing the resolution does not increases the computation time of this algorithm.}
 
-\item{gamma}{a numeric value specifying the gamma correction (only used when \code{display == "colored"}). Larger values result in brighter images and vice versa.}
+\item{gamma}{a numeric value specifying the gamma correction (only used when \code{display = "colored"}). Larger values result in brighter images and vice versa.}
 }
 \value{
 A \code{ggplot} object containing the artwork.
