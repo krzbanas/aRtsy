@@ -25,7 +25,7 @@
 #'
 #' @param colors      a string or character vector specifying the color(s) used for the artwork.
 #' @param background  a character specifying the color used for the background.
-#' @param iterations  a positive integer specifying the number of iterations of the algorithm.
+#' @param iterations  a positive integer specifying the number of iterations of the algorithm. Using more iterations results in images of higher quality but also increases the computation time.
 #' @param variations  an integer (vector) with a minimum of 0 and a maximum of 48 specifying the variations to be included in the flame. The default \code{0} includes only a linear variation. Including multiple variations (e.g., \code{c(1, 2, 3)}) increases the computation time. See the details section for more information about possible variations.
 #' @param symmetry    an integer with a minimum of -6 and a maximum of 6 indicating the type of symmetry to include in the flame. The default \code{0} includes no symmetry. Including symmetry increases the computation time as a function of the absolute \code{symmetry} value. See the details section for more information about possible symmetries.
 #' @param blend       logical. Whether to blend the variations (\code{TRUE}) or pick a unique variation in each iteration (\code{FALSE}). \code{blend = TRUE} increases computation time as a function of the number of included variations.
@@ -41,7 +41,7 @@
 #' @details           The \code{variation} argument can be used to include specific variations into the flame. See the appendix in the references for examples of all variations. Possible variations are:
 #'
 #' \itemize{
-#'  \item{\code{0}: Linear}
+#'  \item{\code{0}: Linear (default)}
 #'  \item{\code{1}: Sine}
 #'  \item{\code{2}: Spherical}
 #'  \item{\code{3}: Swirl}
@@ -95,7 +95,7 @@
 #' @details           The \code{symmetry} argument can be used to include symmetry into the flame. Possible options are:
 #'
 #' \itemize{
-#'  \item{\code{0}: Linear}
+#'  \item{\code{0}: No symmetry (default)}
 #'  \item{\code{-1}: Dihedral symmetry}
 #'  \item{\code{1}: Two-way rotational symmetry}
 #'  \item{\code{(-)2}: (Dihedral) Three-way rotational symmetry}
