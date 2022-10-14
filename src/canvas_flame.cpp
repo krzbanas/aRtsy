@@ -16,30 +16,30 @@
 #include <RcppArmadillo.h>
 // [[Rcpp::depends(RcppArmadillo)]]
 
-void transform(double &x,
-               double &y,
-               const double a,
-               const double b,
-               const double c,
-               const double d,
-               const double e,
-               const double f) {
-  double newx = a * x + b * y + c;
-  double newy = d * x + e * y + f;
+void transform(double& x,
+               double& y,
+               const double& a,
+               const double& b,
+               const double& c,
+               const double& d,
+               const double& e,
+               const double& f) {
+  const double newx = a * x + b * y + c;
+  const double newy = d * x + e * y + f;
   x = newx;
   y = newy;
 }
 
-void variation(double &x,
-               double &y,
-               const int i,
-               const double a,
-               const double b,
-               const double c,
-               const double d,
-               const double e,
-               const double f,
-               const Rcpp::DoubleVector pparams) {;
+void variation(double& x,
+               double& y,
+               const int& i,
+               const double& a,
+               const double& b,
+               const double& c,
+               const double& d,
+               const double& e,
+               const double& f,
+               const Rcpp::DoubleVector& pparams) {
   double newx, newy;
   if (i == 0) { // Linear
     newx = x;
@@ -105,12 +105,7 @@ void variation(double &x,
     double r = sqrt(pow(x, 2) + pow(y, 2));
     double theta = atan(x / y);
     double s = R::runif(0, 1);
-    double Omega;
-    if (s < 0.5) {
-      Omega = 0;
-    } else {
-      Omega = M_PI;
-    }
+    double Omega = (s < .05) ? 0 : M_PI;
     newx = sqrt(r) * cos(theta / 2 + Omega);
     newy = sqrt(r) * sin(theta / 2 + Omega);
   } else if (i == 14) { // Bent
@@ -333,58 +328,49 @@ void variation(double &x,
 
 // [[Rcpp::export]]
 arma::cube iterate_flame(arma::cube canvas,
-                         int iterations,
-                         int resolution,
-                         int edge,
-                         bool blend,
-                         bool weighted,
-                         bool post,
-                         bool final,
-                         bool extra,
-                         arma::mat colors,
-                         Rcpp::DoubleVector functions,
-                         Rcpp::DoubleVector funcWeights,
-                         arma::mat funcPars,
-                         Rcpp::DoubleVector variations,
-                         arma::mat varWeights,
-                         Rcpp::DoubleVector varParams,
-                         arma::mat postPars,
-                         Rcpp::DoubleVector finalPars,
-                         Rcpp::DoubleVector extraPars,
-                         int bsym) {
-  int i, j, indx, indy, nvar = variations.length(), nfunc = functions.length();
-  double xc, yc, xp, yp, x = R::runif(-1, 1), y = R::runif(-1, 1), c1 = R::runif(0, 1), c2 = R::runif(0, 1), c3 = R::runif(0, 1);
+                         const int& iterations,
+                         const int& resolution,
+                         const int& edge,
+                         const bool& blend,
+                         const bool& weighted,
+                         const bool& post,
+                         const bool& final,
+                         const bool& extra,
+                         const arma::mat& colors,
+                         const Rcpp::DoubleVector& functions,
+                         const Rcpp::DoubleVector& funcWeights,
+                         const arma::mat& funcPars,
+                         const Rcpp::DoubleVector& variations,
+                         const arma::mat& varWeights,
+                         const Rcpp::DoubleVector& varParams,
+                         const arma::mat& postPars,
+                         const Rcpp::DoubleVector& finalPars,
+                         const Rcpp::DoubleVector& extraPars,
+                         const int& bsym) {
+  const int nvar = variations.length(), nfunc = functions.length();
+  double x = R::runif(-1, 1), y = R::runif(-1, 1), c1 = R::runif(0, 1), c2 = R::runif(0, 1), c3 = R::runif(0, 1);
   bool vary = !((nvar == 1) && (variations[0] == 0));
-  for (int iter = 1; iter < iterations; iter++) {
-    if ((iter % 100) == 0) {
+  for (int iter = 1; iter < iterations; ++iter) {
+    if ((iter % 1000) == 0) {
       Rcpp::checkUserInterrupt();
     }
-    // Pick an affine function to use according to their weights
-    if (weighted) {
-      i = Rcpp::sample(functions, 1, false, funcWeights)[0];
-    } else {
-      i = floor(R::runif(0, nfunc));
-    }
-    // Apply the affine function to the current point
+    // Pick an affine function to use and apply to the current point
+    const int i = weighted ? Rcpp::sample(functions, 1, false, funcWeights)[0] : floor(R::runif(0, nfunc));
     transform(x, y, funcPars(i, 0), funcPars(i, 1), funcPars(i, 2), funcPars(i, 3), funcPars(i, 4), funcPars(i, 5));
-    if (i < bsym) { // This is not a symmetric function
-      if (vary) {
-        // Apply the variation(s) to the point
-        if (blend) {
-          xc = 0, yc = 0;
+    // Apply variations
+    if (i < bsym) { // Functions with i < bsym are affine functions, the rest is symmtry functions so we skip
+      if (vary) { // Do not vary if the only affine is linear
+        if (blend) { // Blend variations
+          double xc = 0, yc = 0;
           for (int j = 0; j < nvar; j++) {
-            xp = x, yp = y;
+            double xp = x, yp = y;
             variation(xp, yp, variations[j], funcPars(i, 0), funcPars(i, 1), funcPars(i, 2), funcPars(i, 3), funcPars(i, 4), funcPars(i, 5), varParams);
             xc += varWeights(i, j) * xp;
             yc += varWeights(i, j) * yp;
           }
           x = xc, y = yc;
-        } else {
-          if (weighted) {
-            j = Rcpp::sample(variations, 1, false, Rcpp::as<Rcpp::NumericVector>(Rcpp::wrap(varWeights.row(i))))[0];
-          } else {
-            j = floor(R::runif(0, nvar));
-          }
+        } else { // Do not blend variations
+          const int j = weighted ? Rcpp::sample(variations, 1, false, Rcpp::as<Rcpp::NumericVector>(Rcpp::wrap(varWeights.row(i))))[0] : floor(R::runif(0, nvar));
           variation(x, y, variations[j], funcPars(i, 0), funcPars(i, 1), funcPars(i, 2), funcPars(i, 3), funcPars(i, 4), funcPars(i, 5), varParams);
         }
       }
@@ -405,11 +391,11 @@ arma::cube iterate_flame(arma::cube canvas,
       c2 = (c2 + colors(i, 1)) / 2;
       c3 = (c3 + colors(i, 2)) / 2;
     }
-    // Color the four channels
+    // Update the cube data structure
     if (iter > 20) {
-      indx = (x * resolution / (2 * edge)) + resolution / 2;
+      const int indx = (x * resolution / (2 * edge)) + resolution / 2;
       if ((indx >= 0) && (indx < resolution)) {
-        indy = (y * resolution / (2 * edge)) + resolution / 2;
+        const int indy = (y * resolution / (2 * edge)) + resolution / 2;
         if ((indy >= 0) && (indy < resolution)) {
           ++canvas(indx, indy, 0);
           canvas(indx, indy, 1) = canvas(indx, indy, 1) + c1;

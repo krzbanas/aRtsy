@@ -79,31 +79,31 @@ BEGIN_RCPP
 END_RCPP
 }
 // iterate_flame
-arma::cube iterate_flame(arma::cube canvas, int iterations, int resolution, int edge, bool blend, bool weighted, bool post, bool final, bool extra, arma::mat colors, Rcpp::DoubleVector functions, Rcpp::DoubleVector funcWeights, arma::mat funcPars, Rcpp::DoubleVector variations, arma::mat varWeights, Rcpp::DoubleVector varParams, arma::mat postPars, Rcpp::DoubleVector finalPars, Rcpp::DoubleVector extraPars, int bsym);
+arma::cube iterate_flame(arma::cube canvas, const int& iterations, const int& resolution, const int& edge, const bool& blend, const bool& weighted, const bool& post, const bool& final, const bool& extra, const arma::mat& colors, const Rcpp::DoubleVector& functions, const Rcpp::DoubleVector& funcWeights, const arma::mat& funcPars, const Rcpp::DoubleVector& variations, const arma::mat& varWeights, const Rcpp::DoubleVector& varParams, const arma::mat& postPars, const Rcpp::DoubleVector& finalPars, const Rcpp::DoubleVector& extraPars, const int& bsym);
 RcppExport SEXP _aRtsy_iterate_flame(SEXP canvasSEXP, SEXP iterationsSEXP, SEXP resolutionSEXP, SEXP edgeSEXP, SEXP blendSEXP, SEXP weightedSEXP, SEXP postSEXP, SEXP finalSEXP, SEXP extraSEXP, SEXP colorsSEXP, SEXP functionsSEXP, SEXP funcWeightsSEXP, SEXP funcParsSEXP, SEXP variationsSEXP, SEXP varWeightsSEXP, SEXP varParamsSEXP, SEXP postParsSEXP, SEXP finalParsSEXP, SEXP extraParsSEXP, SEXP bsymSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< arma::cube >::type canvas(canvasSEXP);
-    Rcpp::traits::input_parameter< int >::type iterations(iterationsSEXP);
-    Rcpp::traits::input_parameter< int >::type resolution(resolutionSEXP);
-    Rcpp::traits::input_parameter< int >::type edge(edgeSEXP);
-    Rcpp::traits::input_parameter< bool >::type blend(blendSEXP);
-    Rcpp::traits::input_parameter< bool >::type weighted(weightedSEXP);
-    Rcpp::traits::input_parameter< bool >::type post(postSEXP);
-    Rcpp::traits::input_parameter< bool >::type final(finalSEXP);
-    Rcpp::traits::input_parameter< bool >::type extra(extraSEXP);
-    Rcpp::traits::input_parameter< arma::mat >::type colors(colorsSEXP);
-    Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type functions(functionsSEXP);
-    Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type funcWeights(funcWeightsSEXP);
-    Rcpp::traits::input_parameter< arma::mat >::type funcPars(funcParsSEXP);
-    Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type variations(variationsSEXP);
-    Rcpp::traits::input_parameter< arma::mat >::type varWeights(varWeightsSEXP);
-    Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type varParams(varParamsSEXP);
-    Rcpp::traits::input_parameter< arma::mat >::type postPars(postParsSEXP);
-    Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type finalPars(finalParsSEXP);
-    Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type extraPars(extraParsSEXP);
-    Rcpp::traits::input_parameter< int >::type bsym(bsymSEXP);
+    Rcpp::traits::input_parameter< const int& >::type iterations(iterationsSEXP);
+    Rcpp::traits::input_parameter< const int& >::type resolution(resolutionSEXP);
+    Rcpp::traits::input_parameter< const int& >::type edge(edgeSEXP);
+    Rcpp::traits::input_parameter< const bool& >::type blend(blendSEXP);
+    Rcpp::traits::input_parameter< const bool& >::type weighted(weightedSEXP);
+    Rcpp::traits::input_parameter< const bool& >::type post(postSEXP);
+    Rcpp::traits::input_parameter< const bool& >::type final(finalSEXP);
+    Rcpp::traits::input_parameter< const bool& >::type extra(extraSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type colors(colorsSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::DoubleVector& >::type functions(functionsSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::DoubleVector& >::type funcWeights(funcWeightsSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type funcPars(funcParsSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::DoubleVector& >::type variations(variationsSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type varWeights(varWeightsSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::DoubleVector& >::type varParams(varParamsSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type postPars(postParsSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::DoubleVector& >::type finalPars(finalParsSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::DoubleVector& >::type extraPars(extraParsSEXP);
+    Rcpp::traits::input_parameter< const int& >::type bsym(bsymSEXP);
     rcpp_result_gen = Rcpp::wrap(iterate_flame(canvas, iterations, resolution, edge, blend, weighted, post, final, extra, colors, functions, funcWeights, funcPars, variations, varWeights, varParams, postPars, finalPars, extraPars, bsym));
     return rcpp_result_gen;
 END_RCPP
