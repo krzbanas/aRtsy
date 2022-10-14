@@ -142,19 +142,20 @@ BEGIN_RCPP
 END_RCPP
 }
 // iterate_mesh
-Rcpp::DataFrame iterate_mesh(int iterations, int start, Rcpp::IntegerVector order, Rcpp::DoubleVector points, Rcpp::DoubleVector centers, Rcpp::DoubleVector radii, Rcpp::DoubleVector increase);
-RcppExport SEXP _aRtsy_iterate_mesh(SEXP iterationsSEXP, SEXP startSEXP, SEXP orderSEXP, SEXP pointsSEXP, SEXP centersSEXP, SEXP radiiSEXP, SEXP increaseSEXP) {
+Rcpp::DataFrame iterate_mesh(arma::mat& canvas, const Rcpp::DoubleVector& points, const Rcpp::DoubleVector& centers, const int& iterations, const int& start, Rcpp::IntegerVector& order, Rcpp::DoubleVector& radii, Rcpp::DoubleVector& increase);
+RcppExport SEXP _aRtsy_iterate_mesh(SEXP canvasSEXP, SEXP pointsSEXP, SEXP centersSEXP, SEXP iterationsSEXP, SEXP startSEXP, SEXP orderSEXP, SEXP radiiSEXP, SEXP increaseSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< int >::type iterations(iterationsSEXP);
-    Rcpp::traits::input_parameter< int >::type start(startSEXP);
-    Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type order(orderSEXP);
-    Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type points(pointsSEXP);
-    Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type centers(centersSEXP);
-    Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type radii(radiiSEXP);
-    Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type increase(increaseSEXP);
-    rcpp_result_gen = Rcpp::wrap(iterate_mesh(iterations, start, order, points, centers, radii, increase));
+    Rcpp::traits::input_parameter< arma::mat& >::type canvas(canvasSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::DoubleVector& >::type points(pointsSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::DoubleVector& >::type centers(centersSEXP);
+    Rcpp::traits::input_parameter< const int& >::type iterations(iterationsSEXP);
+    Rcpp::traits::input_parameter< const int& >::type start(startSEXP);
+    Rcpp::traits::input_parameter< Rcpp::IntegerVector& >::type order(orderSEXP);
+    Rcpp::traits::input_parameter< Rcpp::DoubleVector& >::type radii(radiiSEXP);
+    Rcpp::traits::input_parameter< Rcpp::DoubleVector& >::type increase(increaseSEXP);
+    rcpp_result_gen = Rcpp::wrap(iterate_mesh(canvas, points, centers, iterations, start, order, radii, increase));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -381,7 +382,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_aRtsy_iterate_flame", (DL_FUNC) &_aRtsy_iterate_flame, 20},
     {"_aRtsy_iterate_flow", (DL_FUNC) &_aRtsy_iterate_flow, 10},
     {"_aRtsy_iterate_maze", (DL_FUNC) &_aRtsy_iterate_maze, 3},
-    {"_aRtsy_iterate_mesh", (DL_FUNC) &_aRtsy_iterate_mesh, 7},
+    {"_aRtsy_iterate_mesh", (DL_FUNC) &_aRtsy_iterate_mesh, 8},
     {"_aRtsy_get_closest_node", (DL_FUNC) &_aRtsy_get_closest_node, 5},
     {"_aRtsy_kill_attractors", (DL_FUNC) &_aRtsy_kill_attractors, 5},
     {"_aRtsy_draw_circle", (DL_FUNC) &_aRtsy_draw_circle, 4},
