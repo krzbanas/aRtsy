@@ -19,7 +19,7 @@ canvas_flame(colors, background = "#000000", iterations = 1000000,
 
 \item{variations}{an integer (vector) with a minimum of 0 and a maximum of 48 specifying the variations to be included in the flame. The default \code{0} includes only a linear variation. Including multiple variations (e.g., \code{c(1, 2, 3)}) increases the computation time. See the details section for more information about possible variations.}
 
-\item{symmetry}{an integer with a minimum of -6 and a maximum of 6 indicating the type of symmetry to include in the flame. The default \code{0} includes no symmetry. Including symmetry increases the computation time as a function of the absolute \code{symmetry} value. See the details section for more information about possible symmetries.}
+\item{symmetry}{an integer with a minimum of -6 and a maximum of 6 indicating the type of symmetry to include in the flame. The default \code{0} includes no symmetry. Including symmetry decreases the computation time as a function of the absolute \code{symmetry} value. See the details section for more information about possible symmetries.}
 
 \item{blend}{logical. Whether to blend the variations (\code{TRUE}) or pick a unique variation in each iteration (\code{FALSE}). \code{blend = TRUE} increases computation time as a function of the number of included variations.}
 
@@ -131,7 +131,7 @@ canvas_flame(
 
 # More iterations give much better images
 set.seed(123)
-canvas_flame(colors = c("red", "blue"), iterations = 1e8, variations = c(21, 29))
+canvas_flame(colors = c("red", "blue"), iterations = 1e8, variations = c(10, 17))
 }
 
 }
