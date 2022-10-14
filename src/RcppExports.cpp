@@ -12,15 +12,16 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
 // draw_ant
-arma::mat draw_ant(const arma::mat& directions, const int& iterations, const int& resolution);
-RcppExport SEXP _aRtsy_draw_ant(SEXP directionsSEXP, SEXP iterationsSEXP, SEXP resolutionSEXP) {
+arma::mat draw_ant(arma::mat& canvas, const arma::mat& directions, const int& iterations, const int& resolution);
+RcppExport SEXP _aRtsy_draw_ant(SEXP canvasSEXP, SEXP directionsSEXP, SEXP iterationsSEXP, SEXP resolutionSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::mat& >::type canvas(canvasSEXP);
     Rcpp::traits::input_parameter< const arma::mat& >::type directions(directionsSEXP);
     Rcpp::traits::input_parameter< const int& >::type iterations(iterationsSEXP);
     Rcpp::traits::input_parameter< const int& >::type resolution(resolutionSEXP);
-    rcpp_result_gen = Rcpp::wrap(draw_ant(directions, iterations, resolution));
+    rcpp_result_gen = Rcpp::wrap(draw_ant(canvas, directions, iterations, resolution));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -374,7 +375,7 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_aRtsy_draw_ant", (DL_FUNC) &_aRtsy_draw_ant, 3},
+    {"_aRtsy_draw_ant", (DL_FUNC) &_aRtsy_draw_ant, 4},
     {"_aRtsy_iterate_chladni", (DL_FUNC) &_aRtsy_iterate_chladni, 3},
     {"_aRtsy_draw_circlemap", (DL_FUNC) &_aRtsy_draw_circlemap, 6},
     {"_aRtsy_get_collatz_sequence", (DL_FUNC) &_aRtsy_get_collatz_sequence, 1},

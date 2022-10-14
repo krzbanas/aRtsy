@@ -58,6 +58,7 @@ canvas_ant <- function(colors, background = "#fafafa", iterations = 1000000,
   }
   palette <- c(background, colors)
   full_canvas <- draw_ant(
+    canvas = matrix(0, nrow = resolution, ncol = resolution),
     directions = .ant_directions(length(colors)),
     iterations = iterations,
     resolution = resolution

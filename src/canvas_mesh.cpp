@@ -29,13 +29,13 @@ Rcpp::IntegerVector int_seq(const int& first,
 }
 
 void shift_right(Rcpp::IntegerVector& x) {
-  int x1 = x[0];
+  const int& x1 = x[0];
   x.erase(0);
   x.push_back(x1);
 }
 
 void shift_right(Rcpp::DoubleVector& x) {
-  double x1 = x[0];
+  const double& x1 = x[0];
   x.erase(0);
   x.push_back(x1);
 }

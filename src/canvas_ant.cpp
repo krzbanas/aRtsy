@@ -17,10 +17,10 @@
 // [[Rcpp::depends(RcppArmadillo)]]
 
 // [[Rcpp::export]]
-arma::mat draw_ant(const arma::mat& directions,
+arma::mat draw_ant(arma::mat& canvas,
+                   const arma::mat& directions,
                    const int& iterations,
                    const int& resolution) {
-  arma::mat canvas(resolution, resolution, arma::fill::zeros);
   const int ncolors = directions.n_rows, s = iterations / ncolors;
   int d = 0, c = 0, t0 = 0, t1 = 0, x = floor(R::runif(resolution * 0.05, resolution * 0.95)), y = floor(R::runif(resolution * 0.05, resolution * 0.95));
   for (int i = 0; i < iterations; ++i) {
