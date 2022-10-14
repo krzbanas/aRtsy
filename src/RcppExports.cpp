@@ -12,14 +12,14 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
 // draw_ant
-arma::mat draw_ant(arma::mat directions, int iterations, int resolution);
+arma::mat draw_ant(const arma::mat& directions, const int& iterations, const int& resolution);
 RcppExport SEXP _aRtsy_draw_ant(SEXP directionsSEXP, SEXP iterationsSEXP, SEXP resolutionSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::mat >::type directions(directionsSEXP);
-    Rcpp::traits::input_parameter< int >::type iterations(iterationsSEXP);
-    Rcpp::traits::input_parameter< int >::type resolution(resolutionSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type directions(directionsSEXP);
+    Rcpp::traits::input_parameter< const int& >::type iterations(iterationsSEXP);
+    Rcpp::traits::input_parameter< const int& >::type resolution(resolutionSEXP);
     rcpp_result_gen = Rcpp::wrap(draw_ant(directions, iterations, resolution));
     return rcpp_result_gen;
 END_RCPP
