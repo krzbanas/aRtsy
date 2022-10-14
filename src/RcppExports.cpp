@@ -109,20 +109,22 @@ BEGIN_RCPP
 END_RCPP
 }
 // iterate_flow
-Rcpp::DataFrame iterate_flow(arma::mat angles, int j, int iters, int left, int right, int top, int bottom, double step);
-RcppExport SEXP _aRtsy_iterate_flow(SEXP anglesSEXP, SEXP jSEXP, SEXP itersSEXP, SEXP leftSEXP, SEXP rightSEXP, SEXP topSEXP, SEXP bottomSEXP, SEXP stepSEXP) {
+Rcpp::DataFrame iterate_flow(arma::mat& canvas, const arma::mat& angles, const int& lines, const int& iters, const int& ncolors, const int& left, const int& right, const int& top, const int& bottom, const double& stepmax);
+RcppExport SEXP _aRtsy_iterate_flow(SEXP canvasSEXP, SEXP anglesSEXP, SEXP linesSEXP, SEXP itersSEXP, SEXP ncolorsSEXP, SEXP leftSEXP, SEXP rightSEXP, SEXP topSEXP, SEXP bottomSEXP, SEXP stepmaxSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::mat >::type angles(anglesSEXP);
-    Rcpp::traits::input_parameter< int >::type j(jSEXP);
-    Rcpp::traits::input_parameter< int >::type iters(itersSEXP);
-    Rcpp::traits::input_parameter< int >::type left(leftSEXP);
-    Rcpp::traits::input_parameter< int >::type right(rightSEXP);
-    Rcpp::traits::input_parameter< int >::type top(topSEXP);
-    Rcpp::traits::input_parameter< int >::type bottom(bottomSEXP);
-    Rcpp::traits::input_parameter< double >::type step(stepSEXP);
-    rcpp_result_gen = Rcpp::wrap(iterate_flow(angles, j, iters, left, right, top, bottom, step));
+    Rcpp::traits::input_parameter< arma::mat& >::type canvas(canvasSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type angles(anglesSEXP);
+    Rcpp::traits::input_parameter< const int& >::type lines(linesSEXP);
+    Rcpp::traits::input_parameter< const int& >::type iters(itersSEXP);
+    Rcpp::traits::input_parameter< const int& >::type ncolors(ncolorsSEXP);
+    Rcpp::traits::input_parameter< const int& >::type left(leftSEXP);
+    Rcpp::traits::input_parameter< const int& >::type right(rightSEXP);
+    Rcpp::traits::input_parameter< const int& >::type top(topSEXP);
+    Rcpp::traits::input_parameter< const int& >::type bottom(bottomSEXP);
+    Rcpp::traits::input_parameter< const double& >::type stepmax(stepmaxSEXP);
+    rcpp_result_gen = Rcpp::wrap(iterate_flow(canvas, angles, lines, iters, ncolors, left, right, top, bottom, stepmax));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -377,7 +379,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_aRtsy_get_collatz_sequence", (DL_FUNC) &_aRtsy_get_collatz_sequence, 1},
     {"_aRtsy_draw_collatz", (DL_FUNC) &_aRtsy_draw_collatz, 4},
     {"_aRtsy_iterate_flame", (DL_FUNC) &_aRtsy_iterate_flame, 20},
-    {"_aRtsy_iterate_flow", (DL_FUNC) &_aRtsy_iterate_flow, 8},
+    {"_aRtsy_iterate_flow", (DL_FUNC) &_aRtsy_iterate_flow, 10},
     {"_aRtsy_iterate_maze", (DL_FUNC) &_aRtsy_iterate_maze, 3},
     {"_aRtsy_iterate_mesh", (DL_FUNC) &_aRtsy_iterate_mesh, 7},
     {"_aRtsy_get_closest_node", (DL_FUNC) &_aRtsy_get_closest_node, 5},

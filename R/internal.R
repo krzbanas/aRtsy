@@ -118,3 +118,10 @@
   }
   return(matrix(c(p[, 1] + c(cos(angles)) * c(distances), p[, 2] + c(sin(angles)) * c(distances)), ncol = 2))
 }
+
+# This function returns a brownian motion line
+.bmline <- function(n, lwd) {
+  x <- cumsum(stats::rnorm(n = n, sd = sqrt(1)))
+  x <- abs(x / stats::sd(x) * lwd)
+  return(x)
+}

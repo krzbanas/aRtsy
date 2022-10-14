@@ -25,8 +25,8 @@ iterate_flame <- function(canvas, iterations, resolution, edge, blend, weighted,
     .Call('_aRtsy_iterate_flame', PACKAGE = 'aRtsy', canvas, iterations, resolution, edge, blend, weighted, post, final, extra, colors, functions, funcWeights, funcPars, variations, varWeights, varParams, postPars, finalPars, extraPars, bsym)
 }
 
-iterate_flow <- function(angles, j, iters, left, right, top, bottom, step) {
-    .Call('_aRtsy_iterate_flow', PACKAGE = 'aRtsy', angles, j, iters, left, right, top, bottom, step)
+iterate_flow <- function(canvas, angles, lines, iters, ncolors, left, right, top, bottom, stepmax) {
+    .Call('_aRtsy_iterate_flow', PACKAGE = 'aRtsy', canvas, angles, lines, iters, ncolors, left, right, top, bottom, stepmax)
 }
 
 iterate_maze <- function(X, x, y) {
