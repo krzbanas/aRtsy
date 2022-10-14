@@ -437,7 +437,7 @@ arma::cube iterate_flame(arma::cube canvas,
   double x = R::runif(-1, 1), y = R::runif(-1, 1), c1 = R::runif(0, 1), c2 = R::runif(0, 1), c3 = R::runif(0, 1);
   bool vary = !((nvar == 1) && (variations[0] == 0));
   for (int iter = 1; iter < iterations; ++iter) {
-    if ((iter % 1000) == 0) {
+    if (iter % 1000 == 0) {
       Rcpp::checkUserInterrupt();
     }
     // Pick an affine function to use and apply to the current point

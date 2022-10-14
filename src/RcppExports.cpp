@@ -54,26 +54,26 @@ BEGIN_RCPP
 END_RCPP
 }
 // get_collatz_sequence
-Rcpp::IntegerVector get_collatz_sequence(int x);
+Rcpp::IntegerVector get_collatz_sequence(int& x);
 RcppExport SEXP _aRtsy_get_collatz_sequence(SEXP xSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< int >::type x(xSEXP);
+    Rcpp::traits::input_parameter< int& >::type x(xSEXP);
     rcpp_result_gen = Rcpp::wrap(get_collatz_sequence(x));
     return rcpp_result_gen;
 END_RCPP
 }
 // draw_collatz
-arma::mat draw_collatz(arma::mat empty, Rcpp::IntegerVector series, double even, double odd);
+arma::mat draw_collatz(arma::mat& empty, const Rcpp::IntegerVector& series, const double& even, const double& odd);
 RcppExport SEXP _aRtsy_draw_collatz(SEXP emptySEXP, SEXP seriesSEXP, SEXP evenSEXP, SEXP oddSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::mat >::type empty(emptySEXP);
-    Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type series(seriesSEXP);
-    Rcpp::traits::input_parameter< double >::type even(evenSEXP);
-    Rcpp::traits::input_parameter< double >::type odd(oddSEXP);
+    Rcpp::traits::input_parameter< arma::mat& >::type empty(emptySEXP);
+    Rcpp::traits::input_parameter< const Rcpp::IntegerVector& >::type series(seriesSEXP);
+    Rcpp::traits::input_parameter< const double& >::type even(evenSEXP);
+    Rcpp::traits::input_parameter< const double& >::type odd(oddSEXP);
     rcpp_result_gen = Rcpp::wrap(draw_collatz(empty, series, even, odd));
     return rcpp_result_gen;
 END_RCPP

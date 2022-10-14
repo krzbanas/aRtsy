@@ -24,7 +24,7 @@ arma::mat draw_ant(const arma::mat& directions,
   const int ncolors = directions.n_rows, s = iterations / ncolors;
   int d = 0, c = 0, t0 = 0, t1 = 0, x = floor(R::runif(resolution * 0.05, resolution * 0.95)), y = floor(R::runif(resolution * 0.05, resolution * 0.95));
   for (int i = 0; i < iterations; ++i) {
-    if ((i % 1000) == 0) {
+    if (i % 1000 == 0) {
       Rcpp::checkUserInterrupt();
     }
     if (i % s == 0) { // Switch color every s iterations
