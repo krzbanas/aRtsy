@@ -38,12 +38,12 @@ BEGIN_RCPP
 END_RCPP
 }
 // draw_circlemap
-arma::mat draw_circlemap(arma::mat canvas, const double& left, const double& right, const double& bottom, const double& top, const int& iters);
+arma::mat draw_circlemap(arma::mat& canvas, const double& left, const double& right, const double& bottom, const double& top, const int& iters);
 RcppExport SEXP _aRtsy_draw_circlemap(SEXP canvasSEXP, SEXP leftSEXP, SEXP rightSEXP, SEXP bottomSEXP, SEXP topSEXP, SEXP itersSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::mat >::type canvas(canvasSEXP);
+    Rcpp::traits::input_parameter< arma::mat& >::type canvas(canvasSEXP);
     Rcpp::traits::input_parameter< const double& >::type left(leftSEXP);
     Rcpp::traits::input_parameter< const double& >::type right(rightSEXP);
     Rcpp::traits::input_parameter< const double& >::type bottom(bottomSEXP);
@@ -79,12 +79,12 @@ BEGIN_RCPP
 END_RCPP
 }
 // iterate_flame
-arma::cube iterate_flame(arma::cube canvas, const int& iterations, const int& resolution, const int& edge, const bool& blend, const bool& weighted, const bool& post, const bool& final, const bool& extra, const arma::mat& colors, const Rcpp::DoubleVector& functions, const Rcpp::DoubleVector& funcWeights, const arma::mat& funcPars, const Rcpp::DoubleVector& variations, const arma::mat& varWeights, const Rcpp::DoubleVector& varParams, const arma::mat& postPars, const Rcpp::DoubleVector& finalPars, const Rcpp::DoubleVector& extraPars, const int& bsym);
+arma::cube iterate_flame(arma::cube& canvas, const int& iterations, const int& resolution, const int& edge, const bool& blend, const bool& weighted, const bool& post, const bool& final, const bool& extra, const arma::mat& colors, const Rcpp::DoubleVector& functions, const Rcpp::DoubleVector& funcWeights, const arma::mat& funcPars, const Rcpp::DoubleVector& variations, const arma::mat& varWeights, const Rcpp::DoubleVector& varParams, const arma::mat& postPars, const Rcpp::DoubleVector& finalPars, const Rcpp::DoubleVector& extraPars, const int& bsym);
 RcppExport SEXP _aRtsy_iterate_flame(SEXP canvasSEXP, SEXP iterationsSEXP, SEXP resolutionSEXP, SEXP edgeSEXP, SEXP blendSEXP, SEXP weightedSEXP, SEXP postSEXP, SEXP finalSEXP, SEXP extraSEXP, SEXP colorsSEXP, SEXP functionsSEXP, SEXP funcWeightsSEXP, SEXP funcParsSEXP, SEXP variationsSEXP, SEXP varWeightsSEXP, SEXP varParamsSEXP, SEXP postParsSEXP, SEXP finalParsSEXP, SEXP extraParsSEXP, SEXP bsymSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::cube >::type canvas(canvasSEXP);
+    Rcpp::traits::input_parameter< arma::cube& >::type canvas(canvasSEXP);
     Rcpp::traits::input_parameter< const int& >::type iterations(iterationsSEXP);
     Rcpp::traits::input_parameter< const int& >::type resolution(resolutionSEXP);
     Rcpp::traits::input_parameter< const int& >::type edge(edgeSEXP);

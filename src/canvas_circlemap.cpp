@@ -17,7 +17,7 @@
 // [[Rcpp::depends(RcppArmadillo)]]
 
 // [[Rcpp::export]]
-arma::mat draw_circlemap(arma::mat canvas,
+arma::mat draw_circlemap(arma::mat& canvas,
                          const double& left,
                          const double& right,
                          const double& bottom,

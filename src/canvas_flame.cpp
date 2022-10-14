@@ -413,7 +413,7 @@ void variation(double& x,
 }
 
 // [[Rcpp::export]]
-arma::cube iterate_flame(arma::cube canvas,
+arma::cube iterate_flame(arma::cube& canvas,
                          const int& iterations,
                          const int& resolution,
                          const int& edge,
