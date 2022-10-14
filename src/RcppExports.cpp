@@ -25,14 +25,14 @@ BEGIN_RCPP
 END_RCPP
 }
 // iterate_chladni
-Rcpp::NumericVector iterate_chladni(Rcpp::NumericVector x, Rcpp::NumericVector y, Rcpp::NumericVector waves);
+Rcpp::NumericVector iterate_chladni(const Rcpp::NumericVector& x, const Rcpp::NumericVector& y, const Rcpp::NumericVector& waves);
 RcppExport SEXP _aRtsy_iterate_chladni(SEXP xSEXP, SEXP ySEXP, SEXP wavesSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type x(xSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type y(ySEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type waves(wavesSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::NumericVector& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::NumericVector& >::type y(ySEXP);
+    Rcpp::traits::input_parameter< const Rcpp::NumericVector& >::type waves(wavesSEXP);
     rcpp_result_gen = Rcpp::wrap(iterate_chladni(x, y, waves));
     return rcpp_result_gen;
 END_RCPP
