@@ -9,8 +9,8 @@ iterate_chladni <- function(x, y, waves) {
     .Call('_aRtsy_iterate_chladni', PACKAGE = 'aRtsy', x, y, waves)
 }
 
-draw_circlemap <- function(X, left, right, bottom, top, iters) {
-    .Call('_aRtsy_draw_circlemap', PACKAGE = 'aRtsy', X, left, right, bottom, top, iters)
+draw_circlemap <- function(canvas, left, right, bottom, top, iters) {
+    .Call('_aRtsy_draw_circlemap', PACKAGE = 'aRtsy', canvas, left, right, bottom, top, iters)
 }
 
 get_collatz_sequence <- function(x) {

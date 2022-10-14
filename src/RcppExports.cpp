@@ -38,18 +38,18 @@ BEGIN_RCPP
 END_RCPP
 }
 // draw_circlemap
-arma::mat draw_circlemap(arma::mat X, double left, double right, double bottom, double top, int iters);
-RcppExport SEXP _aRtsy_draw_circlemap(SEXP XSEXP, SEXP leftSEXP, SEXP rightSEXP, SEXP bottomSEXP, SEXP topSEXP, SEXP itersSEXP) {
+arma::mat draw_circlemap(arma::mat canvas, const double& left, const double& right, const double& bottom, const double& top, const int& iters);
+RcppExport SEXP _aRtsy_draw_circlemap(SEXP canvasSEXP, SEXP leftSEXP, SEXP rightSEXP, SEXP bottomSEXP, SEXP topSEXP, SEXP itersSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::mat >::type X(XSEXP);
-    Rcpp::traits::input_parameter< double >::type left(leftSEXP);
-    Rcpp::traits::input_parameter< double >::type right(rightSEXP);
-    Rcpp::traits::input_parameter< double >::type bottom(bottomSEXP);
-    Rcpp::traits::input_parameter< double >::type top(topSEXP);
-    Rcpp::traits::input_parameter< int >::type iters(itersSEXP);
-    rcpp_result_gen = Rcpp::wrap(draw_circlemap(X, left, right, bottom, top, iters));
+    Rcpp::traits::input_parameter< arma::mat >::type canvas(canvasSEXP);
+    Rcpp::traits::input_parameter< const double& >::type left(leftSEXP);
+    Rcpp::traits::input_parameter< const double& >::type right(rightSEXP);
+    Rcpp::traits::input_parameter< const double& >::type bottom(bottomSEXP);
+    Rcpp::traits::input_parameter< const double& >::type top(topSEXP);
+    Rcpp::traits::input_parameter< const int& >::type iters(itersSEXP);
+    rcpp_result_gen = Rcpp::wrap(draw_circlemap(canvas, left, right, bottom, top, iters));
     return rcpp_result_gen;
 END_RCPP
 }
