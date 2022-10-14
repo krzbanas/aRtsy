@@ -327,17 +327,17 @@ BEGIN_RCPP
 END_RCPP
 }
 // draw_turmite
-arma::mat draw_turmite(arma::mat X, int iters, int row, int col, double p);
-RcppExport SEXP _aRtsy_draw_turmite(SEXP XSEXP, SEXP itersSEXP, SEXP rowSEXP, SEXP colSEXP, SEXP pSEXP) {
+arma::mat draw_turmite(arma::mat& canvas, const int& iters, int& row, int& col, const double& p);
+RcppExport SEXP _aRtsy_draw_turmite(SEXP canvasSEXP, SEXP itersSEXP, SEXP rowSEXP, SEXP colSEXP, SEXP pSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::mat >::type X(XSEXP);
-    Rcpp::traits::input_parameter< int >::type iters(itersSEXP);
-    Rcpp::traits::input_parameter< int >::type row(rowSEXP);
-    Rcpp::traits::input_parameter< int >::type col(colSEXP);
-    Rcpp::traits::input_parameter< double >::type p(pSEXP);
-    rcpp_result_gen = Rcpp::wrap(draw_turmite(X, iters, row, col, p));
+    Rcpp::traits::input_parameter< arma::mat& >::type canvas(canvasSEXP);
+    Rcpp::traits::input_parameter< const int& >::type iters(itersSEXP);
+    Rcpp::traits::input_parameter< int& >::type row(rowSEXP);
+    Rcpp::traits::input_parameter< int& >::type col(colSEXP);
+    Rcpp::traits::input_parameter< const double& >::type p(pSEXP);
+    rcpp_result_gen = Rcpp::wrap(draw_turmite(canvas, iters, row, col, p));
     return rcpp_result_gen;
 END_RCPP
 }

@@ -81,8 +81,8 @@ draw_strokes <- function(X, neighbors, s, p) {
     .Call('_aRtsy_draw_strokes', PACKAGE = 'aRtsy', X, neighbors, s, p)
 }
 
-draw_turmite <- function(X, iters, row, col, p) {
-    .Call('_aRtsy_draw_turmite', PACKAGE = 'aRtsy', X, iters, row, col, p)
+draw_turmite <- function(canvas, iters, row, col, p) {
+    .Call('_aRtsy_draw_turmite', PACKAGE = 'aRtsy', canvas, iters, row, col, p)
 }
 
 deform <- function(canvas, maxdepth, resolution) {
