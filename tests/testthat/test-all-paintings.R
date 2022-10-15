@@ -56,7 +56,7 @@ test_that("canvas_ant()", {
 test_that("canvas_planet()", {
   set.seed(1)
   .runtime(expression = {
-    artwork <- canvas_planet(colors = c("black", "white"), iterations = 10)
+    artwork <- canvas_planet(colors = c("black", "white"))
   }, name = "Planet")
   expect_equal(!is.null(artwork), TRUE)
 })
@@ -96,7 +96,7 @@ test_that("canvas_polylines()", {
 test_that("canvas_diamonds()", {
   set.seed(1)
   .runtime(expression = {
-    artwork <- canvas_diamonds(colors = c("black", "gray", "white"), radius = 50)
+    artwork <- canvas_diamonds(colors = c("black", "gray", "white"))
   }, name = "Diamonds")
   expect_equal(!is.null(artwork), TRUE)
 })
@@ -256,7 +256,7 @@ test_that("canvas_mesh()", {
 test_that("canvas_flame()", {
   set.seed(2)
   .runtime(expression = {
-    artwork <- canvas_flame(colors = c("dodgerblue", "green"), iterations = 10000)
+    artwork <- canvas_flame(colors = c("dodgerblue", "green"))
   }, name = "Flame")
   expect_equal(!is.null(artwork), TRUE)
 })

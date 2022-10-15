@@ -89,7 +89,7 @@ deform <- function(x, y, s, maxdepth, resolution) {
     .Call('_aRtsy_deform', PACKAGE = 'aRtsy', x, y, s, maxdepth, resolution)
 }
 
-c_noise_knn <- function(x, y, z, newx, newy, k, n) {
-    .Call('_aRtsy_c_noise_knn', PACKAGE = 'aRtsy', x, y, z, newx, newy, k, n)
+c_noise_knn <- function(x, y, z, newx, newy, k) {
+    .Call('_aRtsy_c_noise_knn', PACKAGE = 'aRtsy', x, y, z, newx, newy, k)
 }
 

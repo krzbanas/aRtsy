@@ -16,18 +16,6 @@
 #include <RcppArmadillo.h>
 // [[Rcpp::depends(RcppArmadillo)]]
 
-Rcpp::IntegerVector int_seq(const int& first,
-                            const int& last) {
-  Rcpp::IntegerVector y(abs(last - first) + 1);
-  if (first < last) {
-   std::iota(y.begin(), y.end(), first);
-  } else {
-   std::iota(y.begin(), y.end(), last);
-   std::reverse(y.begin(), y.end());
-  }
-  return y;
-}
-
 void shift_right(Rcpp::IntegerVector& x) {
   const int& x1 = x[0];
   x.erase(0);
@@ -55,7 +43,7 @@ Rcpp::DataFrame iterate_mesh(arma::mat& canvas,
       Rcpp::checkUserInterrupt();
     }
     Rcpp::DoubleVector newy = start + centers[i] + radii * sin(points);
-    const Rcpp::IntegerVector index = int_seq(i * l, i * l + (l- 1));
+    const Rcpp::IntegerVector index = Rcpp::Range(i * l, i * l + (l- 1));
     for (int j = 0; j < l; ++j) {
       canvas.at(index[j], 0) = newy[j];
       canvas.at(index[j], 1) = order[j];
