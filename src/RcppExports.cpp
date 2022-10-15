@@ -345,15 +345,17 @@ BEGIN_RCPP
 END_RCPP
 }
 // deform
-Rcpp::DataFrame deform(Rcpp::DataFrame canvas, int maxdepth, int resolution);
-RcppExport SEXP _aRtsy_deform(SEXP canvasSEXP, SEXP maxdepthSEXP, SEXP resolutionSEXP) {
+Rcpp::DataFrame deform(Rcpp::DoubleVector& x, Rcpp::DoubleVector& y, Rcpp::DoubleVector& s, const int& maxdepth, const int& resolution);
+RcppExport SEXP _aRtsy_deform(SEXP xSEXP, SEXP ySEXP, SEXP sSEXP, SEXP maxdepthSEXP, SEXP resolutionSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::DataFrame >::type canvas(canvasSEXP);
-    Rcpp::traits::input_parameter< int >::type maxdepth(maxdepthSEXP);
-    Rcpp::traits::input_parameter< int >::type resolution(resolutionSEXP);
-    rcpp_result_gen = Rcpp::wrap(deform(canvas, maxdepth, resolution));
+    Rcpp::traits::input_parameter< Rcpp::DoubleVector& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< Rcpp::DoubleVector& >::type y(ySEXP);
+    Rcpp::traits::input_parameter< Rcpp::DoubleVector& >::type s(sSEXP);
+    Rcpp::traits::input_parameter< const int& >::type maxdepth(maxdepthSEXP);
+    Rcpp::traits::input_parameter< const int& >::type resolution(resolutionSEXP);
+    rcpp_result_gen = Rcpp::wrap(deform(x, y, s, maxdepth, resolution));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -397,7 +399,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_aRtsy_draw_squares", (DL_FUNC) &_aRtsy_draw_squares, 5},
     {"_aRtsy_draw_strokes", (DL_FUNC) &_aRtsy_draw_strokes, 4},
     {"_aRtsy_draw_turmite", (DL_FUNC) &_aRtsy_draw_turmite, 5},
-    {"_aRtsy_deform", (DL_FUNC) &_aRtsy_deform, 3},
+    {"_aRtsy_deform", (DL_FUNC) &_aRtsy_deform, 5},
     {"_aRtsy_c_noise_knn", (DL_FUNC) &_aRtsy_c_noise_knn, 7},
     {NULL, NULL, 0}
 };
