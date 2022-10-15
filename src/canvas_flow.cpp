@@ -33,7 +33,7 @@ Rcpp::DataFrame iterate_flow(arma::mat& canvas,
     double x = {ceil(R::runif(left + 1, right - 1))};
     double y = {ceil(R::runif(bottom + 1, top - 1))};
     double step = R::runif(0, 100 * stepmax);
-    int c = ceil(R::runif(0, ncolors - 1));
+    int c = ceil(R::runif(0, ncolors));
     for (int i = 0; i < iters; i++) {
       canvas.at(j * iters + i, 0) = x;
       canvas.at(j * iters + i, 1) = y;
