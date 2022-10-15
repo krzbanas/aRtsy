@@ -161,60 +161,60 @@ BEGIN_RCPP
 END_RCPP
 }
 // get_closest_node
-Rcpp::IntegerVector get_closest_node(Rcpp::NumericVector attractor_x, Rcpp::NumericVector attractor_y, Rcpp::NumericVector nodes_x, Rcpp::NumericVector nodes_y, double attraction_distance);
+Rcpp::IntegerVector get_closest_node(const Rcpp::DoubleVector& attractor_x, const Rcpp::DoubleVector& attractor_y, const Rcpp::DoubleVector& nodes_x, const Rcpp::DoubleVector& nodes_y, const double& attraction_distance);
 RcppExport SEXP _aRtsy_get_closest_node(SEXP attractor_xSEXP, SEXP attractor_ySEXP, SEXP nodes_xSEXP, SEXP nodes_ySEXP, SEXP attraction_distanceSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type attractor_x(attractor_xSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type attractor_y(attractor_ySEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type nodes_x(nodes_xSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type nodes_y(nodes_ySEXP);
-    Rcpp::traits::input_parameter< double >::type attraction_distance(attraction_distanceSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::DoubleVector& >::type attractor_x(attractor_xSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::DoubleVector& >::type attractor_y(attractor_ySEXP);
+    Rcpp::traits::input_parameter< const Rcpp::DoubleVector& >::type nodes_x(nodes_xSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::DoubleVector& >::type nodes_y(nodes_ySEXP);
+    Rcpp::traits::input_parameter< const double& >::type attraction_distance(attraction_distanceSEXP);
     rcpp_result_gen = Rcpp::wrap(get_closest_node(attractor_x, attractor_y, nodes_x, nodes_y, attraction_distance));
     return rcpp_result_gen;
 END_RCPP
 }
 // kill_attractors
-Rcpp::DataFrame kill_attractors(Rcpp::NumericVector attractor_x, Rcpp::NumericVector attractor_y, Rcpp::NumericVector nodes_x, Rcpp::NumericVector nodes_y, double kill_distance);
+Rcpp::DataFrame kill_attractors(Rcpp::DoubleVector& attractor_x, Rcpp::DoubleVector& attractor_y, Rcpp::DoubleVector& nodes_x, Rcpp::DoubleVector& nodes_y, const double& kill_distance);
 RcppExport SEXP _aRtsy_kill_attractors(SEXP attractor_xSEXP, SEXP attractor_ySEXP, SEXP nodes_xSEXP, SEXP nodes_ySEXP, SEXP kill_distanceSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type attractor_x(attractor_xSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type attractor_y(attractor_ySEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type nodes_x(nodes_xSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type nodes_y(nodes_ySEXP);
-    Rcpp::traits::input_parameter< double >::type kill_distance(kill_distanceSEXP);
+    Rcpp::traits::input_parameter< Rcpp::DoubleVector& >::type attractor_x(attractor_xSEXP);
+    Rcpp::traits::input_parameter< Rcpp::DoubleVector& >::type attractor_y(attractor_ySEXP);
+    Rcpp::traits::input_parameter< Rcpp::DoubleVector& >::type nodes_x(nodes_xSEXP);
+    Rcpp::traits::input_parameter< Rcpp::DoubleVector& >::type nodes_y(nodes_ySEXP);
+    Rcpp::traits::input_parameter< const double& >::type kill_distance(kill_distanceSEXP);
     rcpp_result_gen = Rcpp::wrap(kill_attractors(attractor_x, attractor_y, nodes_x, nodes_y, kill_distance));
     return rcpp_result_gen;
 END_RCPP
 }
 // draw_circle
-Rcpp::DataFrame draw_circle(double center_x, double center_y, double diameter, int n);
+Rcpp::DataFrame draw_circle(const double& center_x, const double& center_y, const double& diameter, const int& n);
 RcppExport SEXP _aRtsy_draw_circle(SEXP center_xSEXP, SEXP center_ySEXP, SEXP diameterSEXP, SEXP nSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< double >::type center_x(center_xSEXP);
-    Rcpp::traits::input_parameter< double >::type center_y(center_ySEXP);
-    Rcpp::traits::input_parameter< double >::type diameter(diameterSEXP);
-    Rcpp::traits::input_parameter< int >::type n(nSEXP);
+    Rcpp::traits::input_parameter< const double& >::type center_x(center_xSEXP);
+    Rcpp::traits::input_parameter< const double& >::type center_y(center_ySEXP);
+    Rcpp::traits::input_parameter< const double& >::type diameter(diameterSEXP);
+    Rcpp::traits::input_parameter< const int& >::type n(nSEXP);
     rcpp_result_gen = Rcpp::wrap(draw_circle(center_x, center_y, diameter, n));
     return rcpp_result_gen;
 END_RCPP
 }
 // get_directions
-Rcpp::DataFrame get_directions(Rcpp::NumericVector attractor_x, Rcpp::NumericVector attractor_y, Rcpp::NumericVector nodes_x, Rcpp::NumericVector nodes_y, Rcpp::IntegerVector closest_nodes);
+Rcpp::DataFrame get_directions(Rcpp::DoubleVector& attractor_x, Rcpp::DoubleVector& attractor_y, Rcpp::DoubleVector& nodes_x, Rcpp::DoubleVector& nodes_y, Rcpp::IntegerVector& closest_nodes);
 RcppExport SEXP _aRtsy_get_directions(SEXP attractor_xSEXP, SEXP attractor_ySEXP, SEXP nodes_xSEXP, SEXP nodes_ySEXP, SEXP closest_nodesSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type attractor_x(attractor_xSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type attractor_y(attractor_ySEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type nodes_x(nodes_xSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type nodes_y(nodes_ySEXP);
-    Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type closest_nodes(closest_nodesSEXP);
+    Rcpp::traits::input_parameter< Rcpp::DoubleVector& >::type attractor_x(attractor_xSEXP);
+    Rcpp::traits::input_parameter< Rcpp::DoubleVector& >::type attractor_y(attractor_ySEXP);
+    Rcpp::traits::input_parameter< Rcpp::DoubleVector& >::type nodes_x(nodes_xSEXP);
+    Rcpp::traits::input_parameter< Rcpp::DoubleVector& >::type nodes_y(nodes_ySEXP);
+    Rcpp::traits::input_parameter< Rcpp::IntegerVector& >::type closest_nodes(closest_nodesSEXP);
     rcpp_result_gen = Rcpp::wrap(get_directions(attractor_x, attractor_y, nodes_x, nodes_y, closest_nodes));
     return rcpp_result_gen;
 END_RCPP
