@@ -57,8 +57,8 @@ iterate_phyllotaxis <- function(iter, a, p) {
     .Call('_aRtsy_iterate_phyllotaxis', PACKAGE = 'aRtsy', iter, a, p)
 }
 
-draw_planet <- function(X, radius, xcenter, ycenter, threshold, iterations, starprob, ncolors, colorsused, fade, lightright) {
-    .Call('_aRtsy_draw_planet', PACKAGE = 'aRtsy', X, radius, xcenter, ycenter, threshold, iterations, starprob, ncolors, colorsused, fade, lightright)
+draw_planet <- function(canvas, resolution, radius, xcenter, ycenter, threshold, iterations, ncolors, colorsused, starprob, fade, lightright) {
+    .Call('_aRtsy_draw_planet', PACKAGE = 'aRtsy', canvas, resolution, radius, xcenter, ycenter, threshold, iterations, ncolors, colorsused, starprob, fade, lightright)
 }
 
 draw_polylines <- function(X, ratio, iters, rows, cols) {

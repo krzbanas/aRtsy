@@ -233,23 +233,24 @@ BEGIN_RCPP
 END_RCPP
 }
 // draw_planet
-arma::mat draw_planet(arma::mat X, int radius, int xcenter, int ycenter, int threshold, int iterations, double starprob, int ncolors, int colorsused, double fade, int lightright);
-RcppExport SEXP _aRtsy_draw_planet(SEXP XSEXP, SEXP radiusSEXP, SEXP xcenterSEXP, SEXP ycenterSEXP, SEXP thresholdSEXP, SEXP iterationsSEXP, SEXP starprobSEXP, SEXP ncolorsSEXP, SEXP colorsusedSEXP, SEXP fadeSEXP, SEXP lightrightSEXP) {
+arma::mat draw_planet(arma::mat& canvas, const int& resolution, const int& radius, const int& xcenter, const int& ycenter, const int& threshold, const int& iterations, const int& ncolors, const int& colorsused, const double& starprob, const double& fade, const bool& lightright);
+RcppExport SEXP _aRtsy_draw_planet(SEXP canvasSEXP, SEXP resolutionSEXP, SEXP radiusSEXP, SEXP xcenterSEXP, SEXP ycenterSEXP, SEXP thresholdSEXP, SEXP iterationsSEXP, SEXP ncolorsSEXP, SEXP colorsusedSEXP, SEXP starprobSEXP, SEXP fadeSEXP, SEXP lightrightSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::mat >::type X(XSEXP);
-    Rcpp::traits::input_parameter< int >::type radius(radiusSEXP);
-    Rcpp::traits::input_parameter< int >::type xcenter(xcenterSEXP);
-    Rcpp::traits::input_parameter< int >::type ycenter(ycenterSEXP);
-    Rcpp::traits::input_parameter< int >::type threshold(thresholdSEXP);
-    Rcpp::traits::input_parameter< int >::type iterations(iterationsSEXP);
-    Rcpp::traits::input_parameter< double >::type starprob(starprobSEXP);
-    Rcpp::traits::input_parameter< int >::type ncolors(ncolorsSEXP);
-    Rcpp::traits::input_parameter< int >::type colorsused(colorsusedSEXP);
-    Rcpp::traits::input_parameter< double >::type fade(fadeSEXP);
-    Rcpp::traits::input_parameter< int >::type lightright(lightrightSEXP);
-    rcpp_result_gen = Rcpp::wrap(draw_planet(X, radius, xcenter, ycenter, threshold, iterations, starprob, ncolors, colorsused, fade, lightright));
+    Rcpp::traits::input_parameter< arma::mat& >::type canvas(canvasSEXP);
+    Rcpp::traits::input_parameter< const int& >::type resolution(resolutionSEXP);
+    Rcpp::traits::input_parameter< const int& >::type radius(radiusSEXP);
+    Rcpp::traits::input_parameter< const int& >::type xcenter(xcenterSEXP);
+    Rcpp::traits::input_parameter< const int& >::type ycenter(ycenterSEXP);
+    Rcpp::traits::input_parameter< const int& >::type threshold(thresholdSEXP);
+    Rcpp::traits::input_parameter< const int& >::type iterations(iterationsSEXP);
+    Rcpp::traits::input_parameter< const int& >::type ncolors(ncolorsSEXP);
+    Rcpp::traits::input_parameter< const int& >::type colorsused(colorsusedSEXP);
+    Rcpp::traits::input_parameter< const double& >::type starprob(starprobSEXP);
+    Rcpp::traits::input_parameter< const double& >::type fade(fadeSEXP);
+    Rcpp::traits::input_parameter< const bool& >::type lightright(lightrightSEXP);
+    rcpp_result_gen = Rcpp::wrap(draw_planet(canvas, resolution, radius, xcenter, ycenter, threshold, iterations, ncolors, colorsused, starprob, fade, lightright));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -389,7 +390,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_aRtsy_draw_circle", (DL_FUNC) &_aRtsy_draw_circle, 4},
     {"_aRtsy_get_directions", (DL_FUNC) &_aRtsy_get_directions, 5},
     {"_aRtsy_iterate_phyllotaxis", (DL_FUNC) &_aRtsy_iterate_phyllotaxis, 3},
-    {"_aRtsy_draw_planet", (DL_FUNC) &_aRtsy_draw_planet, 11},
+    {"_aRtsy_draw_planet", (DL_FUNC) &_aRtsy_draw_planet, 12},
     {"_aRtsy_draw_polylines", (DL_FUNC) &_aRtsy_draw_polylines, 5},
     {"_aRtsy_iterate_recaman", (DL_FUNC) &_aRtsy_iterate_recaman, 3},
     {"_aRtsy_draw_splits", (DL_FUNC) &_aRtsy_draw_splits, 8},
