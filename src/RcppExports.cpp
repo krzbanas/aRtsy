@@ -316,16 +316,16 @@ BEGIN_RCPP
 END_RCPP
 }
 // draw_strokes
-arma::mat draw_strokes(arma::mat X, Rcpp::DataFrame neighbors, int s, double p);
-RcppExport SEXP _aRtsy_draw_strokes(SEXP XSEXP, SEXP neighborsSEXP, SEXP sSEXP, SEXP pSEXP) {
+arma::mat draw_strokes(arma::mat& canvas, arma::mat& neighbors, const int& s, const double& p);
+RcppExport SEXP _aRtsy_draw_strokes(SEXP canvasSEXP, SEXP neighborsSEXP, SEXP sSEXP, SEXP pSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::mat >::type X(XSEXP);
-    Rcpp::traits::input_parameter< Rcpp::DataFrame >::type neighbors(neighborsSEXP);
-    Rcpp::traits::input_parameter< int >::type s(sSEXP);
-    Rcpp::traits::input_parameter< double >::type p(pSEXP);
-    rcpp_result_gen = Rcpp::wrap(draw_strokes(X, neighbors, s, p));
+    Rcpp::traits::input_parameter< arma::mat& >::type canvas(canvasSEXP);
+    Rcpp::traits::input_parameter< arma::mat& >::type neighbors(neighborsSEXP);
+    Rcpp::traits::input_parameter< const int& >::type s(sSEXP);
+    Rcpp::traits::input_parameter< const double& >::type p(pSEXP);
+    rcpp_result_gen = Rcpp::wrap(draw_strokes(canvas, neighbors, s, p));
     return rcpp_result_gen;
 END_RCPP
 }

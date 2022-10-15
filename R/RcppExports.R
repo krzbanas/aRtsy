@@ -77,8 +77,8 @@ draw_squares <- function(X, neighbors, s, cuts, ratio) {
     .Call('_aRtsy_draw_squares', PACKAGE = 'aRtsy', X, neighbors, s, cuts, ratio)
 }
 
-draw_strokes <- function(X, neighbors, s, p) {
-    .Call('_aRtsy_draw_strokes', PACKAGE = 'aRtsy', X, neighbors, s, p)
+draw_strokes <- function(canvas, neighbors, s, p) {
+    .Call('_aRtsy_draw_strokes', PACKAGE = 'aRtsy', canvas, neighbors, s, p)
 }
 
 draw_turmite <- function(canvas, iters, row, col, p) {
