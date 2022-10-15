@@ -125,3 +125,12 @@
   x <- abs(x / stats::sd(x) * lwd)
   return(x)
 }
+
+# This function returns the time elapsed
+.runtime <- function(expression, name = NULL) {
+  s1 <- Sys.time()
+  eval(expression)
+  s2 <- Sys.time()
+  cat("\n", if (is.null(name)) NULL else paste0("[", name, "]"), "Runtime:", round(s2 - s1, 5), "seconds\n")
+  return(invisible(as.numeric(s2 - s1)))
+}
