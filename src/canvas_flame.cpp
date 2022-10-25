@@ -136,20 +136,8 @@ void variation(double& x,
     x = newx;
     y = newy;
   } else if (i == 14) { // Bent
-    double newx, newy;
-    if ((x >= 0) && (y >= 0)) {
-      newx = x;
-      newy = y;
-    } else if ((x < 0) && (y >= 0)) {
-      newx = 2 * x;
-      newy = y;
-    } else if ((x >= 0) && (y < 0)) {
-      newx = x;
-      newy = y / 2;
-    } else if ((x < 0) && (y < 0)) {
-      newx = 2 * x;
-      newy = y / 2;
-    }
+    double newx = ((x >= 0) && (y >= 0)) ? x : (((x < 0) && (y >= 0)) ? (2 * x) : (((x >= 0) && (y < 0)) ? x : (2 * x)));
+    double newy = ((x >= 0) && (y >= 0)) ? y : (((x < 0) && (y >= 0)) ? y : (((x >= 0) && (y < 0)) ? (y / 2) : (y / 2)));
     x = newx;
     y = newy;
   } else if (i == 15) { // Waves
