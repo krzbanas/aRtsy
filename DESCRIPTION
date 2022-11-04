@@ -9,7 +9,7 @@ Authors@R:
            role = c("aut", "cre"),
            email = "koen-derks@hotmail.com")
 BugReports: https://github.com/koenderks/aRtsy/issues
-URL: https://koenderks.github.io/aRtsy/, https://github.com/koenderks/aRtsy, https://twitter.com/aRtsy_package
+URL: https://koenderks.github.io/aRtsy/, https://github.com/koenderks/aRtsy, https://twitter.com/aRtsy_package, https://botsin.space/web/@aRtsy_package
 Imports: ambient, e1071, ggplot2, kknn, randomForest, Rcpp, stats
 LinkingTo: Rcpp, RcppArmadillo
 Language: en-US
