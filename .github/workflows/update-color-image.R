@@ -10,6 +10,7 @@ palettes <- c(
   "dark1",
   "dark2",
   "dark3",
+  "flag",
   "flora",
   "house",
   "gogh",
