@@ -28,7 +28,7 @@ preferred-citation:
 repository: https://CRAN.R-project.org/package=aRtsy
 repository-code: https://github.com/koenderks/aRtsy
 url: https://koenderks.github.io/aRtsy/
-date-released: '2022-12-20'
+date-released: '2023-01-01'
 contact:
 - family-names: Derks
   given-names: Koen
@@ -52,7 +52,7 @@ references:
     orcid: https://orcid.org/0000-0002-5147-4711
   - family-names: Peck
     given-names: Jordan
-  year: '2022'
+  year: '2023'
 - type: software
   title: e1071
   abstract: 'e1071: Misc Functions of the Department of Statistics, Probability Theory
@@ -71,7 +71,7 @@ references:
     given-names: Andreas
   - family-names: Leisch
     given-names: Friedrich
-  year: '2022'
+  year: '2023'
 - type: software
   title: ggplot2
   abstract: 'ggplot2: Create Elegant Data Visualisations Using the Grammar of Graphics'
@@ -106,7 +106,7 @@ references:
   - family-names: Dunnington
     given-names: Dewey
     orcid: https://orcid.org/0000-0002-9415-4582
-  year: '2022'
+  year: '2023'
 - type: software
   title: kknn
   abstract: 'kknn: Weighted k-Nearest Neighbors'
@@ -119,7 +119,7 @@ references:
     email: klaus.schliep@gmail.com
   - family-names: Hechenbichler
     given-names: Klaus
-  year: '2022'
+  year: '2023'
 - type: software
   title: randomForest
   abstract: 'randomForest: Breiman and Cutler''s Random Forests for Classification
@@ -136,7 +136,7 @@ references:
     given-names: R port by Andy
   - family-names: Wiener.
     given-names: Matthew
-  year: '2022'
+  year: '2023'
 - type: software
   title: Rcpp
   abstract: 'Rcpp: Seamless R and C++ Integration'
@@ -162,7 +162,7 @@ references:
     given-names: Douglas
   - family-names: Chambers
     given-names: John
-  year: '2022'
+  year: '2023'
 - type: software
   title: stats
   abstract: 'R: A Language and Environment for Statistical Computing'
@@ -171,7 +171,7 @@ references:
   - name: R Core Team
   location:
     name: Vienna, Austria
-  year: '2022'
+  year: '2023'
   institution:
     name: R Foundation for Statistical Computing
 - type: software
@@ -192,7 +192,7 @@ references:
     given-names: Binxiang
   - family-names: Sanderson
     given-names: Conrad
-  year: '2022'
+  year: '2023'
 - type: software
   title: testthat
   abstract: 'testthat: Unit Testing for R'
@@ -203,7 +203,7 @@ references:
   - family-names: Wickham
     given-names: Hadley
     email: hadley@rstudio.com
-  year: '2022'
+  year: '2023'
   version: '>= 3.0.0'
 identifiers:
 - type: url
