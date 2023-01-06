@@ -1,0 +1,94 @@
+url: https://koenderks.github.io/aRtsy/
+
+destination: "."
+
+authors:
+  Koen Derks:
+    href: https://koenderks.com
+
+template:
+  params:
+    bootswatch: cosmo
+
+navbar:
+  left:
+    - icon: fa-home fa-lg
+      href: index.html
+    - text: "Functions"
+      href: reference/index.html
+    - text: "News"
+      href: news/index.html
+  right:
+   - icon: fa-github
+     href: https://github.com/koenderks/aRtsy
+   - icon: fa-users
+     href: https://github.com/koenderks/aRtsy/discussions
+
+home:
+  links:
+  - text: Ask a question
+    href: https://github.com/koenderks/aRtsy/discussions
+
+reference:
+  - title: "Overview"
+    desc: >
+      Package overview
+    contents:
+      - aRtsy-package
+  - title: "Color palettes"
+    desc: >
+      Functions for creating color palettes.
+    contents:
+      - colorPalette
+  - title: "The Iterative collection"
+    desc: >
+      The Iterative collection implements algorithms whose state is dependent on a previous state.
+    contents:
+      - canvas_ant
+      - canvas_cobweb
+      - canvas_collatz
+      - canvas_chladni
+      - canvas_flame
+      - canvas_flow
+      - canvas_maze
+      - canvas_mesh
+      - canvas_petri
+      - canvas_planet
+      - canvas_splits
+      - canvas_stripes
+      - canvas_strokes
+      - canvas_phyllotaxis
+      - canvas_recaman
+      - canvas_turmite
+      - canvas_watercolors
+  - title: "The Geometric collection"
+    desc: >
+      The Geometric collection implements algorithms that draw a geometric shape.
+    contents:
+      - canvas_diamonds
+      - canvas_function
+      - canvas_polylines
+      - canvas_ribbons
+      - canvas_segments
+      - canvas_squares
+  - title: "The Supervised collection"
+    desc: >
+      The Supervised collection is inspired by decision boundary plots in machine learning tasks.
+    contents:
+      - canvas_blacklight
+      - canvas_forest
+      - canvas_gemstone
+      - canvas_mosaic
+      - canvas_nebula
+  - title: "The Static collection"
+    desc: >
+      The Static collection implements images whose appearence are heavily influenced by the location and scale of the viewport.
+    contents:
+      - canvas_circlemap
+      - canvas_mandelbrot
+  - title: "Miscellaneous"
+    desc: >
+      Functions for working with output from the **aRtsy** package.
+    contents:
+      - saveCanvas
+      - theme_canvas
