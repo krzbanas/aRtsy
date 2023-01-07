@@ -1,5 +1,6 @@
 # aRtsy 0.2.2
 
+- Added argument `flatten` (default = `FALSE`) to `canvas_chladni()` to flatten the colors in the output.
 - The argument `size` in `canvas_segments()` now accepts a vector of sizes as input. The segments on the canvas receive a size samples from the elements in this vector.
 
 # aRtsy 0.2.1
