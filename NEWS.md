@@ -1,3 +1,7 @@
+# aRtsy 0.2.2
+
+- The argument `size` in `canvas_segments()` now accepts a vector of sizes as input. The segments on the canvas receive a size samples from the elements in this vector.
+
 # aRtsy 0.2.1
 
 - Added `symmetry` argument to the `canvas_flame()` function. This argument can be used to include dihedral or rotation symmetry into the flame.
