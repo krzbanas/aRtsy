@@ -1,4 +1,4 @@
-# Copyright (C) 2021-2022 Koen Derks
+# Copyright (C) 2021-2023 Koen Derks
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -18,7 +18,7 @@
 #' @description This function draws Chladni figures on a canvas and subsequently warps the domain under these figures.
 #'
 #' @usage canvas_chladni(colors, waves = 5, warp = 0, resolution = 500,
-#'                angles = NULL, distances = NULL)
+#'                angles = NULL, distances = NULL, flatten = FALSE)
 #'
 #' @param colors      a string or character vector specifying the color(s) used for the artwork.
 #' @param waves       a character specifying the number of randomly sampled waves, or an integer vector of waves to be summed.

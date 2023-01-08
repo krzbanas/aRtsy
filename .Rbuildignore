@@ -12,3 +12,5 @@ aRtsyRelease.R
 ^LICENSE\.md$
 ^CITATION\.cff$
 ^\.github$
+^_pkgdown.yml$
+.lintr
