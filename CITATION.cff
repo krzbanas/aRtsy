@@ -28,7 +28,7 @@ preferred-citation:
 repository: https://CRAN.R-project.org/package=aRtsy
 repository-code: https://github.com/koenderks/aRtsy
 url: https://koenderks.github.io/aRtsy/
-date-released: '2023-01-07'
+date-released: '2023-01-08'
 contact:
 - family-names: Derks
   given-names: Koen
@@ -39,6 +39,18 @@ keywords:
 - r
 - rstats
 references:
+- type: software
+  title: testthat
+  abstract: 'testthat: Unit Testing for R'
+  notes: Suggests
+  url: https://testthat.r-lib.org
+  repository: https://CRAN.R-project.org/package=testthat
+  authors:
+  - family-names: Wickham
+    given-names: Hadley
+    email: hadley@rstudio.com
+  year: '2023'
+  version: '>= 3.0.0'
 - type: software
   title: ambient
   abstract: 'ambient: A Generator of Multidimensional Noise'
@@ -107,6 +119,7 @@ references:
     given-names: Dewey
     orcid: https://orcid.org/0000-0002-9415-4582
   year: '2023'
+  version: '>= 3.4.0'
 - type: software
   title: kknn
   abstract: 'kknn: Weighted k-Nearest Neighbors'
@@ -193,18 +206,6 @@ references:
   - family-names: Sanderson
     given-names: Conrad
   year: '2023'
-- type: software
-  title: testthat
-  abstract: 'testthat: Unit Testing for R'
-  notes: Suggests
-  url: https://testthat.r-lib.org
-  repository: https://CRAN.R-project.org/package=testthat
-  authors:
-  - family-names: Wickham
-    given-names: Hadley
-    email: hadley@rstudio.com
-  year: '2023'
-  version: '>= 3.0.0'
 identifiers:
 - type: url
   value: https://twitter.com/aRtsy_package
