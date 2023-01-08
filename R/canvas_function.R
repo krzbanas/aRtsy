@@ -80,6 +80,7 @@ canvas_function <- function(colors, background = "#fafafa", by = 0.01,
     painting_formula <- list(x = formula[["x"]], y = formula[["y"]])
   }
   grid <- expand.grid(x_i = seq(from = -pi, to = pi, by = by), y_i = seq(from = -pi, to = pi, by = by))
+  x_i <- grid$x_i # nolint
   y_i <- grid$y_i
   full_canvas <- data.frame(x = eval(painting_formula$x), y = eval(painting_formula$y))
   z <- y_i[stats::complete.cases(full_canvas)]
