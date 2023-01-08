@@ -82,7 +82,7 @@ canvas_petri <- function(colors, background = "#fafafa", dish = "black",
       yend = node_data$yend + directions$yend
     )
     new_nodes <- new_nodes[stats::complete.cases(new_nodes), ]
-    node_data[nrow(node_data) + 1:nrow(new_nodes), ] <- new_nodes
+    node_data[nrow(node_data) + seq_len(nrow(new_nodes)), ] <- new_nodes
     attractor_data <- kill_attractors(attractor_data$x, attractor_data$y, node_data$x, node_data$y, kill_distance)
     if (nrow(attractor_data) < 1) {
       break

@@ -60,7 +60,7 @@ canvas_mesh <- function(colors, background = "#fafafa",
   artwork <- ggplot2::ggplot()
   miny <- Inf
   maxy <- -Inf
-  for (j in 1:length(colors)) {
+  for (j in seq_along(colors)) {
     circle_points <- seq(from = -pi, to = pi, length.out = lines)
     start <- stats::runif(1, min = -10, max = 10)
     centers <- data.frame(x = 0:iterations, y = c(start, start + .bmline(n = iterations, lwd = stats::runif(1, min = 1, max = 10))))

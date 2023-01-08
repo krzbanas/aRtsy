@@ -46,7 +46,7 @@ colorPalette <- function(name, n = NULL) {
       stop("'n' is missing for palette = 'random'")
     }
     palette <- character(n)
-    for (i in 1:length(palette)) {
+    for (i in seq_along(palette)) {
       palette[i] <- .hsl_to_rgb(h = stats::runif(1, 1, 360), stats::runif(1), stats::runif(1))
     }
   } else if (name == "complement") {
@@ -73,7 +73,7 @@ colorPalette <- function(name, n = NULL) {
     start <- stats::runif(1, 0, 260)
     colSeq <- seq(from = 1, to = 360, length.out = n)
     h <- (colSeq + start) %% 360
-    for (i in 1:length(palette)) {
+    for (i in seq_along(palette)) {
       palette[i] <- .hsl_to_rgb(h = h[i], stats::runif(1, .4, .7), stats::runif(1, .4, .7))
     }
   } else {

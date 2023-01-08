@@ -52,7 +52,7 @@ canvas_collatz <- function(colors, background = "#fafafa", n = 200,
   .checkUserInput(background = background)
   canvas <- data.frame(x = numeric(), y = numeric(), col = numeric(), z = numeric())
   if (length(n) == 1) {
-    n <- sample(1:1000000, size = n, replace = F)
+    n <- sample(1:1000000, size = n, replace = FALSE)
   }
   for (i in n) {
     series <- rev(get_collatz_sequence(i))
