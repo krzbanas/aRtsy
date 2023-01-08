@@ -78,12 +78,12 @@ canvas_diamonds <- function(colors, background = "#fafafa", col.line = "black",
     ggplot2::geom_curve(
       data = data.frame(x = 0, y = sample(0:resolution / 2, size = 1), xend = resolution, yend = sample((resolution / 2):resolution, size = 1), type = 999),
       mapping = ggplot2::aes(x = x, y = y, xend = xend, yend = yend),
-      colour = col.line, size = stats::runif(1, 5, 15), curvature = stats::runif(1, 0, 0.5)
+      colour = col.line, linewidth = stats::runif(1, 5, 15), curvature = stats::runif(1, 0, 0.5)
     ) +
     ggplot2::geom_curve(
       data = data.frame(x = 0, y = sample((resolution / 2):resolution, size = 1), xend = resolution, yend = sample(0:resolution / 2, size = 1), type = 999),
       mapping = ggplot2::aes(x = x, y = y, xend = xend, yend = yend),
-      colour = col.line, size = stats::runif(1, 5, 15), curvature = stats::runif(1, -0.5, 0)
+      colour = col.line, linewidth = stats::runif(1, 5, 15), curvature = stats::runif(1, -0.5, 0)
     ) +
     ggplot2::geom_polygon(fill = full_canvas$col, color = NA, alpha = alpha) +
     ggplot2::scale_fill_manual(values = palette)

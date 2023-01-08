@@ -67,7 +67,7 @@ canvas_segments <- function(colors, background = "#fafafa", n = 250,
   artwork <- ggplot2::ggplot(data = full_canvas, mapping = ggplot2::aes(x = x, y = y, xend = xend, yend = yend)) +
     ggplot2::xlim(c(0, 1)) +
     ggplot2::ylim(c(0, 1)) +
-    ggplot2::geom_segment(color = full_canvas$col, size = sizes)
+    ggplot2::geom_segment(color = full_canvas$col, linewidth = sizes)
   artwork <- theme_canvas(artwork, background)
   return(artwork)
 }

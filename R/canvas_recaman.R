@@ -92,7 +92,7 @@ canvas_recaman <- function(colors, background = "#fafafa", iterations = 100, sta
   artwork <- ggplot2::ggplot() +
     ggplot2::geom_curve(
       mapping = ggplot2::aes(x = x, y = y, xend = xend, yend = yend, color = z),
-      data = canvas, curvature = curvature, ncp = 25, size = size
+      data = canvas, curvature = curvature, ncp = 25, linewidth = size
     ) +
     ggplot2::scale_color_gradientn(colors = colors)
   artwork <- theme_canvas(artwork, background = background)

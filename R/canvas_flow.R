@@ -117,7 +117,7 @@ canvas_flow <- function(colors, background = "#fafafa", lines = 500, lwd = 0.05,
   colnames(canvas) <- c("x", "y", "z", "color", "size")
   canvas$color <- colors[canvas[["color"]]]
   artwork <- ggplot2::ggplot(data = canvas, mapping = ggplot2::aes(x = x, y = y, group = factor(z))) +
-    ggplot2::geom_path(size = canvas[["size"]], color = canvas[["color"]], lineend = "round")
+    ggplot2::geom_path(linewidth = canvas[["size"]], color = canvas[["color"]], lineend = "round")
   if (polar) {
     artwork <- artwork + ggplot2::coord_polar()
   } else {

@@ -95,7 +95,7 @@ canvas_petri <- function(colors, background = "#fafafa", dish = "black",
   artwork <- ggplot2::ggplot(data = node_data, mapping = ggplot2::aes(x = x, y = y, xend = xend, yend = yend, group = factor(z))) +
     ggplot2::geom_polygon(data = circle_points, mapping = ggplot2::aes(x = x, y = y), inherit.aes = FALSE, fill = dish) +
     ggplot2::geom_polygon(data = hole_points, mapping = ggplot2::aes(x = x, y = y), inherit.aes = FALSE, fill = background) +
-    ggplot2::geom_segment(mapping = ggplot2::aes(color = factor(z)), size = node_data$size, linejoin = "round", lineend = "round") +
+    ggplot2::geom_segment(mapping = ggplot2::aes(color = factor(z)), linewidth = node_data$size, linejoin = "round", lineend = "round") +
     ggplot2::scale_color_manual(values = colors) +
     ggplot2::coord_equal(xlim = limits, ylim = limits)
   artwork <- theme_canvas(artwork, background = background)

@@ -59,7 +59,7 @@ canvas_polylines <- function(colors, background = "#fafafa", ratio = 0.5, iterat
     ggplot2::xlim(c(0, resolution)) +
     ggplot2::ylim(c(0, resolution)) +
     ggplot2::geom_polygon(color = NA, alpha = rep(alphas, each = iterations)) +
-    ggplot2::geom_path(color = background, size = size) +
+    ggplot2::geom_path(color = background, linewidth = size) +
     ggplot2::scale_fill_manual(values = colors)
   artwork <- theme_canvas(artwork, background)
   return(artwork)

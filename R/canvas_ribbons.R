@@ -77,7 +77,7 @@ canvas_ribbons <- function(colors, background = "#fdf5e6", triangle = TRUE) {
     artwork <- artwork + ggplot2::geom_polygon(
       data = data.frame(x = c(15, 50, 85), y = c(15, 75, 15)), mapping = ggplot2::aes(x = x, y = y),
       fill = NA, color = "black",
-      stat = "identity", size = 1
+      stat = "identity", linewidth = 1
     )
   }
   artwork <- theme_canvas(artwork, background)

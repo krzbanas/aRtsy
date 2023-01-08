@@ -97,7 +97,7 @@ canvas_mesh <- function(colors, background = "#fafafa",
     artwork <- artwork + ggplot2::geom_line(
       data = df,
       mapping = ggplot2::aes(x = x, y = y, group = z, col = col),
-      alpha = 0.2, size = 0.05
+      alpha = 0.2, linewidth = 0.05
     )
   }
   artwork <- artwork + ggplot2::scale_color_manual(values = colors) +
