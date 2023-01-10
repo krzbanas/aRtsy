@@ -235,12 +235,34 @@ arma::umat createPalette(const int& resolution) {
   return palette;
 }
 
+arma::umat samplePalette(const int resolution,
+                         arma::umat color_mat) {
+  const int color_count = pow(resolution, 2);
+  const int numcolors = ceil(pow(color_count, 1.0/3));
+  arma::umat palette(color_count, 3);
+  int pick;
+  for (int i = 0; i < color_count; ++i) {
+    pick = floor(R::runif(0, color_mat.n_rows));
+    palette.at(i, 0) = color_mat.at(pick, 0);
+	palette.at(i, 1) = color_mat.at(pick, 1);
+	palette.at(i, 2) = color_mat.at(pick, 2);
+  }
+  return palette;
+}
+
 // [[Rcpp::export]]
 arma::cube iterate_smoke(arma::cube& canvas,
-                         const int& algorithm) {
+                         const int& algorithm,
+						 bool all_colors,
+						 arma::umat color_mat) {
   bool first = true;
   const int resolution = canvas.n_rows;
-  arma::umat colors = createPalette(resolution);
+  arma::umat colors;
+  if (all_colors) {
+    colors = createPalette(resolution);
+  } else {
+	colors = samplePalette(resolution, color_mat);
+  }
   arma::umat available(resolution, resolution, arma::fill::zeros);
   arma::umat colored(resolution, resolution, arma::fill::zeros);
   Rcpp::IntegerVector color(3);

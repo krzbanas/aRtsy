@@ -4,9 +4,11 @@
 \alias{canvas_smoke}
 \title{Draw Rainbow Smoke}
 \usage{
-canvas_smoke(resolution = 100, distance = c("minimum", "average"))
+canvas_smoke(colors, resolution = 100, distance = c("minimum", "average"))
 }
 \arguments{
+\item{colors}{a string or character vector specifying the color(s) used for the artwork.}
+
 \item{resolution}{resolution of the artwork in pixels per row/column. Increasing the resolution increases the quality of the artwork but also increases the computation time exponentially.}
 
 \item{distance}{an character specifying whether to take the neighbor with the minimum distance or the smallest average distance.}
@@ -22,7 +24,7 @@ This function creates rainbow smoke.
 set.seed(1)
 
 # Simple example
-canvas_smoke(n_colors = 100)
+canvas_smoke(colors = colorPalette("random", 1024), resolution = 250)
 }
 
 }
