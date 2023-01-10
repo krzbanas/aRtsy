@@ -264,7 +264,7 @@ test_that("canvas_flame()", {
 test_that("canvas_smoke()", {
   set.seed(2)
   .runtime(expression = {
-    artwork <- canvas_smoke(resolution = 10)
+    artwork <- canvas_smoke(colors = c("red", "blue", "green"), resolution = 10)
   }, name = "Smoke")
   expect_equal(!is.null(artwork), TRUE)
 })
