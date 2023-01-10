@@ -63,6 +63,6 @@ canvas_smoke <- function(colors, resolution = 100, distance = c("minimum", "aver
   if (all_colors) {
     return(matrix(NA, 1, 1))
   } else {
-    return(t(as.matrix(col2rgb(colors))))
+    return(t(as.matrix(grDevices::col2rgb(colors))))
   }
 }
