@@ -69,6 +69,10 @@ iterate_recaman <- function(n, start, increment) {
     .Call('_aRtsy_iterate_recaman', PACKAGE = 'aRtsy', n, start, increment)
 }
 
+iterate_smoke <- function(canvas, algorithm) {
+    .Call('_aRtsy_iterate_smoke', PACKAGE = 'aRtsy', canvas, algorithm)
+}
+
 draw_splits <- function(x, xend, y, yend, col, sda, ncols, iterations) {
     .Call('_aRtsy_draw_splits', PACKAGE = 'aRtsy', x, xend, y, yend, col, sda, ncols, iterations)
 }

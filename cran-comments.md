@@ -1,7 +1,7 @@
 ## aRtsy version 0.2.2
 This is a submission for aRtsy version 0.2.2. In this version I have:
 
-* Added a new argument to a function.
+* Added a function.
 
 ## Test environments
 * Windows install, (on github actions) R release

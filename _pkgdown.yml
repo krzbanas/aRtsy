@@ -55,6 +55,7 @@ reference:
       - canvas_petri
       - canvas_planet
       - canvas_splits
+      - canvas_smoke
       - canvas_stripes
       - canvas_strokes
       - canvas_phyllotaxis

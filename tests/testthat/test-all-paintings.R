@@ -260,3 +260,11 @@ test_that("canvas_flame()", {
   }, name = "Flame")
   expect_equal(!is.null(artwork), TRUE)
 })
+
+test_that("canvas_smoke()", {
+  set.seed(2)
+  .runtime(expression = {
+    artwork <- canvas_smoke(resolution = 10)
+  }, name = "Smoke")
+  expect_equal(!is.null(artwork), TRUE)
+})

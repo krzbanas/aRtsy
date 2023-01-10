@@ -282,6 +282,18 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// iterate_smoke
+arma::cube iterate_smoke(arma::cube& canvas, const int& algorithm);
+RcppExport SEXP _aRtsy_iterate_smoke(SEXP canvasSEXP, SEXP algorithmSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::cube& >::type canvas(canvasSEXP);
+    Rcpp::traits::input_parameter< const int& >::type algorithm(algorithmSEXP);
+    rcpp_result_gen = Rcpp::wrap(iterate_smoke(canvas, algorithm));
+    return rcpp_result_gen;
+END_RCPP
+}
 // draw_splits
 Rcpp::DataFrame draw_splits(Rcpp::NumericVector x, Rcpp::NumericVector xend, Rcpp::NumericVector y, Rcpp::NumericVector yend, Rcpp::NumericVector col, double sda, int ncols, int iterations);
 RcppExport SEXP _aRtsy_draw_splits(SEXP xSEXP, SEXP xendSEXP, SEXP ySEXP, SEXP yendSEXP, SEXP colSEXP, SEXP sdaSEXP, SEXP ncolsSEXP, SEXP iterationsSEXP) {
@@ -394,6 +406,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_aRtsy_draw_planet", (DL_FUNC) &_aRtsy_draw_planet, 12},
     {"_aRtsy_draw_polylines", (DL_FUNC) &_aRtsy_draw_polylines, 5},
     {"_aRtsy_iterate_recaman", (DL_FUNC) &_aRtsy_iterate_recaman, 3},
+    {"_aRtsy_iterate_smoke", (DL_FUNC) &_aRtsy_iterate_smoke, 2},
     {"_aRtsy_draw_splits", (DL_FUNC) &_aRtsy_draw_splits, 8},
     {"_aRtsy_draw_squares", (DL_FUNC) &_aRtsy_draw_squares, 5},
     {"_aRtsy_draw_strokes", (DL_FUNC) &_aRtsy_draw_strokes, 4},

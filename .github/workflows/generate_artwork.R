@@ -9,7 +9,7 @@ seed <- as.numeric(Sys.Date())
 set.seed(seed)
 
 # Select artwork type
-type <- sample(1:30, size = 1)
+type <- sample(1:31, size = 1)
 
 # Create artwork with random palette, feel free to suggest a new pallette at https://github.com/koenderks/aRtsy/issues
 artwork <- switch(type,
@@ -42,7 +42,8 @@ artwork <- switch(type,
   "27" = canvas_petri(colors = colorPalette("random-palette"), background = colorPalette("random", 1), dish = colorPalette("random", 1), attractors = 5000, iterations = sample(10:20, size = 1), hole = sample(c(0, 0.7, 0.8), size = 1)),
   "28" = canvas_splits(colors = colorPalette("random-palette"), background = colorPalette("random", 1), iterations = sample(6:8, size = 1), sd = abs(rnorm(1, sd = 0.5))),
   "29" = canvas_mesh(colors = colorPalette("random-palette", n = sample(1:5, size = 1)), background = sample(c("#fafafa", "firebrick", "#f9f0e0", "black", "lavenderblush2", "#215682"), size = 1)),
-  "30" = canvas_flame(colors = colorPalette("random-palette"), background = sample(c("#fafafa", "firebrick", "#f9f0e0", "black", "lavenderblush2", "#215682"), size = 1), variations = sample(0:48, size = 3, replace = FALSE), symmetry = sample(-1:2, size = 1), iterations = 1e9, weighted = TRUE, post = sample(0:1, size = 1))
+  "30" = canvas_flame(colors = colorPalette("random-palette"), background = sample(c("#fafafa", "firebrick", "#f9f0e0", "black", "lavenderblush2", "#215682"), size = 1), variations = sample(0:48, size = 3, replace = FALSE), symmetry = sample(-1:2, size = 1), iterations = 1e9, weighted = TRUE, post = sample(0:1, size = 1)),
+  "31" = canvas_smoke(resolution = 500)
 )
 
 saveCanvas(artwork, filename, width = ifelse(type == 19, yes = NA, no = 7), height = ifelse(type == 19, yes = NA, no = 7))
