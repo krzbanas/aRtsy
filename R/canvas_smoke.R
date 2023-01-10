@@ -42,7 +42,7 @@
 canvas_smoke <- function(resolution = 100, distance = c("minimum", "average")) {
   .checkUserInput(resolution = resolution)
   distance <- match.arg(distance)
-  canvas <- aRtsy:::iterate_smoke(
+  canvas <- iterate_smoke(
     canvas = array(-1, c(resolution, resolution, 3)),
     algorithm = switch(distance,
       "minimum" = 0,
