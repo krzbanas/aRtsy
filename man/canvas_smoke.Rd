@@ -11,13 +11,13 @@ canvas_smoke(colors, resolution = 100, distance = c("minimum", "average"))
 
 \item{resolution}{resolution of the artwork in pixels per row/column. Increasing the resolution increases the quality of the artwork but also increases the computation time exponentially.}
 
-\item{distance}{an character specifying whether to take the neighbor with the minimum distance or the smallest average distance.}
+\item{distance}{an character specifying how to select a new pixel. The default option \code{minimum} selects the pixel with the smallest color difference in a single neighbor and is relatively fast. The option \code{average} selects the pixel with the smallest average color difference in all the neighbors and is relatively slow.}
 }
 \value{
 A \code{ggplot} object containing the artwork.
 }
 \description{
-This function creates rainbow smoke.
+This function implements the rainbow smoke algorithm.
 }
 \examples{
 \donttest{
@@ -27,6 +27,9 @@ set.seed(1)
 canvas_smoke(colors = colorPalette("random", 1024), resolution = 250)
 }
 
+}
+\references{
+\url{http://rainbowsmoke.hu}
 }
 \seealso{
 \code{colorPalette}

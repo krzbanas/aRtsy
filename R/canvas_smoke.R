@@ -15,15 +15,17 @@
 
 #' Draw Rainbow Smoke
 #'
-#' @description This function creates rainbow smoke.
+#' @description This function implements the rainbow smoke algorithm.
 #'
 #' @usage canvas_smoke(colors, resolution = 100, distance = c("minimum", "average"))
 #'
 #' @param colors      a string or character vector specifying the color(s) used for the artwork.
 #' @param resolution  resolution of the artwork in pixels per row/column. Increasing the resolution increases the quality of the artwork but also increases the computation time exponentially.
-#' @param distance    an character specifying whether to take the neighbor with the minimum distance or the smallest average distance.
+#' @param distance    an character specifying how to select a new pixel. The default option \code{minimum} selects the pixel with the smallest color difference in a single neighbor and is relatively fast. The option \code{average} selects the pixel with the smallest average color difference in all the neighbors and is relatively slow.
 #'
 #' @return A \code{ggplot} object containing the artwork.
+#'
+#' @references \url{http://rainbowsmoke.hu}
 #'
 #' @author Koen Derks, \email{koen-derks@hotmail.com}
 #'

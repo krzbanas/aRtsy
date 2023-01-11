@@ -108,11 +108,11 @@ Rcpp::IntegerVector min_diff(const arma::cube& canvas,
   return point;
 }
 
-Rcpp::IntegerVector avg_diff(const arma::cube& canvas,
-                             const arma::umat& available,
-                             const arma::umat& colored,
-                             const Rcpp::IntegerVector& color,
-                             const int& resolution)  {
+Rcpp::IntegerVector min_avg_diff(const arma::cube& canvas,
+                                 const arma::umat& available,
+                                 const arma::umat& colored,
+                                 const Rcpp::IntegerVector& color,
+                                 const int& resolution)  {
   Rcpp::IntegerVector point(2);
   Rcpp::IntegerVector neighborcolor(3);
   int neighborCount, neighborColorDifferenceTotal, difference;
@@ -162,17 +162,17 @@ Rcpp::IntegerVector avg_diff(const arma::cube& canvas,
   return point;
 }
 
-Rcpp::IntegerVector get_point(arma::cube& canvas,
-                              arma::umat& available,
-                              arma::umat& colored,
-                              Rcpp::IntegerVector& color,
-                              int resolution,
-                              int algorithm) {
+Rcpp::IntegerVector get_point(const arma::cube& canvas,
+                              const arma::umat& available,
+                              const arma::umat& colored,
+                              const Rcpp::IntegerVector& color,
+                              const int& resolution,
+                              const int& algorithm) {
   Rcpp::IntegerVector point(2);
   if (algorithm == 0) {
     point = min_diff(canvas, available, colored, color, resolution);
   } else {
-    point = avg_diff(canvas, available, colored, color, resolution);
+    point = min_avg_diff(canvas, available, colored, color, resolution);
   }
   return point;
 }
