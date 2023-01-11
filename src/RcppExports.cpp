@@ -283,15 +283,15 @@ BEGIN_RCPP
 END_RCPP
 }
 // iterate_smoke
-arma::cube iterate_smoke(arma::cube& canvas, const int& algorithm, bool all_colors, arma::umat color_mat);
+arma::cube iterate_smoke(arma::cube& canvas, const int& algorithm, const bool& all_colors, arma::umat& color_mat);
 RcppExport SEXP _aRtsy_iterate_smoke(SEXP canvasSEXP, SEXP algorithmSEXP, SEXP all_colorsSEXP, SEXP color_matSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< arma::cube& >::type canvas(canvasSEXP);
     Rcpp::traits::input_parameter< const int& >::type algorithm(algorithmSEXP);
-    Rcpp::traits::input_parameter< bool >::type all_colors(all_colorsSEXP);
-    Rcpp::traits::input_parameter< arma::umat >::type color_mat(color_matSEXP);
+    Rcpp::traits::input_parameter< const bool& >::type all_colors(all_colorsSEXP);
+    Rcpp::traits::input_parameter< arma::umat& >::type color_mat(color_matSEXP);
     rcpp_result_gen = Rcpp::wrap(iterate_smoke(canvas, algorithm, all_colors, color_mat));
     return rcpp_result_gen;
 END_RCPP
