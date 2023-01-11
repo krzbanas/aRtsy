@@ -155,12 +155,13 @@ Rcpp::IntegerVector get_point(arma::cube& canvas,
                               Rcpp::IntegerVector& color,
                               int resolution,
                               int algorithm) {
-  switch (algorithm) {
-    case 0:
-      return min_diff(canvas, available, colored, color, resolution);
-    case 1:
-      return avg_diff(canvas, available, colored, color, resolution);
+  Rcpp::IntegerVector point(2);
+  if (algorithm == 0) {
+    point = min_diff(canvas, available, colored, color, resolution);
+  } else {
+    point = avg_diff(canvas, available, colored, color, resolution);
   }
+  return point;
 }
 
 arma::umat createPaletteRGB(const int& resolution) {
@@ -176,10 +177,11 @@ arma::umat createPaletteRGB(const int& resolution) {
         colors.at(i, 2) = b * 255 / (numcolors - 1);
         ++i;
         if (i == color_count)
-          return colors;
+          break;
       }
     }
   }
+  return colors;
 }
 
 arma::umat createPaletteGBR(const int& resolution) {
@@ -195,10 +197,11 @@ arma::umat createPaletteGBR(const int& resolution) {
         colors.at(i, 2) = b * 255 / (numcolors - 1);
         ++i;
         if (i == color_count)
-          return colors;
+          break;
       }
     }
   }
+  return colors;
 }
 
 arma::umat createPaletteBRG(const int& resolution) {
@@ -214,13 +217,14 @@ arma::umat createPaletteBRG(const int& resolution) {
         colors.at(i, 2) = b * 255 / (numcolors - 1);
         ++i;
         if (i == color_count)
-          return colors;
+          break;
       }
     }
   }
+  return colors;
 }
 
-arma::umat createPalette(const int& resolution) {
+arma::umat create_palette(const int& resolution) {
   arma::umat palette;
   int pick = floor(R::runif(0, 3));
   switch (pick) {
@@ -235,17 +239,28 @@ arma::umat createPalette(const int& resolution) {
   return palette;
 }
 
-arma::umat samplePalette(const int resolution,
-                         arma::umat color_mat) {
+arma::umat sample_palette(const int& resolution,
+                          arma::umat& color_mat) {
   const int color_count = pow(resolution, 2);
-  const int numcolors = ceil(pow(color_count, 1.0/3));
   arma::umat palette(color_count, 3);
   int pick;
   for (int i = 0; i < color_count; ++i) {
     pick = floor(R::runif(0, color_mat.n_rows));
     palette.at(i, 0) = color_mat.at(pick, 0);
-	palette.at(i, 1) = color_mat.at(pick, 1);
-	palette.at(i, 2) = color_mat.at(pick, 2);
+    palette.at(i, 1) = color_mat.at(pick, 1);
+    palette.at(i, 2) = color_mat.at(pick, 2);
+  }
+  return palette;
+}
+
+arma::umat get_palette(const int& resolution,
+                       const bool& all_colors,
+                       arma::umat& color_mat) {
+  arma::umat palette;
+  if (all_colors) {
+    palette = create_palette(resolution);
+  } else {
+    palette = sample_palette(resolution, color_mat);
   }
   return palette;
 }
@@ -253,15 +268,15 @@ arma::umat samplePalette(const int resolution,
 // [[Rcpp::export]]
 arma::cube iterate_smoke(arma::cube& canvas,
                          const int& algorithm,
-						 bool all_colors,
-						 arma::umat color_mat) {
+                         bool all_colors,
+                         arma::umat color_mat) {
   bool first = true;
   const int resolution = canvas.n_rows;
   arma::umat colors;
   if (all_colors) {
-    colors = createPalette(resolution);
+    colors = create_palette(resolution);
   } else {
-	colors = samplePalette(resolution, color_mat);
+    colors = sample_palette(resolution, color_mat);
   }
   arma::umat available(resolution, resolution, arma::fill::zeros);
   arma::umat colored(resolution, resolution, arma::fill::zeros);
