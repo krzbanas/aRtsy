@@ -153,6 +153,7 @@ Rcpp::IntegerVector min_avg_diff(const arma::cube& canvas,
       }
       int averageDifferenceAmongNeighbors = neighborColorDifferenceTotal / neighborCount;
       int averageDifferenceAmongNeighbors;
+      int averageDifferenceAmongNeighbors = 99999999;
       if (neighborCount > 0) {
         averageDifferenceAmongNeighbors = neighborColorDifferenceTotal / neighborCount;
       }
