@@ -43,7 +43,7 @@ artwork <- switch(type,
   "28" = canvas_splits(colors = colorPalette("random-palette"), background = colorPalette("random", 1), iterations = sample(6:8, size = 1), sd = abs(rnorm(1, sd = 0.5))),
   "29" = canvas_mesh(colors = colorPalette("random-palette", n = sample(1:5, size = 1)), background = sample(c("#fafafa", "firebrick", "#f9f0e0", "black", "lavenderblush2", "#215682"), size = 1)),
   "30" = canvas_flame(colors = colorPalette("random-palette"), background = sample(c("#fafafa", "firebrick", "#f9f0e0", "black", "lavenderblush2", "#215682"), size = 1), variations = sample(0:48, size = 3, replace = FALSE), symmetry = sample(-1:2, size = 1), iterations = 1e9, weighted = TRUE, post = sample(0:1, size = 1)),
-  "31" = canvas_smoke(colors = if (runif(1) > 1 / 3) colorPalette("random", n = 1024) else "all", resolution = 500)
+  "31" = canvas_smoke(colors = "all", resolution = 750)
 )
 
 saveCanvas(artwork, filename, width = ifelse(type == 19, yes = NA, no = 7), height = ifelse(type == 19, yes = NA, no = 7))
