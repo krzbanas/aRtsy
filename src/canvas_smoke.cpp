@@ -115,7 +115,7 @@ Rcpp::IntegerVector min_avg_diff(const arma::cube& canvas,
                                  const int& resolution)  {
   Rcpp::IntegerVector point(2);
   Rcpp::IntegerVector neighborcolor(3);
-  int neighborCount, neighborColorDifferenceTotal, difference;
+  int neighborCount, neighborColorDifferenceTotal, averageDifferenceAmongNeighbors, difference;
   int smallestAverageDifference = 99999999;
   for (int y = 0; y < resolution; y++) {
     for (int x = 0; x < resolution; x++) {
@@ -151,9 +151,7 @@ Rcpp::IntegerVector min_avg_diff(const arma::cube& canvas,
           neighborColorDifferenceTotal += difference;
         }
       }
-      int averageDifferenceAmongNeighbors = neighborColorDifferenceTotal / neighborCount;
-      int averageDifferenceAmongNeighbors;
-      int averageDifferenceAmongNeighbors = 99999999;
+      averageDifferenceAmongNeighbors = 99999999;
       if (neighborCount > 0) {
         averageDifferenceAmongNeighbors = neighborColorDifferenceTotal / neighborCount;
       }
