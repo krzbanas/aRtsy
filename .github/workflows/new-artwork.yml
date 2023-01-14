@@ -1,6 +1,7 @@
 on:
   schedule:
     - cron:  '00 00 * * *'
+  workflow_dispatch:
 
 name: Create new artwork
 
