@@ -17,11 +17,13 @@
 #'
 #' @description This function implements the rainbow smoke algorithm.
 #'
-#' @usage canvas_smoke(colors, resolution = 100, distance = c("minimum", "average"))
+#' @usage canvas_smoke(colors, resolution = 100, compute = c("minimum", "average"),
+#'              distance = c("euclidean", "manhattan"))
 #'
 #' @param colors      a string or character vector specifying the color(s) used for the artwork.
 #' @param resolution  resolution of the artwork in pixels per row/column. Increasing the resolution increases the quality of the artwork but also increases the computation time exponentially.
-#' @param distance    an character specifying how to select a new pixel. The default option \code{minimum} selects the pixel with the smallest color difference in a single neighbor and is relatively fast. The option \code{average} selects the pixel with the smallest average color difference in all the neighbors and is relatively slow.
+#' @param compute     a character specifying how to select a new pixel. The default option \code{minimum} selects the pixel with the smallest color difference in a single neighbor and is relatively fast. The option \code{average} selects the pixel with the smallest average color difference in all the neighbors and is relatively slow.
+#' @param distance    an character specifying the type of distance to compute for each possible neighbor.
 #'
 #' @return A \code{ggplot} object containing the artwork.
 #'
@@ -42,17 +44,23 @@
 #' }
 #'
 #' @export
-canvas_smoke <- function(colors, resolution = 100, distance = c("minimum", "average")) {
+canvas_smoke <- function(colors, resolution = 100, compute = c("minimum", "average"),
+                         distance = c("euclidean", "manhattan")) {
   .checkUserInput(resolution = resolution)
   distance <- match.arg(distance)
+  compute <- match.arg(compute)
   all_colors <- length(colors) == 1 && colors[1] == "all"
   color_mat <- .getColorMat(colors, all_colors)
-  algorithm <- switch(distance,
+  algorithm <- switch(compute,
     "minimum" = 0,
     "average" = 1
   )
+  power <- switch(distance,
+    "euclidean" = 2,
+    "manhattan" = 1
+  )
   canvas <- array(-1, c(resolution, resolution, 3))
-  canvas <- iterate_smoke(canvas, algorithm, all_colors, color_mat)
+  canvas <- iterate_smoke(canvas, algorithm, all_colors, color_mat, power)
   full_canvas <- as.data.frame(expand.grid(x = 1:resolution, y = 1:resolution))
   full_canvas[["col"]] <- grDevices::rgb(red = canvas[, , 1], green = canvas[, , 2], blue = canvas[, , 3], maxColorValue = 255)
   artwork <- ggplot2::ggplot(data = full_canvas, mapping = ggplot2::aes(x = x, y = y)) +
