@@ -24,7 +24,7 @@ This function implements the rainbow smoke algorithm.
 set.seed(1)
 
 # Simple example
-canvas_smoke(colors = colorPalette("random", 1024), resolution = 250)
+canvas_smoke(colors = colorPalette("random", 1024), compute = "average")
 
 # Advanced example
 canvas_smoke(colors = "all", resolution = 500)

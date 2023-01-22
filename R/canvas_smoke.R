@@ -38,7 +38,7 @@
 #' set.seed(1)
 #'
 #' # Simple example
-#' canvas_smoke(colors = colorPalette("random", 1024), resolution = 250)
+#' canvas_smoke(colors = colorPalette("random", 1024), compute = "average")
 #'
 #' # Advanced example
 #' canvas_smoke(colors = "all", resolution = 500)
@@ -55,7 +55,7 @@ canvas_smoke <- function(colors, resolution = 150, compute = c("minimum", "avera
     "average" = 1
   )
   canvas <- array(c(rep(-1, 3 * resolution^2), rep(0, 2 * resolution^2)), c(resolution, resolution, 5))
-  canvas <- iterate_smoke(canvas, algorithm, all_colors, color_mat)
+  canvas <- draw_smoke(canvas, algorithm, all_colors, color_mat)
   full_canvas <- as.data.frame(expand.grid(x = 1:resolution, y = 1:resolution))
   full_canvas[["col"]] <- grDevices::rgb(red = canvas[, , 1], green = canvas[, , 2], blue = canvas[, , 3], maxColorValue = 255)
   artwork <- ggplot2::ggplot(data = full_canvas, mapping = ggplot2::aes(x = x, y = y)) +

@@ -79,29 +79,35 @@ arma::umat create_palette_brg(const int& resolution) {
   return colors;
 }
 
-void shuffle(arma::umat& palette) {
-  for (int i=0; i < palette.n_rows; ++i) {
-    palette.row(i) = arma::shuffle(palette.row(i), 1);
+void shuffle_palette(arma::umat& palette) {
+  arma::uvec indices = arma::randi<arma::uvec>(palette.n_rows, arma::distr_param(0, palette.n_rows - 1));
+  arma::umat shuffled(palette.n_rows, palette.n_cols);
+  for (int i = 0; i < palette.n_rows; i++) {
+    shuffled.row(i) = palette.row(indices(i));
   }
+  palette = shuffled;
 }
 
-const arma::umat create_palette(const int& resolution) {
+const arma::umat new_palette(const int& resolution) {
   arma::umat palette;
   const int pick = floor(R::runif(0, 3));
   switch (pick) {
     case 0:
       palette = create_palette_rgb(resolution);
+      break;
     case 1:
       palette = create_palette_gbr(resolution);
+      break;
     case 2:
       palette = create_palette_brg(resolution);
+      break;
   }
-  shuffle(palette);
+  shuffle_palette(palette);
   return palette;
 }
 
 const arma::umat sample_palette(const int& resolution,
-                          arma::umat color_mat) {
+                                const arma::umat& color_mat) {
   const int color_count = resolution * resolution;
   arma::uvec indices = arma::randi<arma::uvec>(color_count, arma::distr_param(0, color_mat.n_rows - 1));
   arma::umat palette(color_count, 3);
@@ -115,7 +121,7 @@ const arma::umat get_palette(const int& resolution,
                              const bool& all_colors,
                              const arma::umat& color_mat) {
   if (all_colors) {
-    return create_palette(resolution);
+    return new_palette(resolution);
   } else {
     return sample_palette(resolution, color_mat);
   }
@@ -131,19 +137,17 @@ double color_difference(const Rcpp::IntegerVector& c1,
 
 Rcpp::IntegerVector min_diff(const arma::cube& canvas,
                              const Rcpp::IntegerVector& color) {
-  Rcpp::IntegerVector point(2);
-  Rcpp::IntegerVector neighborcolor(3);
-  const int resolution = canvas.n_rows;
-  // find the pixel with the smallest difference between the current color and all of it's neighbors' colors
+  Rcpp::IntegerVector neighborcolor(3), point(2);
+  int resolution = canvas.n_rows;
   int smallestDifference = 99999999;
+  int difference, nx, ny, smallestDifferenceAmongNeighbors;
   for (int y = 0; y < resolution; ++y) {
     for (int x = 0; x < resolution; ++x) {
       // skip any that arent' available or that are already colored
       if (canvas.at(y, x, 3) != 1 || canvas.at(y, x, 4) == 1) {
         continue;
       }
-      // loop through its neighbors
-      int smallestDifferenceAmongNeighbors = 99999999;
+      smallestDifferenceAmongNeighbors = 99999999;
       for (int dy = -1; dy <= 1; ++dy) {
         if (y + dy == -1 || y + dy == resolution) {
           continue;
@@ -155,8 +159,8 @@ Rcpp::IntegerVector min_diff(const arma::cube& canvas,
           if (x + dx == -1 || x + dx == resolution) {
             continue;
           }
-          int nx = x + dx;
-          int ny = y + dy;
+          nx = x + dx;
+          ny = y + dy;
           // skip any neighbors that don't have a color
           if (canvas.at(ny, nx, 4) != 1) {
             continue;
@@ -164,7 +168,7 @@ Rcpp::IntegerVector min_diff(const arma::cube& canvas,
           neighborcolor[0] = canvas.at(ny, nx, 0);
           neighborcolor[1] = canvas.at(ny, nx, 1);
           neighborcolor[2] = canvas.at(ny, nx, 2);
-          int difference = color_difference(neighborcolor, color);
+          difference = color_difference(neighborcolor, color);
           if (difference < smallestDifferenceAmongNeighbors) {
             smallestDifferenceAmongNeighbors = difference;
           }
@@ -182,11 +186,9 @@ Rcpp::IntegerVector min_diff(const arma::cube& canvas,
 
 Rcpp::IntegerVector min_avg_diff(const arma::cube& canvas,
                                  const Rcpp::IntegerVector& color)  {
-  Rcpp::IntegerVector point(2);
-  Rcpp::IntegerVector neighborcolor(3);
-  int neighborCount, neighborColorDifferenceTotal, averageDifferenceAmongNeighbors, difference;
-  int smallestAverageDifference = 99999999;
-  const int resolution = canvas.n_rows;
+  Rcpp::IntegerVector neighborcolor(3), point(2);
+  int neighborCount, neighborColorDifferenceTotal, averageDifferenceAmongNeighbors, difference, nx, ny;
+  int resolution = canvas.n_rows, smallestAverageDifference = 99999999;
   for (int y = 0; y < resolution; y++) {
     for (int x = 0; x < resolution; x++) {
       // skip any that arent' available or that are already colored
@@ -207,8 +209,8 @@ Rcpp::IntegerVector min_avg_diff(const arma::cube& canvas,
           if (x + dx == -1 || x + dx == resolution) {
             continue;
           }
-          int nx = x + dx;
-          int ny = y + dy;
+          nx = x + dx;
+          ny = y + dy;
           // skip any neighbors that don't already have a color
           if (canvas.at(ny, nx, 4) != 1) {
             continue;
@@ -235,9 +237,9 @@ Rcpp::IntegerVector min_avg_diff(const arma::cube& canvas,
   return point;
 }
 
-Rcpp::IntegerVector get_point(const arma::cube& canvas,
-                              const Rcpp::IntegerVector& color,
-                              const int& algorithm) {
+Rcpp::IntegerVector update_point(const arma::cube& canvas,
+                                 const Rcpp::IntegerVector& color,
+                                 const int& algorithm) {
   Rcpp::IntegerVector point(2);
   if (algorithm == 0) {
     point = min_diff(canvas, color);
@@ -271,10 +273,10 @@ void mark_neighbors(arma::cube& canvas,
 }
 
 // [[Rcpp::export]]
-arma::cube iterate_smoke(arma::cube& canvas,
-                         const int& algorithm,
-                         const bool& all_colors,
-                         arma::umat& color_mat) {
+arma::cube draw_smoke(arma::cube& canvas,
+                      const int& algorithm,
+                      const bool& all_colors,
+                      arma::umat& color_mat) {
   const int resolution = canvas.n_rows;
   Rcpp::IntegerVector color(3), point(2);
   const arma::umat colors = get_palette(resolution, all_colors, color_mat);
@@ -285,7 +287,7 @@ arma::cube iterate_smoke(arma::cube& canvas,
       point[0] = floor(R::runif(0, resolution));
       point[1] = floor(R::runif(0, resolution));
     } else {
-      point = get_point(canvas, color, algorithm);
+      point = update_point(canvas, color, algorithm);
     }
     canvas.at(point[1], point[0], 0) = color[0]; // Red
     canvas.at(point[1], point[0], 1) = color[1]; // Green
