@@ -17,7 +17,7 @@
 #'
 #' @description This function implements the rainbow smoke algorithm.
 #'
-#' @usage canvas_smoke(colors, resolution = 200, compute = c("minimum", "average"))
+#' @usage canvas_smoke(colors, resolution = 150, compute = c("minimum", "average"))
 #'
 #' @param colors      a string or character vector specifying the color(s) used for the artwork.
 #' @param resolution  resolution of the artwork in pixels per row/column. Increasing the resolution increases the quality of the artwork but also increases the computation time exponentially.
@@ -38,14 +38,14 @@
 #' set.seed(1)
 #'
 #' # Simple example
-#' canvas_smoke(colors = colorPalette("random", 1024))
+#' canvas_smoke(colors = colorPalette("random", 1024), resolution = 250)
 #'
 #' # Advanced example
 #' canvas_smoke(colors = "all", resolution = 500)
 #' }
 #'
 #' @export
-canvas_smoke <- function(colors, resolution = 200, compute = c("minimum", "average")) {
+canvas_smoke <- function(colors, resolution = 150, compute = c("minimum", "average")) {
   .checkUserInput(resolution = resolution)
   compute <- match.arg(compute)
   all_colors <- length(colors) == 1 && colors[1] == "all"

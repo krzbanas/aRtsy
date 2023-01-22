@@ -4,7 +4,7 @@
 \alias{canvas_smoke}
 \title{Draw Rainbow Smoke}
 \usage{
-canvas_smoke(colors, resolution = 200, compute = c("minimum", "average"))
+canvas_smoke(colors, resolution = 150, compute = c("minimum", "average"))
 }
 \arguments{
 \item{colors}{a string or character vector specifying the color(s) used for the artwork.}
@@ -24,7 +24,7 @@ This function implements the rainbow smoke algorithm.
 set.seed(1)
 
 # Simple example
-canvas_smoke(colors = colorPalette("random", 1024))
+canvas_smoke(colors = colorPalette("random", 1024), resolution = 250)
 
 # Advanced example
 canvas_smoke(colors = "all", resolution = 500)

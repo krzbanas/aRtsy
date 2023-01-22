@@ -16,13 +16,6 @@
 #include <RcppArmadillo.h>
 // [[Rcpp::depends(RcppArmadillo)]]
 
-arma::umat shuffle(arma::umat& A) {
-  for (int i=0; i < A.n_rows; ++i) {
-    A.row(i) = arma::shuffle(A.row(i), 1);
-  }
-  return A;
-}
-
 arma::umat create_palette_rgb(const int& resolution) {
   const int color_count = resolution * resolution;
   const int numcolors = ceil(pow(color_count, 1.0/3));
@@ -86,7 +79,13 @@ arma::umat create_palette_brg(const int& resolution) {
   return colors;
 }
 
-arma::umat create_palette(const int& resolution) {
+void shuffle(arma::umat& palette) {
+  for (int i=0; i < palette.n_rows; ++i) {
+    palette.row(i) = arma::shuffle(palette.row(i), 1);
+  }
+}
+
+const arma::umat create_palette(const int& resolution) {
   arma::umat palette;
   const int pick = floor(R::runif(0, 3));
   switch (pick) {
@@ -97,34 +96,29 @@ arma::umat create_palette(const int& resolution) {
     case 2:
       palette = create_palette_brg(resolution);
   }
-  palette = shuffle(palette);
+  shuffle(palette);
   return palette;
 }
 
-arma::umat sample_palette(const int& resolution,
-                          arma::umat& color_mat) {
+const arma::umat sample_palette(const int& resolution,
+                          arma::umat color_mat) {
   const int color_count = resolution * resolution;
+  arma::uvec indices = arma::randi<arma::uvec>(color_count, arma::distr_param(0, color_mat.n_rows - 1));
   arma::umat palette(color_count, 3);
-  int pick;
-  for (int i = 0; i < color_count; ++i) {
-    pick = floor(R::runif(0, color_mat.n_rows));
-    palette.at(i, 0) = color_mat.at(pick, 0);
-    palette.at(i, 1) = color_mat.at(pick, 1);
-    palette.at(i, 2) = color_mat.at(pick, 2);
+  for (int i = 0; i < color_count; i++) {
+    palette.row(i) = color_mat.row(indices(i));
   }
   return palette;
 }
 
-arma::umat get_palette(const int& resolution,
-                       const bool& all_colors,
-                       arma::umat& color_mat) {
-  arma::umat palette;
+const arma::umat get_palette(const int& resolution,
+                             const bool& all_colors,
+                             const arma::umat& color_mat) {
   if (all_colors) {
-    palette = create_palette(resolution);
+    return create_palette(resolution);
   } else {
-    palette = sample_palette(resolution, color_mat);
+    return sample_palette(resolution, color_mat);
   }
-  return palette;
 }
 
 double color_difference(const Rcpp::IntegerVector& c1,
@@ -133,29 +127,6 @@ double color_difference(const Rcpp::IntegerVector& c1,
   const int g = c1[1] - c2[1];
   const int b = c1[2] - c2[2];
   return (r*r + g*g + b*b) >> 1; // Bit-shifting
-}
-
-void mark_neighbors(arma::cube& canvas,
-                    const Rcpp::IntegerVector& point) {
-  const int resolution = canvas.n_rows;
-  for (int dy = -1; dy <= 1; ++dy) {
-    int ny = point[1] + dy;
-    if (ny == -1 || ny == resolution) {
-      continue;
-    }
-    for (int dx = -1; dx <= 1; ++dx) {
-      if (dx == 0 && dy == 0) {
-        continue;
-      }
-      int nx = point[0] + dx;
-      if (nx == -1 || nx == resolution) {
-        continue;
-      }
-      if (canvas.at(ny, nx, 4) != 1) {
-        canvas.at(ny, nx, 3) = 1;
-      }
-    }
-  }
 }
 
 Rcpp::IntegerVector min_diff(const arma::cube& canvas,
@@ -276,6 +247,29 @@ Rcpp::IntegerVector get_point(const arma::cube& canvas,
   return point;
 }
 
+void mark_neighbors(arma::cube& canvas,
+                    const Rcpp::IntegerVector& point) {
+  const int resolution = canvas.n_rows;
+  for (int dy = -1; dy <= 1; ++dy) {
+    int ny = point[1] + dy;
+    if (ny == -1 || ny == resolution) {
+      continue;
+    }
+    for (int dx = -1; dx <= 1; ++dx) {
+      if (dx == 0 && dy == 0) {
+        continue;
+      }
+      int nx = point[0] + dx;
+      if (nx == -1 || nx == resolution) {
+        continue;
+      }
+      if (canvas.at(ny, nx, 4) != 1) {
+        canvas.at(ny, nx, 3) = 1;
+      }
+    }
+  }
+}
+
 // [[Rcpp::export]]
 arma::cube iterate_smoke(arma::cube& canvas,
                          const int& algorithm,
@@ -283,7 +277,7 @@ arma::cube iterate_smoke(arma::cube& canvas,
                          arma::umat& color_mat) {
   const int resolution = canvas.n_rows;
   Rcpp::IntegerVector color(3), point(2);
-  arma::umat colors = get_palette(resolution, all_colors, color_mat);
+  const arma::umat colors = get_palette(resolution, all_colors, color_mat);
   for (int i = 0; i < colors.n_rows; ++i) {
     Rcpp::checkUserInterrupt();
     color = Rcpp::as<Rcpp::IntegerVector>(Rcpp::wrap(colors.row(i)));
