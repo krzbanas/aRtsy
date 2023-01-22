@@ -135,9 +135,10 @@ double color_difference(const Rcpp::IntegerVector& c1,
   return (r*r + g*g + b*b) >> 1; // Bit-shifting
 }
 
-Rcpp::IntegerVector min_diff(const arma::cube& canvas,
-                             const Rcpp::IntegerVector& color) {
-  Rcpp::IntegerVector neighborcolor(3), point(2);
+void min_diff(Rcpp::IntegerVector& point,
+              const arma::cube& canvas,
+              const Rcpp::IntegerVector& color) {
+  Rcpp::IntegerVector neighborcolor(3), newpoint(2);
   int resolution = canvas.n_rows;
   int smallestDifference = 99999999;
   int difference, nx, ny, smallestDifferenceAmongNeighbors;
@@ -176,17 +177,18 @@ Rcpp::IntegerVector min_diff(const arma::cube& canvas,
       }
       if (smallestDifferenceAmongNeighbors < smallestDifference || (smallestDifferenceAmongNeighbors == smallestDifference && R::runif(0, 1) < 0.5)) {
         smallestDifference = smallestDifferenceAmongNeighbors;
-        point[0] = x;
-        point[1] = y;
+        newpoint[0] = x;
+        newpoint[1] = y;
       }
     }
   }
-  return point;
+  point = newpoint;
 }
 
-Rcpp::IntegerVector min_avg_diff(const arma::cube& canvas,
-                                 const Rcpp::IntegerVector& color)  {
-  Rcpp::IntegerVector neighborcolor(3), point(2);
+void min_avg_diff(Rcpp::IntegerVector& point,
+                  const arma::cube& canvas,
+                  const Rcpp::IntegerVector& color) {
+  Rcpp::IntegerVector neighborcolor(3), newpoint(2);
   int neighborCount, neighborColorDifferenceTotal, averageDifferenceAmongNeighbors, difference, nx, ny;
   int resolution = canvas.n_rows, smallestAverageDifference = 99999999;
   for (int y = 0; y < resolution; y++) {
@@ -229,24 +231,27 @@ Rcpp::IntegerVector min_avg_diff(const arma::cube& canvas,
       }
       if (averageDifferenceAmongNeighbors < smallestAverageDifference || (averageDifferenceAmongNeighbors == smallestAverageDifference && R::runif(0, 1) < 0.5)) {
         smallestAverageDifference = averageDifferenceAmongNeighbors;
-        point[0] = x;
-        point[1] = y;
+        newpoint[0] = x;
+        newpoint[1] = y;
       }
     }
   }
-  return point;
+  point = newpoint;
 }
 
-Rcpp::IntegerVector update_point(const arma::cube& canvas,
-                                 const Rcpp::IntegerVector& color,
-                                 const int& algorithm) {
-  Rcpp::IntegerVector point(2);
-  if (algorithm == 0) {
-    point = min_diff(canvas, color);
-  } else {
-    point = min_avg_diff(canvas, color);
+void update_point(Rcpp::IntegerVector& point,
+                  const arma::cube& canvas,
+                  const Rcpp::IntegerVector& color,
+                  const int& algorithm) {
+  switch (algorithm)
+  {
+  case 0:
+    min_diff(point, canvas, color);
+    break;
+  case 1:
+    min_avg_diff(point, canvas, color);
+    break;
   }
-  return point;
 }
 
 void mark_neighbors(arma::cube& canvas,
@@ -287,7 +292,7 @@ arma::cube draw_smoke(arma::cube& canvas,
       point[0] = floor(R::runif(0, resolution));
       point[1] = floor(R::runif(0, resolution));
     } else {
-      point = update_point(canvas, color, algorithm);
+      update_point(point, canvas, color, algorithm);
     }
     canvas.at(point[1], point[0], 0) = color[0]; // Red
     canvas.at(point[1], point[0], 1) = color[1]; // Green
