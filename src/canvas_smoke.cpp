@@ -239,6 +239,14 @@ void min_avg_diff(Rcpp::IntegerVector& point,
   point = newpoint;
 }
 
+void init_point(Rcpp::IntegerVector& point,
+                arma::umat& coords) {
+  int row = floor(R::runif(0, coords.n_rows));
+  point[0] = coords(row, 0);
+  point[1] = coords(row, 1);
+  coords.shed_row(row);
+}
+
 void update_point(Rcpp::IntegerVector& point,
                   const arma::cube& canvas,
                   const Rcpp::IntegerVector& color,
@@ -291,10 +299,7 @@ arma::cube draw_smoke(arma::cube& canvas,
     Rcpp::checkUserInterrupt();
     color = Rcpp::as<Rcpp::IntegerVector>(Rcpp::wrap(colors.row(i)));
     if (i < init) {
-      int row = floor(R::runif(0, coords.n_rows));
-      point[0] = coords(row, 0);
-      point[1] = coords(row, 1);
-      coords.shed_row(row);
+      init_point(point, coords);
     } else {
       update_point(point, canvas, color, algorithm);
     }
