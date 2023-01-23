@@ -31,13 +31,10 @@ set.seed(1)
 # Simple example
 canvas_smoke(colors = "all", resolution = 500)
 
-# Simple example
-canvas_smoke(colors = colorPalette("random", 1024), algorithm = "average")
-
 # Advanced example
 ramp1 <- colorRampPalette(c("red", "black"))(100)
 ramp2 <- colorRampPalette(c("goldenrod", "navyblue"))(100)
-canvas_smoke(colors = c(ramp1, ramp2), resolution = 500)
+canvas_smoke(colors = c(ramp1, ramp2), init = 3, resolution = 500)
 }
 
 }
