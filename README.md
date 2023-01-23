@@ -313,9 +313,9 @@ canvas_splits(colors = colorPalette("origami"))
 This function implements the [rainbow smoke](http://rainbowsmoke.hu/home) algorithm, an original idea from Jozsef Fejes. The algorithm works as follows: First, we select an initial color and apply it to a randomly chosen pixel. Next, we proceed to use the remaining colors one at the time and color pixels in a manner where colors that are alike are positioned near each other.
 
 <p align="center">
+  <img src='https://github.com/koenderks/aRtsy/raw/development/png/smokes/2023-01-10.png' width='30%'>
   <img src='https://github.com/koenderks/aRtsy/raw/development/png/smokes/2023-01-08.png' width='30%'>
   <img src='https://github.com/koenderks/aRtsy/raw/development/png/smokes/2023-01-09.png' width='30%'>
-  <img src='https://github.com/koenderks/aRtsy/raw/development/png/smokes/2023-01-10.png' width='30%'>
 </p>
 
 You can use the `canvas_smoke()` function to make your own artwork using this algorithm.

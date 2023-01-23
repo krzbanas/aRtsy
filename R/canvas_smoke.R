@@ -21,7 +21,7 @@
 #'              resolution = 150)
 #'
 #' @param colors      a string or character vector specifying the color(s) used for the artwork.
-#' @param init        an integer specifying the initial number of pixels to color.
+#' @param init        an integer larger than zero and lower  than or equal to \code{resolution^2} specifying the initial number of pixels to color on the canvas.
 #' @param resolution  resolution of the artwork in pixels per row/column. Increasing the resolution increases the quality of the artwork but also increases the computation time exponentially.
 #' @param compute     a character specifying how to select a new pixel. The default option \code{minimum} selects the pixel with the smallest color difference in a single neighbor and is relatively fast. The option \code{average} selects the pixel with the smallest average color difference in all the neighbors and is relatively slow.
 #'
@@ -55,7 +55,7 @@
 canvas_smoke <- function(colors, init = 1, compute = c("minimum", "average"),
                          resolution = 150) {
   .checkUserInput(resolution = resolution)
-  stopifnot("'init' must be > 0 and < 6" = init > 0 && init < 6)
+  stopifnot("'init' must be > 0 and <= resolution^2" = init > 0 && init <= resolution^2)
   compute <- match.arg(compute)
   all_colors <- length(colors) == 1 && colors[1] == "all"
   color_mat <- .getColorMat(colors, all_colors)
@@ -64,7 +64,8 @@ canvas_smoke <- function(colors, init = 1, compute = c("minimum", "average"),
     "average" = 1
   )
   canvas <- array(c(rep(-1, 3 * resolution^2), rep(0, 2 * resolution^2)), c(resolution, resolution, 5))
-  canvas <- draw_smoke(canvas, algorithm, all_colors, color_mat, init)
+  coords <- as.matrix(expand.grid(0:(resolution - 1), 0:(resolution - 1)))
+  canvas <- draw_smoke(canvas, coords, color_mat, init, algorithm, all_colors)
   full_canvas <- as.data.frame(expand.grid(x = 1:resolution, y = 1:resolution))
   full_canvas[["col"]] <- grDevices::rgb(red = canvas[, , 1], green = canvas[, , 2], blue = canvas[, , 3], maxColorValue = 255)
   artwork <- ggplot2::ggplot(data = full_canvas, mapping = ggplot2::aes(x = x, y = y)) +

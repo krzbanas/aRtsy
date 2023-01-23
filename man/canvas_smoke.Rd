@@ -10,7 +10,7 @@ canvas_smoke(colors, init = 1, compute = c("minimum", "average"),
 \arguments{
 \item{colors}{a string or character vector specifying the color(s) used for the artwork.}
 
-\item{init}{an integer specifying the initial number of pixels to color.}
+\item{init}{an integer larger than zero and lower  than or equal to \code{resolution^2} specifying the initial number of pixels to color on the canvas.}
 
 \item{compute}{a character specifying how to select a new pixel. The default option \code{minimum} selects the pixel with the smallest color difference in a single neighbor and is relatively fast. The option \code{average} selects the pixel with the smallest average color difference in all the neighbors and is relatively slow.}
 
