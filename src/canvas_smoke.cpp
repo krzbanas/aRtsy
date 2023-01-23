@@ -239,14 +239,6 @@ void min_avg_diff(Rcpp::IntegerVector& point,
   point = newpoint;
 }
 
-void init_point(Rcpp::IntegerVector& point,
-                arma::umat& coords) {
-  int row = floor(R::runif(0, coords.n_rows));
-  point[0] = coords(row, 0);
-  point[1] = coords(row, 1);
-  coords.shed_row(row);
-}
-
 void update_point(Rcpp::IntegerVector& point,
                   const arma::cube& canvas,
                   const Rcpp::IntegerVector& color,
@@ -260,6 +252,14 @@ void update_point(Rcpp::IntegerVector& point,
     min_avg_diff(point, canvas, color);
     break;
   }
+}
+
+void init_point(Rcpp::IntegerVector& point,
+                arma::umat& coords) {
+  int row = floor(R::runif(0, coords.n_rows));
+  point[0] = coords(row, 0);
+  point[1] = coords(row, 1);
+  coords.shed_row(row);
 }
 
 void mark_neighbors(arma::cube& canvas,
