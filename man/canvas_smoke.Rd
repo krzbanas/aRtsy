@@ -4,15 +4,17 @@
 \alias{canvas_smoke}
 \title{Draw Rainbow Smoke}
 \usage{
-canvas_smoke(colors, init = 1, compute = c("minimum", "average"),
-             resolution = 150)
+canvas_smoke(colors, init = 1, shape = c("bursts", "clouds"),
+             algorithm = c("minimum", "average"), resolution = 150)
 }
 \arguments{
 \item{colors}{a string or character vector specifying the color(s) used for the artwork.}
 
 \item{init}{an integer larger than zero and lower  than or equal to \code{resolution^2} specifying the initial number of pixels to color on the canvas.}
 
-\item{compute}{a character specifying how to select a new pixel. The default option \code{minimum} selects the pixel with the smallest color difference in a single neighbor and is relatively fast. The option \code{average} selects the pixel with the smallest average color difference in all the neighbors and is relatively slow.}
+\item{shape}{a character indicating the shape of the smoke. Possible options are \code{burst} and \code{clouds}.}
+
+\item{algorithm}{a character specifying how to select a new pixel. The default option \code{minimum} selects the pixel with the smallest color difference in a single neighbor and is relatively fast. The option \code{average} selects the pixel with the smallest average color difference in all the neighbors and is relatively slow.}
 
 \item{resolution}{resolution of the artwork in pixels per row/column. Increasing the resolution increases the quality of the artwork but also increases the computation time exponentially.}
 }
@@ -30,7 +32,7 @@ set.seed(1)
 canvas_smoke(colors = "all", resolution = 500)
 
 # Simple example
-canvas_smoke(colors = colorPalette("random", 1024), compute = "average")
+canvas_smoke(colors = colorPalette("random", 1024), algorithm = "average")
 
 # Advanced example
 ramp1 <- colorRampPalette(c("red", "black"))(100)

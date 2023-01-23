@@ -79,13 +79,19 @@ arma::umat create_palette_brg(const int& resolution) {
   return colors;
 }
 
-void shuffle_palette(arma::umat& palette) {
+void shuffle_rows(arma::umat& palette) {
   arma::uvec indices = arma::randi<arma::uvec>(palette.n_rows, arma::distr_param(0, palette.n_rows - 1));
   arma::umat shuffled(palette.n_rows, palette.n_cols);
   for (int i = 0; i < palette.n_rows; i++) {
     shuffled.row(i) = palette.row(indices(i));
   }
   palette = shuffled;
+}
+
+void shuffle_within_rows(arma::umat& palette) {
+  for (int i=0; i < palette.n_rows; ++i) {
+    palette.row(i) = arma::shuffle(palette.row(i), 1);
+  }
 }
 
 const arma::umat new_palette(const int& resolution) {
@@ -102,7 +108,6 @@ const arma::umat new_palette(const int& resolution) {
       palette = create_palette_brg(resolution);
       break;
   }
-  shuffle_palette(palette);
   return palette;
 }
 
@@ -119,12 +124,24 @@ const arma::umat sample_palette(const int& resolution,
 
 const arma::umat get_palette(const int& resolution,
                              const bool& all_colors,
-                             const arma::umat& color_mat) {
+                             const arma::umat& color_mat,
+                             const int& shape) {
+  arma::umat palette;
   if (all_colors) {
-    return new_palette(resolution);
+    palette = new_palette(resolution);
   } else {
-    return sample_palette(resolution, color_mat);
+    palette = sample_palette(resolution, color_mat);
   }
+  switch (shape)
+  {
+  case 0:
+    shuffle_rows(palette);
+    break;
+  case 1:
+    shuffle_within_rows(palette);
+    break;
+  }
+  return palette;
 }
 
 double color_difference(const Rcpp::IntegerVector& c1,
@@ -291,10 +308,11 @@ arma::cube draw_smoke(arma::cube& canvas,
                       const arma::umat& color_mat,
                       const int& init,
                       const int& algorithm,
+                      const int& shape,
                       const bool& all_colors) {
   const int resolution = canvas.n_rows;
   Rcpp::IntegerVector color(3), point(2);
-  const arma::umat colors = get_palette(resolution, all_colors, color_mat);
+  const arma::umat colors = get_palette(resolution, all_colors, color_mat, shape);
   for (int i = 0; i < colors.n_rows; ++i) {
     Rcpp::checkUserInterrupt();
     color = Rcpp::as<Rcpp::IntegerVector>(Rcpp::wrap(colors.row(i)));

@@ -283,8 +283,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // draw_smoke
-arma::cube draw_smoke(arma::cube& canvas, arma::umat coords, const arma::umat& color_mat, const int& init, const int& algorithm, const bool& all_colors);
-RcppExport SEXP _aRtsy_draw_smoke(SEXP canvasSEXP, SEXP coordsSEXP, SEXP color_matSEXP, SEXP initSEXP, SEXP algorithmSEXP, SEXP all_colorsSEXP) {
+arma::cube draw_smoke(arma::cube& canvas, arma::umat coords, const arma::umat& color_mat, const int& init, const int& algorithm, const int& shape, const bool& all_colors);
+RcppExport SEXP _aRtsy_draw_smoke(SEXP canvasSEXP, SEXP coordsSEXP, SEXP color_matSEXP, SEXP initSEXP, SEXP algorithmSEXP, SEXP shapeSEXP, SEXP all_colorsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -293,8 +293,9 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const arma::umat& >::type color_mat(color_matSEXP);
     Rcpp::traits::input_parameter< const int& >::type init(initSEXP);
     Rcpp::traits::input_parameter< const int& >::type algorithm(algorithmSEXP);
+    Rcpp::traits::input_parameter< const int& >::type shape(shapeSEXP);
     Rcpp::traits::input_parameter< const bool& >::type all_colors(all_colorsSEXP);
-    rcpp_result_gen = Rcpp::wrap(draw_smoke(canvas, coords, color_mat, init, algorithm, all_colors));
+    rcpp_result_gen = Rcpp::wrap(draw_smoke(canvas, coords, color_mat, init, algorithm, shape, all_colors));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -410,7 +411,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_aRtsy_draw_planet", (DL_FUNC) &_aRtsy_draw_planet, 12},
     {"_aRtsy_draw_polylines", (DL_FUNC) &_aRtsy_draw_polylines, 5},
     {"_aRtsy_iterate_recaman", (DL_FUNC) &_aRtsy_iterate_recaman, 3},
-    {"_aRtsy_draw_smoke", (DL_FUNC) &_aRtsy_draw_smoke, 6},
+    {"_aRtsy_draw_smoke", (DL_FUNC) &_aRtsy_draw_smoke, 7},
     {"_aRtsy_draw_splits", (DL_FUNC) &_aRtsy_draw_splits, 8},
     {"_aRtsy_draw_squares", (DL_FUNC) &_aRtsy_draw_squares, 5},
     {"_aRtsy_draw_strokes", (DL_FUNC) &_aRtsy_draw_strokes, 4},
