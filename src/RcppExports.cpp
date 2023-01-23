@@ -283,8 +283,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // draw_smoke
-arma::cube draw_smoke(arma::cube& canvas, const int& algorithm, const bool& all_colors, arma::umat& color_mat);
-RcppExport SEXP _aRtsy_draw_smoke(SEXP canvasSEXP, SEXP algorithmSEXP, SEXP all_colorsSEXP, SEXP color_matSEXP) {
+arma::cube draw_smoke(arma::cube& canvas, const int& algorithm, const bool& all_colors, arma::umat& color_mat, const int& init);
+RcppExport SEXP _aRtsy_draw_smoke(SEXP canvasSEXP, SEXP algorithmSEXP, SEXP all_colorsSEXP, SEXP color_matSEXP, SEXP initSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -292,7 +292,8 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const int& >::type algorithm(algorithmSEXP);
     Rcpp::traits::input_parameter< const bool& >::type all_colors(all_colorsSEXP);
     Rcpp::traits::input_parameter< arma::umat& >::type color_mat(color_matSEXP);
-    rcpp_result_gen = Rcpp::wrap(draw_smoke(canvas, algorithm, all_colors, color_mat));
+    Rcpp::traits::input_parameter< const int& >::type init(initSEXP);
+    rcpp_result_gen = Rcpp::wrap(draw_smoke(canvas, algorithm, all_colors, color_mat, init));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -408,7 +409,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_aRtsy_draw_planet", (DL_FUNC) &_aRtsy_draw_planet, 12},
     {"_aRtsy_draw_polylines", (DL_FUNC) &_aRtsy_draw_polylines, 5},
     {"_aRtsy_iterate_recaman", (DL_FUNC) &_aRtsy_iterate_recaman, 3},
-    {"_aRtsy_draw_smoke", (DL_FUNC) &_aRtsy_draw_smoke, 4},
+    {"_aRtsy_draw_smoke", (DL_FUNC) &_aRtsy_draw_smoke, 5},
     {"_aRtsy_draw_splits", (DL_FUNC) &_aRtsy_draw_splits, 8},
     {"_aRtsy_draw_squares", (DL_FUNC) &_aRtsy_draw_squares, 5},
     {"_aRtsy_draw_strokes", (DL_FUNC) &_aRtsy_draw_strokes, 4},

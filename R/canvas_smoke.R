@@ -17,9 +17,11 @@
 #'
 #' @description This function implements the rainbow smoke algorithm.
 #'
-#' @usage canvas_smoke(colors, resolution = 150, compute = c("minimum", "average"))
+#' @usage canvas_smoke(colors, init = 1, compute = c("minimum", "average"),
+#'              resolution = 150)
 #'
 #' @param colors      a string or character vector specifying the color(s) used for the artwork.
+#' @param init        an integer specifying the initial number of pixels to color.
 #' @param resolution  resolution of the artwork in pixels per row/column. Increasing the resolution increases the quality of the artwork but also increases the computation time exponentially.
 #' @param compute     a character specifying how to select a new pixel. The default option \code{minimum} selects the pixel with the smallest color difference in a single neighbor and is relatively fast. The option \code{average} selects the pixel with the smallest average color difference in all the neighbors and is relatively slow.
 #'
@@ -38,15 +40,22 @@
 #' set.seed(1)
 #'
 #' # Simple example
+#' canvas_smoke(colors = "all", resolution = 500)
+#'
+#' # Simple example
 #' canvas_smoke(colors = colorPalette("random", 1024), compute = "average")
 #'
 #' # Advanced example
-#' canvas_smoke(colors = "all", resolution = 500)
+#' ramp1 <- colorRampPalette(c("red", "black"))(100)
+#' ramp2 <- colorRampPalette(c("goldenrod", "navyblue"))(100)
+#' canvas_smoke(colors = c(ramp1, ramp2), resolution = 500)
 #' }
 #'
 #' @export
-canvas_smoke <- function(colors, resolution = 150, compute = c("minimum", "average")) {
+canvas_smoke <- function(colors, init = 1, compute = c("minimum", "average"),
+                         resolution = 150) {
   .checkUserInput(resolution = resolution)
+  stopifnot("'init' must be > 0 and < 6" = init > 0 && init < 6)
   compute <- match.arg(compute)
   all_colors <- length(colors) == 1 && colors[1] == "all"
   color_mat <- .getColorMat(colors, all_colors)
@@ -55,7 +64,7 @@ canvas_smoke <- function(colors, resolution = 150, compute = c("minimum", "avera
     "average" = 1
   )
   canvas <- array(c(rep(-1, 3 * resolution^2), rep(0, 2 * resolution^2)), c(resolution, resolution, 5))
-  canvas <- draw_smoke(canvas, algorithm, all_colors, color_mat)
+  canvas <- draw_smoke(canvas, algorithm, all_colors, color_mat, init)
   full_canvas <- as.data.frame(expand.grid(x = 1:resolution, y = 1:resolution))
   full_canvas[["col"]] <- grDevices::rgb(red = canvas[, , 1], green = canvas[, , 2], blue = canvas[, , 3], maxColorValue = 255)
   artwork <- ggplot2::ggplot(data = full_canvas, mapping = ggplot2::aes(x = x, y = y)) +

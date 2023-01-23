@@ -4,14 +4,17 @@
 \alias{canvas_smoke}
 \title{Draw Rainbow Smoke}
 \usage{
-canvas_smoke(colors, resolution = 150, compute = c("minimum", "average"))
+canvas_smoke(colors, init = 1, compute = c("minimum", "average"),
+             resolution = 150)
 }
 \arguments{
 \item{colors}{a string or character vector specifying the color(s) used for the artwork.}
 
-\item{resolution}{resolution of the artwork in pixels per row/column. Increasing the resolution increases the quality of the artwork but also increases the computation time exponentially.}
+\item{init}{an integer specifying the initial number of pixels to color.}
 
 \item{compute}{a character specifying how to select a new pixel. The default option \code{minimum} selects the pixel with the smallest color difference in a single neighbor and is relatively fast. The option \code{average} selects the pixel with the smallest average color difference in all the neighbors and is relatively slow.}
+
+\item{resolution}{resolution of the artwork in pixels per row/column. Increasing the resolution increases the quality of the artwork but also increases the computation time exponentially.}
 }
 \value{
 A \code{ggplot} object containing the artwork.
@@ -24,10 +27,15 @@ This function implements the rainbow smoke algorithm.
 set.seed(1)
 
 # Simple example
+canvas_smoke(colors = "all", resolution = 500)
+
+# Simple example
 canvas_smoke(colors = colorPalette("random", 1024), compute = "average")
 
 # Advanced example
-canvas_smoke(colors = "all", resolution = 500)
+ramp1 <- colorRampPalette(c("red", "black"))(100)
+ramp2 <- colorRampPalette(c("goldenrod", "navyblue"))(100)
+canvas_smoke(colors = c(ramp1, ramp2), resolution = 500)
 }
 
 }

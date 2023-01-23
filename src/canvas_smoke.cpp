@@ -281,14 +281,15 @@ void mark_neighbors(arma::cube& canvas,
 arma::cube draw_smoke(arma::cube& canvas,
                       const int& algorithm,
                       const bool& all_colors,
-                      arma::umat& color_mat) {
+                      arma::umat& color_mat,
+                      const int& init) {
   const int resolution = canvas.n_rows;
   Rcpp::IntegerVector color(3), point(2);
   const arma::umat colors = get_palette(resolution, all_colors, color_mat);
   for (int i = 0; i < colors.n_rows; ++i) {
     Rcpp::checkUserInterrupt();
     color = Rcpp::as<Rcpp::IntegerVector>(Rcpp::wrap(colors.row(i)));
-    if (i == 0) {
+    if (i < init) {
       point[0] = floor(R::runif(0, resolution));
       point[1] = floor(R::runif(0, resolution));
     } else {
