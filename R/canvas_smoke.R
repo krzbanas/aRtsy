@@ -44,9 +44,10 @@
 #' canvas_smoke(colors = "all", resolution = 500)
 #'
 #' # Advanced example
-#' ramp1 <- colorRampPalette(c("red", "black"))(100)
-#' ramp2 <- colorRampPalette(c("goldenrod", "navyblue"))(100)
-#' canvas_smoke(colors = c(ramp1, ramp2), init = 3, resolution = 500)
+#' reds <- colorRampPalette(c("red", "black"))
+#' blues <- colorRampPalette(c("goldenrod", "navyblue"))
+#' palette <- c(reds(100), blues(100))
+#' canvas_smoke(colors = palette, init = 3, shape = "clouds", resolution = 500)
 #' }
 #'
 #' @export
