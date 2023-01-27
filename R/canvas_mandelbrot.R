@@ -82,7 +82,7 @@ canvas_mandelbrot <- function(colors, iterations = 100, zoom = 1,
   for (rep in 1:iterations) {
     index <- which(Mod(z) < 2)
     z[index] <- switch(set,
-      "mandelbrot" = z[index]^3 + c[index],
+      "mandelbrot" = z[index]^2 + c[index],
       "multibrot" = z[index]^mk + c[index],
       "julia" = z[index]^2 + c,
       "ship" = (abs(Re(z[index])) + abs(Im(z[index])) * 1i)^2 + c[index]
