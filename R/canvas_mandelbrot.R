@@ -15,11 +15,11 @@
 
 #' Draw the Mandelbrot Set
 #'
-#' @description This function draws the Mandelbrot set and other related fractals on the canvas.
+#' @description This function draws the Mandelbrot set and other related fractal sets on the canvas.
 #'
 #' @usage canvas_mandelbrot(colors, iterations = 100, zoom = 1,
 #'                    set = c("mandelbrot", "multibrot", "julia", "ship"),
-#'                    left = -2, right = 2, bottom = -2, top = 2,
+#'                    left = -2.16, right = 1.16, bottom = -1.66, top = 1.66,
 #'                    resolution = 500)
 #'
 #' @param colors      a string or character vector specifying the color(s) used for the artwork.
@@ -52,7 +52,7 @@
 
 canvas_mandelbrot <- function(colors, iterations = 100, zoom = 1,
                               set = c("mandelbrot", "multibrot", "julia", "ship"),
-                              left = -2, right = 2, bottom = -2, top = 2,
+                              left = -2.16, right = 1.16, bottom = -1.66, top = 1.66,
                               resolution = 500) {
   .checkUserInput(resolution = resolution, iterations = iterations)
   set <- match.arg(set)

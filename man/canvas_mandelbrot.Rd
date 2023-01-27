@@ -6,7 +6,7 @@
 \usage{
 canvas_mandelbrot(colors, iterations = 100, zoom = 1,
                    set = c("mandelbrot", "multibrot", "julia", "ship"),
-                   left = -2, right = 2, bottom = -2, top = 2,
+                   left = -2.16, right = 1.16, bottom = -1.66, top = 1.66,
                    resolution = 500)
 }
 \arguments{
@@ -32,7 +32,7 @@ canvas_mandelbrot(colors, iterations = 100, zoom = 1,
 A \code{ggplot} object containing the artwork.
 }
 \description{
-This function draws the Mandelbrot set and other related fractals on the canvas.
+This function draws the Mandelbrot set and other related fractal sets on the canvas.
 }
 \examples{
 \donttest{
