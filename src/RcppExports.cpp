@@ -362,7 +362,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // deform
-Rcpp::DataFrame deform(Rcpp::DoubleVector& x, Rcpp::DoubleVector& y, Rcpp::DoubleVector& s, const int& maxdepth, const int& resolution);
+Rcpp::DataFrame deform(Rcpp::DoubleVector& x, Rcpp::DoubleVector& y, Rcpp::DoubleVector& s, const int& maxdepth, const double& resolution);
 RcppExport SEXP _aRtsy_deform(SEXP xSEXP, SEXP ySEXP, SEXP sSEXP, SEXP maxdepthSEXP, SEXP resolutionSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
@@ -371,7 +371,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< Rcpp::DoubleVector& >::type y(ySEXP);
     Rcpp::traits::input_parameter< Rcpp::DoubleVector& >::type s(sSEXP);
     Rcpp::traits::input_parameter< const int& >::type maxdepth(maxdepthSEXP);
-    Rcpp::traits::input_parameter< const int& >::type resolution(resolutionSEXP);
+    Rcpp::traits::input_parameter< const double& >::type resolution(resolutionSEXP);
     rcpp_result_gen = Rcpp::wrap(deform(x, y, s, maxdepth, resolution));
     return rcpp_result_gen;
 END_RCPP
