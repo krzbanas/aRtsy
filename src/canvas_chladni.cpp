@@ -19,12 +19,22 @@
 Rcpp::NumericVector iterate_chladni(const Rcpp::NumericVector& x,
                                     const Rcpp::NumericVector& y,
                                     const Rcpp::NumericVector& waves) {
+  // Constants
   const int n = x.length(), k = waves.length();
+  // Variables
+  double sx, sy;
   Rcpp::NumericVector z(n);
-  for (int i = 0; i < k; i++) {
+  // Main loop
+  for (int i = 0; i < k; ++i) {
+    // Check for interrupt
     Rcpp::checkUserInterrupt();
-    for (int j = 0; j < n; j++) {
-      z[j] += fabs(sin(waves[i] *  x[j]) * sin(waves[i] * y[j]));
+    // Inner loop
+    for (int j = 0; j < n; ++j) {
+      // Calculate the sines
+      sx = sin(waves[i] * x[j]);
+      sy = sin(waves[i] * y[j]);
+      // Add the absolute value of the product
+      z[j] += fabs(sx * sy);
     }
   }
   return z;
