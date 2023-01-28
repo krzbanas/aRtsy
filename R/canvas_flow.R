@@ -96,18 +96,9 @@ canvas_flow <- function(colors, background = "#fafafa", lines = 500, lwd = 0.05,
       stop(paste0("'angles' must be a ", nrows, " x ", ncols, " matrix"))
     }
   }
-  canvas <- iterate_flow(
-    canvas = matrix(NA, nrow = iterations * lines, ncol = 5),
-    angles = angles,
-    lines = lines,
-    iters = iterations,
-    ncolors = length(colors),
-    left = left,
-    right = right,
-    top = top,
-    bottom = bottom,
-    stepmax = stepmax
-  )
+  canvas <- matrix(NA, nrow = iterations * lines, ncol = 5)
+  ncolors <- length(colors)
+  canvas <- iterate_flow(canvas, angles, lines, iterations, ncolors, left, right, top, bottom, stepmax)
   canvas <- canvas[!is.na(canvas[, 1]), ]
   for (j in 1:lines) {
     index <- which(canvas[, 3] == j)
