@@ -318,16 +318,16 @@ BEGIN_RCPP
 END_RCPP
 }
 // draw_squares
-arma::mat draw_squares(arma::mat X, Rcpp::DataFrame neighbors, int s, int cuts, double ratio);
+arma::mat draw_squares(arma::mat X, const Rcpp::DataFrame neighbors, const int s, const int cuts, const double ratio);
 RcppExport SEXP _aRtsy_draw_squares(SEXP XSEXP, SEXP neighborsSEXP, SEXP sSEXP, SEXP cutsSEXP, SEXP ratioSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< arma::mat >::type X(XSEXP);
-    Rcpp::traits::input_parameter< Rcpp::DataFrame >::type neighbors(neighborsSEXP);
-    Rcpp::traits::input_parameter< int >::type s(sSEXP);
-    Rcpp::traits::input_parameter< int >::type cuts(cutsSEXP);
-    Rcpp::traits::input_parameter< double >::type ratio(ratioSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::DataFrame >::type neighbors(neighborsSEXP);
+    Rcpp::traits::input_parameter< const int >::type s(sSEXP);
+    Rcpp::traits::input_parameter< const int >::type cuts(cutsSEXP);
+    Rcpp::traits::input_parameter< const double >::type ratio(ratioSEXP);
     rcpp_result_gen = Rcpp::wrap(draw_squares(X, neighbors, s, cuts, ratio));
     return rcpp_result_gen;
 END_RCPP
