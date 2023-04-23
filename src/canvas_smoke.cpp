@@ -82,14 +82,16 @@ arma::umat create_palette_brg(const int& resolution) {
 void shuffle_rows(arma::umat& palette) {
   arma::uvec indices = arma::randi<arma::uvec>(palette.n_rows, arma::distr_param(0, palette.n_rows - 1));
   arma::umat shuffled(palette.n_rows, palette.n_cols);
-  for (int i = 0; i < palette.n_rows; i++) {
+  int nrows = palette.n_rows;
+  for (int i = 0; i < nrows; i++) {
     shuffled.row(i) = palette.row(indices(i));
   }
   palette = shuffled;
 }
 
 void shuffle_within_rows(arma::umat& palette) {
-  for (int i=0; i < palette.n_rows; ++i) {
+  int nrows = palette.n_rows;
+  for (int i=0; i < nrows; ++i) {
     palette.row(i) = arma::shuffle(palette.row(i), 1);
   }
 }
@@ -313,7 +315,8 @@ arma::cube draw_smoke(arma::cube& canvas,
   const int resolution = canvas.n_rows;
   Rcpp::IntegerVector color(3), point(2);
   const arma::umat colors = get_palette(resolution, all_colors, color_mat, shape);
-  for (int i = 0; i < colors.n_rows; ++i) {
+  int nrows = colors.n_rows;
+  for (int i = 0; i < nrows; ++i) {
     Rcpp::checkUserInterrupt();
     color = Rcpp::as<Rcpp::IntegerVector>(Rcpp::wrap(colors.row(i)));
     if (i < init) {
