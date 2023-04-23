@@ -1,5 +1,5 @@
 # -----------------------------------------------------------
-# CITATION file created with {cffr} R package, v0.4.0
+# CITATION file created with {cffr} R package, v0.4.1
 # See also: https://docs.ropensci.org/cffr/
 # -----------------------------------------------------------
  
@@ -28,7 +28,7 @@ preferred-citation:
 repository: https://CRAN.R-project.org/package=aRtsy
 repository-code: https://github.com/koenderks/aRtsy
 url: https://koenderks.github.io/aRtsy/
-date-released: '2023-01-27'
+date-released: '2023-04-23'
 contact:
 - family-names: Derks
   given-names: Koen
@@ -75,10 +75,13 @@ references:
   - family-names: Meyer
     given-names: David
     email: David.Meyer@R-project.org
+    orcid: https://orcid.org/0000-0002-5196-3048
   - family-names: Dimitriadou
     given-names: Evgenia
   - family-names: Hornik
     given-names: Kurt
+    email: Kurt.Hornik@R-project.org
+    orcid: https://orcid.org/0000-0003-4198-9911
   - family-names: Weingessel
     given-names: Andreas
   - family-names: Leisch
@@ -93,7 +96,7 @@ references:
   authors:
   - family-names: Wickham
     given-names: Hadley
-    email: hadley@rstudio.com
+    email: hadley@posit.co
     orcid: https://orcid.org/0000-0003-4757-117X
   - family-names: Chang
     given-names: Winston
@@ -102,7 +105,7 @@ references:
     given-names: Lionel
   - family-names: Pedersen
     given-names: Thomas Lin
-    email: thomas.pedersen@rstudio.com
+    email: thomas.pedersen@posit.co
     orcid: https://orcid.org/0000-0002-5147-4711
   - family-names: Takahashi
     given-names: Kohske
