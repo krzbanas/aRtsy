@@ -16,4 +16,4 @@ On linux, there was 1 NOTE:
 * checking installed package size ... NOTE. installed size is 20.5Mb. sub-directories of 1Mb or more: libs 20.0Mb
 
 ## Downstream dependencies
-There are currently no downstream dependencies for this package.
+There is currently 1 downstream dependency for this package.
