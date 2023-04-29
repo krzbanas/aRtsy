@@ -383,7 +383,7 @@ canvas_phyllotaxis(colors = colorPalette("tuscany1"))
 
 #### Portuguese Tiles
 
-The aim of this function is to simulate the intricate design of Portuguese-style tiles. The technique employed to create this effect is based on a reaction-diffusion model (excellently described in these two blogposts: [link](https://itp.uni-frankfurt.de/~gros/StudentProjects/Projects_2020/projekt_schulz_kaefer/), [link](https://www.karlsims.com/rd.html) and [link](https://fronkonstin.com)) to fill the surface of the tiles. Next, the tile is rotated to get the look is reminiscent of the distinctive appearance of traditional Portuguese tiles.
+This function tries to simulate the intricate design of Portuguese-style tiles. The technique employed to create this effect is a reaction-diffusion model (excellently described in these three blogposts: [link](https://itp.uni-frankfurt.de/~gros/StudentProjects/Projects_2020/projekt_schulz_kaefer/), [link](https://www.karlsims.com/rd.html) and [link](https://fronkonstin.com)) to fill the surface of the tile. Next, the tile is rotated and duplicated to get a look is reminiscent of the distinctive appearance of traditional Portuguese tiles.
 
 <p align="center">
   <img src='https://github.com/koenderks/aRtsy/raw/development/png/tiles/2023-04-29.png' width='30%'>
