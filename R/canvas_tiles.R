@@ -13,9 +13,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#' Draw Portugese Tiles
+#' Draw Portuguese Tiles
 #'
-#' @description This function uses a reaction diffusion algorithm to draw portugese tiles.
+#' @description This function uses a reaction diffusion algorithm in an attempt to draw a Portuguese-styled tiling pattern.
 #'
 #' @usage canvas_tiles(colors, background = "#ffffff", iterations = 1000,
 #'              duplicates = 5, col.line = "#000000", resolution = 100)

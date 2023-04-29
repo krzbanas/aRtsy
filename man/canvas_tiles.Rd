@@ -2,7 +2,7 @@
 % Please edit documentation in R/canvas_tiles.R
 \name{canvas_tiles}
 \alias{canvas_tiles}
-\title{Draw Portugese Tiles}
+\title{Draw Portuguese Tiles}
 \usage{
 canvas_tiles(colors, background = "#ffffff", iterations = 1000,
              duplicates = 5, col.line = "#000000", resolution = 100)
@@ -24,7 +24,7 @@ canvas_tiles(colors, background = "#ffffff", iterations = 1000,
 A \code{ggplot} object containing the artwork.
 }
 \description{
-This function uses a reaction diffusion algorithm to draw portugese tiles.
+This function uses a reaction diffusion algorithm in an attempt to draw a Portuguese-styled tiling pattern.
 }
 \examples{
 \donttest{
