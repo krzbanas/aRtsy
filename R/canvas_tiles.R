@@ -18,7 +18,8 @@
 #' @description This function uses a reaction diffusion algorithm in an attempt to draw a Portuguese-styled tiling pattern.
 #'
 #' @usage canvas_tiles(colors, background = "#ffffff", iterations = 1000,
-#'              duplicates = 5, col.line = "#000000", resolution = 100)
+#'              duplicates = 5, col.line = "#000000", resolution = 100,
+#'              flatten = FALSE)
 #'
 #' @param colors      a string or character vector specifying the color(s) used for the artwork.
 #' @param background  a character specifying the color of the background.
@@ -26,6 +27,7 @@
 #' @param col.line    a character specifying the color of the tile borders.
 #' @param iterations  a positive integer specifying the number of iterations of the algorithm.
 #' @param resolution  resolution of the artwork in pixels per row/column. Increasing the resolution increases the quality of the artwork but also increases the computation time exponentially.
+#' @param flatten     logical, should colors be flattened after being assigned to a point.
 #'
 #' @return A \code{ggplot} object containing the artwork.
 #'
@@ -42,13 +44,14 @@
 #' set.seed(1)
 #'
 #' # Simple example
-#' canvas_tiles(colors = colorPalette("bell"), iterations = 5000)
+#' canvas_tiles(colors = colorPalette("bell"), iterations = 1000)
 #' }
 #'
 #' @export
 
 canvas_tiles <- function(colors, background = "#ffffff", iterations = 1000,
-                         duplicates = 5, col.line = "#000000", resolution = 100) {
+                         duplicates = 5, col.line = "#000000", resolution = 100,
+                         flatten = FALSE) {
   .checkUserInput(
     resolution = resolution, background = background, iterations = iterations
   )
@@ -89,7 +92,9 @@ canvas_tiles <- function(colors, background = "#ffffff", iterations = 1000,
   }
   rownames(canvas) <- colnames(canvas) <- seq_len(nrow(canvas))
   full_canvas <- .unraster(canvas, names = c("x", "y", "z"))
-  full_canvas$z <- as.numeric(as.factor(cut(full_canvas$z, breaks = length(colors) + 1)))
+  if (flatten) {
+    full_canvas$z <- as.numeric(as.factor(cut(full_canvas$z, breaks = length(colors) + 1)))
+  }
   artwork <- ggplot2::ggplot(data = full_canvas, ggplot2::aes(x = x, y = y, fill = z)) +
     ggplot2::geom_raster(interpolate = TRUE) +
     ggplot2::scale_fill_gradientn(colours = c(background, colors)) +

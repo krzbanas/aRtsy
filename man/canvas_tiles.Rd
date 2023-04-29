@@ -5,7 +5,8 @@
 \title{Draw Portuguese Tiles}
 \usage{
 canvas_tiles(colors, background = "#ffffff", iterations = 1000,
-             duplicates = 5, col.line = "#000000", resolution = 100)
+             duplicates = 5, col.line = "#000000", resolution = 100,
+             flatten = FALSE)
 }
 \arguments{
 \item{colors}{a string or character vector specifying the color(s) used for the artwork.}
@@ -19,6 +20,8 @@ canvas_tiles(colors, background = "#ffffff", iterations = 1000,
 \item{col.line}{a character specifying the color of the tile borders.}
 
 \item{resolution}{resolution of the artwork in pixels per row/column. Increasing the resolution increases the quality of the artwork but also increases the computation time exponentially.}
+
+\item{flatten}{logical, should colors be flattened after being assigned to a point.}
 }
 \value{
 A \code{ggplot} object containing the artwork.
@@ -31,7 +34,7 @@ This function uses a reaction diffusion algorithm in an attempt to draw a Portug
 set.seed(1)
 
 # Simple example
-canvas_tiles(colors = colorPalette("bell"), iterations = 5000)
+canvas_tiles(colors = colorPalette("bell"), iterations = 1000)
 }
 
 }
