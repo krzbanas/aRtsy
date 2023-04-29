@@ -346,6 +346,23 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// draw_tile
+arma::cube draw_tile(arma::cube& canvas, const arma::mat& conv, const double& diffa, const double& diffb, const double& feedrate, const double& killrate, const int& iterations);
+RcppExport SEXP _aRtsy_draw_tile(SEXP canvasSEXP, SEXP convSEXP, SEXP diffaSEXP, SEXP diffbSEXP, SEXP feedrateSEXP, SEXP killrateSEXP, SEXP iterationsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::cube& >::type canvas(canvasSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type conv(convSEXP);
+    Rcpp::traits::input_parameter< const double& >::type diffa(diffaSEXP);
+    Rcpp::traits::input_parameter< const double& >::type diffb(diffbSEXP);
+    Rcpp::traits::input_parameter< const double& >::type feedrate(feedrateSEXP);
+    Rcpp::traits::input_parameter< const double& >::type killrate(killrateSEXP);
+    Rcpp::traits::input_parameter< const int& >::type iterations(iterationsSEXP);
+    rcpp_result_gen = Rcpp::wrap(draw_tile(canvas, conv, diffa, diffb, feedrate, killrate, iterations));
+    return rcpp_result_gen;
+END_RCPP
+}
 // draw_turmite
 arma::mat draw_turmite(arma::mat& canvas, const int& iters, int& row, int& col, const double& p);
 RcppExport SEXP _aRtsy_draw_turmite(SEXP canvasSEXP, SEXP itersSEXP, SEXP rowSEXP, SEXP colSEXP, SEXP pSEXP) {
@@ -415,6 +432,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_aRtsy_draw_splits", (DL_FUNC) &_aRtsy_draw_splits, 8},
     {"_aRtsy_draw_squares", (DL_FUNC) &_aRtsy_draw_squares, 5},
     {"_aRtsy_draw_strokes", (DL_FUNC) &_aRtsy_draw_strokes, 4},
+    {"_aRtsy_draw_tile", (DL_FUNC) &_aRtsy_draw_tile, 7},
     {"_aRtsy_draw_turmite", (DL_FUNC) &_aRtsy_draw_turmite, 5},
     {"_aRtsy_deform", (DL_FUNC) &_aRtsy_deform, 5},
     {"_aRtsy_c_noise_knn", (DL_FUNC) &_aRtsy_c_noise_knn, 6},

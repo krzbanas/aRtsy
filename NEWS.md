@@ -1,3 +1,7 @@
+# aRtsy 0.2.3
+
+- Added new function `canvas_tiles()`
+
 # aRtsy 0.2.2
 
 - New function `canvas_smoke()`.

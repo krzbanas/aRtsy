@@ -85,6 +85,10 @@ draw_strokes <- function(canvas, neighbors, s, p) {
     .Call('_aRtsy_draw_strokes', PACKAGE = 'aRtsy', canvas, neighbors, s, p)
 }
 
+draw_tile <- function(canvas, conv, diffa, diffb, feedrate, killrate, iterations) {
+    .Call('_aRtsy_draw_tile', PACKAGE = 'aRtsy', canvas, conv, diffa, diffb, feedrate, killrate, iterations)
+}
+
 draw_turmite <- function(canvas, iters, row, col, p) {
     .Call('_aRtsy_draw_turmite', PACKAGE = 'aRtsy', canvas, iters, row, col, p)
 }

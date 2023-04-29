@@ -69,6 +69,7 @@ saveCanvas(artwork, filename = "myArtwork.png")
 * [`canvas_stripes()`](#stripes)
 * [`canvas_strokes()`](#paint-strokes)
 * [`canvas_phyllotaxis()`](#phyllotaxis)
+* [`canvas_tiles()`](#portugese-tiles)
 * [`canvas_recaman()`](#recamáns-sequence)
 * [`canvas_turmite()`](#turmite)
 * [`canvas_watercolors()`](#watercolors)
@@ -378,6 +379,24 @@ You can use the `canvas_phyllotaxis()` function to make your own artwork using t
 set.seed(1)
 canvas_phyllotaxis(colors = colorPalette("tuscany1"))
 # see ?canvas_phyllotaxis for more input parameters of this function
+```
+
+#### Portugese Tiles
+
+The aim of this function is to simulate the intricate design of Portuguese-style tiles. The technique employed to create this effect is based on a reaction-diffusion model (excellently described in these two blogposts: [link](https://itp.uni-frankfurt.de/~gros/StudentProjects/Projects_2020/projekt_schulz_kaefer/), [link](https://www.karlsims.com/rd.html) and [link](https://fronkonstin.com)) to fill the surface of the tiles. Next, the tile is rotated to get the look is reminiscent of the distinctive appearance of traditional Portuguese tiles.
+
+<p align="center">
+  <img src='https://github.com/koenderks/aRtsy/raw/development/png/tiles/2023-04-29.png' width='30%'>
+  <img src='https://github.com/koenderks/aRtsy/raw/development/png/tiles/2023-04-28.png' width='30%'>
+  <img src='https://github.com/koenderks/aRtsy/raw/development/png/tiles/2023-04-27.png' width='30%'>
+</p>
+
+You can use the `canvas_tiles()` function to make your own artwork using this algorithm.
+
+```r
+set.seed(1)
+canvas_tiles(colors = colorPalette("house"))
+# see ?canvas_tiles for more input parameters of this function
 ```
 
 #### Recamán's Sequence

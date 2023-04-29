@@ -268,3 +268,11 @@ test_that("canvas_smoke()", {
   }, name = "Smoke")
   expect_equal(!is.null(artwork), TRUE)
 })
+
+test_that("canvas_tiles()", {
+  set.seed(2)
+  .runtime(expression = {
+    artwork <- canvas_tile(colors = c("red", "blue", "green"), iterations = 100)
+  }, name = "Tiles")
+  expect_equal(!is.null(artwork), TRUE)
+})
