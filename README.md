@@ -69,7 +69,7 @@ saveCanvas(artwork, filename = "myArtwork.png")
 * [`canvas_stripes()`](#stripes)
 * [`canvas_strokes()`](#paint-strokes)
 * [`canvas_phyllotaxis()`](#phyllotaxis)
-* [`canvas_tiles()`](#portugese-tiles)
+* [`canvas_tiles()`](#portuguese-tiles)
 * [`canvas_recaman()`](#recamáns-sequence)
 * [`canvas_turmite()`](#turmite)
 * [`canvas_watercolors()`](#watercolors)
@@ -381,7 +381,7 @@ canvas_phyllotaxis(colors = colorPalette("tuscany1"))
 # see ?canvas_phyllotaxis for more input parameters of this function
 ```
 
-#### Portugese Tiles
+#### Portuguese Tiles
 
 The aim of this function is to simulate the intricate design of Portuguese-style tiles. The technique employed to create this effect is based on a reaction-diffusion model (excellently described in these two blogposts: [link](https://itp.uni-frankfurt.de/~gros/StudentProjects/Projects_2020/projekt_schulz_kaefer/), [link](https://www.karlsims.com/rd.html) and [link](https://fronkonstin.com)) to fill the surface of the tiles. Next, the tile is rotated to get the look is reminiscent of the distinctive appearance of traditional Portuguese tiles.
 

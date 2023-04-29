@@ -53,13 +53,14 @@ reference:
       - canvas_maze
       - canvas_mesh
       - canvas_petri
+      - canvas_phyllotaxis
       - canvas_planet
-      - canvas_splits
+      - canvas_recaman
       - canvas_smoke
+      - canvas_splits
       - canvas_stripes
       - canvas_strokes
-      - canvas_phyllotaxis
-      - canvas_recaman
+      - canvas_tiles
       - canvas_turmite
       - canvas_watercolors
   - title: "The Geometric collection"
