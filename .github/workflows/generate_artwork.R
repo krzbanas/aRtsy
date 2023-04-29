@@ -9,7 +9,7 @@ seed <- as.numeric(Sys.Date())
 set.seed(seed)
 
 # Select artwork type
-type <- sample(1:32, size = 1)
+type <- sample.int(32, size = 1)
 
 # Create artwork with random palette, feel free to suggest a new pallette at https://github.com/koenderks/aRtsy/issues
 artwork <- switch(type,
