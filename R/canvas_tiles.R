@@ -102,8 +102,8 @@ canvas_tiles <- function(colors, background = "#ffffff", iterations = 1000,
   if (duplicates > 0 && !is.null(col.line)) {
     lineDataX <- data.frame(x = (resolution * 2) * (0:(duplicates + 1)), xend = (resolution * 2) * (0:(duplicates + 1)), y = rep(0, duplicates + 2), yend = rep((resolution * 2) * (duplicates + 1), duplicates + 2))
     lineDataY <- data.frame(y = (resolution * 2) * (0:(duplicates + 1)), yend = (resolution * 2) * (0:(duplicates + 1)), x = rep(0, duplicates + 2), xend = rep((resolution * 2) * (duplicates + 1), duplicates + 2))
-    lineDataX2 <- data.frame(x = resolution * (0:((duplicates * 2) + 1)), xend = resolution * (0:((duplicates * 2) + 1)), y = rep(0, (duplicates * 2) + 2), yend = rep((resolution * 2) * ((duplicates * 2) + 1), (duplicates * 2) + 2))
-    lineDataY2 <- data.frame(y = resolution * (0:((duplicates * 2) + 1)), yend = resolution * (0:((duplicates * 2) + 1)), x = rep(0, (duplicates * 2) + 2), xend = rep((resolution * 2) * ((duplicates * 2) + 1), (duplicates * 2) + 2))
+    lineDataX2 <- data.frame(x = resolution * (0:((duplicates * 2) + 1)), xend = resolution * (0:((duplicates * 2) + 1)), y = rep(0, (duplicates * 2) + 2), yend = rep(resolution * ((duplicates * 2) + 2), (duplicates * 2) + 2))
+    lineDataY2 <- data.frame(y = resolution * (0:((duplicates * 2) + 1)), yend = resolution * (0:((duplicates * 2) + 1)), x = rep(0, (duplicates * 2) + 2), xend = rep(resolution * ((duplicates * 2) + 2), (duplicates * 2) + 2))
     artwork <- artwork + ggplot2::geom_segment(data = lineDataX2, mapping = ggplot2::aes(x = x, xend = xend, y = y, yend = yend), col = col.line, inherit.aes = FALSE, size = cex.line * 0.1) +
       ggplot2::geom_segment(data = lineDataY2, mapping = ggplot2::aes(x = x, xend = xend, y = y, yend = yend), col = col.line, inherit.aes = FALSE, size = cex.line * 0.1) +
       ggplot2::geom_segment(data = lineDataX, mapping = ggplot2::aes(x = x, xend = xend, y = y, yend = yend), col = col.line, inherit.aes = FALSE, size = cex.line * 0.75) +
