@@ -686,12 +686,12 @@ canvas_circlemap(colors = colorPalette("dark2"))
 
 #### The Mandelbrot set
 
-This type of artwork visualizes the [Mandelbrot set](https://en.wikipedia.org/wiki/Mandelbrot_set) fractal, a perfect example of a complex structure arising from the application of simple rules. You can zoom in on the set and apply some color to create these nice images.
+This type of artwork visualizes the [Mandelbrot set](https://en.wikipedia.org/wiki/Mandelbrot_set) and other related fractals (e.g., the [Julia set](https://en.wikipedia.org/wiki/Julia_set), the [Multibrot set](https://en.wikipedia.org/wiki/Multibrot_set) and the [Burning ship fractal](https://en.wikipedia.org/wiki/Burning_Ship_fractal)). These fractals are well-known examples of a complex structure arising from the application of a simple rule set. You can zoom in on the set and apply some color to create these images below.
 
 <p align="center">
-  <img src='https://github.com/koenderks/aRtsy/raw/development/png/mandelbrots/2021-08-08.png' width='30%'>
-  <img src='https://github.com/koenderks/aRtsy/raw/development/png/mandelbrots/2021-08-09.png' width='30%'>
   <img src='https://github.com/koenderks/aRtsy/raw/development/png/mandelbrots/2021-08-07.png' width='30%'>
+  <img src='https://github.com/koenderks/aRtsy/raw/development/png/mandelbrots/2021-08-09.png' width='30%'>
+  <img src='https://github.com/koenderks/aRtsy/raw/development/png/mandelbrots/2021-08-08.png' width='30%'>
 </p>
 
 You can use the `canvas_mandelbrot()` function to make your own artwork using this algorithm.
