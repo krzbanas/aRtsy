@@ -50,7 +50,7 @@ n <- length(palettes)
 nrow <- ceiling(n / ncol)
 
 plotList <- list()
-for (i in 1:length(palettes)) {
+for (i in seq_along(palettes)) {
   palette <- aRtsy::colorPalette(palettes[i])
   d <- data.frame(y = rep(1, length(palette)), col = palette)
   p <- ggplot2::ggplot(data = d, mapping = ggplot2::aes(y = y, group = col)) +
@@ -74,5 +74,5 @@ for (i in 1:length(palettes)) {
 
 plot <- do.call("ggarrange", c(plotList, nrow = nrow, ncol = ncol)) +
   ggplot2::theme(panel.background = ggplot2::element_rect(fill = NA, colour = NA))
-ggplot2::ggsave(filename = "./man/figures/colors.svg", plot = plot, scale = 1, units = "px")
-ggplot2::ggsave(filename = "./man/figures/colors.pdf", plot = plot, scale = 1, units = "in")
+ggplot2::ggsave(filename = "./man/figures/colors.svg", plot = plot, width = 12.5, height = 17.5, units = "cm")
+ggplot2::ggsave(filename = "./man/figures/colors.pdf", plot = plot, width = 12.5, height = 17.5, units = "cm")
