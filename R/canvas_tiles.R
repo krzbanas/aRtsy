@@ -41,10 +41,10 @@
 #'
 #' @examples
 #' \donttest{
-#' set.seed(1)
+#' set.seed(3)
 #'
 #' # Simple example
-#' canvas_tiles(colors = colorPalette("azul"))
+#' canvas_tiles(colors = colorPalette("azul"), iterations = 5000)
 #' }
 #'
 #' @export

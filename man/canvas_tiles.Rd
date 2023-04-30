@@ -31,10 +31,10 @@ This function uses a reaction diffusion algorithm in an attempt to draw a Portug
 }
 \examples{
 \donttest{
-set.seed(1)
+set.seed(3)
 
 # Simple example
-canvas_tiles(colors = colorPalette("azul"))
+canvas_tiles(colors = colorPalette("azul"), iterations = 5000)
 }
 
 }
