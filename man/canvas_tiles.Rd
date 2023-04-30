@@ -34,7 +34,7 @@ This function uses a reaction diffusion algorithm in an attempt to draw a Portug
 set.seed(1)
 
 # Simple example
-canvas_tiles(colors = colorPalette("bell"), iterations = 1000)
+canvas_tiles(colors = colorPalette("azul"))
 }
 
 }

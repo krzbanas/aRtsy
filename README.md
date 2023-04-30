@@ -395,7 +395,7 @@ You can use the `canvas_tiles()` function to make your own artwork using this al
 
 ```r
 set.seed(1)
-canvas_tiles(colors = colorPalette("house"))
+canvas_tiles(colors = colorPalette("azul"))
 # see ?canvas_tiles for more input parameters of this function
 ```
 

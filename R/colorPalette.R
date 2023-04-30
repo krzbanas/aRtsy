@@ -79,12 +79,13 @@ colorPalette <- function(name, n = NULL) {
   } else {
     if (name == "random-palette") {
       name <- sample(c(
-        "blackwhite", "bell", "boogy1", "boogy2", "boogy3", "dark1", "dark2", "dark3", "flag", "flora", "gogh", "house", "jasp", "jfa", "jungle",
+        "azul", "blackwhite", "bell", "boogy1", "boogy2", "boogy3", "dark1", "dark2", "dark3", "flag", "flora", "gogh", "house", "jasp", "jfa", "jungle",
         "klimt", "kpd", "lava", "nature", "mixer1", "mixer2", "mixer3", "mixer4", "neon1", "neon2", "origami", "retro1", "retro2",
         "retro3", "retro4", "sooph", "sky", "tuscany1", "tuscany2", "tuscany3", "vrolik1", "vrolik2", "vrolik3", "vrolik4", "vrolik5"
       ), size = 1)
     }
     palette <- switch(name,
+      "azul" = c("#ffffff", "#142ea5", "#3b74e4", "#a8d4f7", "#f1da52"),
       "blackwhite" = c("black", "white"),
       "bell" = c("#000000", "#ff0000", "#ffcc00"),
       "boogy1" = c("#a2a07a", "#c49700", "#b4b9cc", "#c0c1b1"),

@@ -44,7 +44,7 @@
 #' set.seed(1)
 #'
 #' # Simple example
-#' canvas_tiles(colors = colorPalette("bell"), iterations = 1000)
+#' canvas_tiles(colors = colorPalette("azul"))
 #' }
 #'
 #' @export

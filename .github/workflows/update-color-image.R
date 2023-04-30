@@ -2,6 +2,7 @@ library(ggpubr)
 library(aRtsy)
 
 palettes <- c(
+  "azul",
   "blackwhite",
   "bell",
   "boogy1",
