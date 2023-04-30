@@ -291,7 +291,7 @@ canvas_planet(colors = colorPalette("retro3"))
 # see ?canvas_planet for more input parameters of this function
 ```
 
-#### Split Lines
+#### Split lines
 
 This function generates a [fractal curve](https://en.wikipedia.org/wiki/Fractal_curve). It starts with four simple lines and proceeds to split each line in four new line segments. If this action is repeated for some time, and each time the same split is made, the end product is a fractal curve. The fractal curve in this function (optionally) uses some noise to create random distortions in the curve.
 
@@ -309,7 +309,7 @@ canvas_splits(colors = colorPalette("origami"))
 # see ?canvas_splits for more input parameters of this function
 ```
 
-#### Rainbow Smoke
+#### Rainbow smoke
 
 This function implements the [rainbow smoke](http://rainbowsmoke.hu/home) algorithm, an original idea from Jozsef Fejes. The algorithm works as follows: First, we select an initial color and apply it to a randomly chosen pixel. Next, we proceed to use the remaining colors one at the time and color pixels in a manner where colors that are alike are positioned near each other.
 
@@ -381,7 +381,7 @@ canvas_phyllotaxis(colors = colorPalette("tuscany1"))
 # see ?canvas_phyllotaxis for more input parameters of this function
 ```
 
-#### Portuguese Tiles
+#### Portuguese tiles
 
 This function attempts to recreate the intricate design of Portuguese-style wall tiles. The algorithm uses a reaction-diffusion model (excellently described in these three blogposts: [link](https://itp.uni-frankfurt.de/~gros/StudentProjects/Projects_2020/projekt_schulz_kaefer/), [link](https://www.karlsims.com/rd.html) and [link](https://fronkonstin.com)), which simulates the process of chemicals reacting and diffusing on a surface, to generate an initial quarter tile. Next, the quarter tile is rotated and duplicated to get the symmetric look that is reminiscent of a traditional Portuguese wall tile.
 
@@ -399,7 +399,7 @@ canvas_tiles(colors = colorPalette("azul"))
 # see ?canvas_tiles for more input parameters of this function
 ```
 
-#### Recamán's Sequence
+#### Recamán's sequence
 
 This function draws Recamán's sequence on a canvas. The algorithm takes increasingly large steps backwards on the positive number line, but takes a step forward if it is unable to perform the step backwards.
 
