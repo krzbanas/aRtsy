@@ -5,7 +5,7 @@
 \title{Draw Portuguese Tiles}
 \usage{
 canvas_tiles(colors, background = "#ffffff", iterations = 1000,
-             duplicates = 5, col.line = "#000000", resolution = 100,
+             size = 5, col.line = "#000000", resolution = 100,
              flatten = FALSE)
 }
 \arguments{
@@ -15,13 +15,13 @@ canvas_tiles(colors, background = "#ffffff", iterations = 1000,
 
 \item{iterations}{a positive integer specifying the number of iterations of the algorithm.}
 
-\item{duplicates}{a non-negative integer specifying how many times the tile should be duplicated.}
+\item{size}{a positive integer specifying how many tiles should be in each row of the wall.}
 
-\item{col.line}{a character specifying the color of the tile borders.}
+\item{col.line}{a character specifying the color of the joints between the tiles.}
 
 \item{resolution}{resolution of the artwork in pixels per row/column. Increasing the resolution increases the quality of the artwork but also increases the computation time exponentially.}
 
-\item{flatten}{logical, should colors be flattened after being assigned to a point.}
+\item{flatten}{logical, should colors be flattened after being put on the tile.}
 }
 \value{
 A \code{ggplot} object containing the artwork.
@@ -39,7 +39,7 @@ canvas_tiles(colors = colorPalette("azul"), iterations = 5000)
 
 }
 \references{
-\url{https://en.wikipedia.org/wiki/Reaction–diffusion_system} \url{https://www.karlsims.com/rd.html}
+\url{https://en.wikipedia.org/wiki/Reaction–diffusion_system}
 }
 \seealso{
 \code{colorPalette}

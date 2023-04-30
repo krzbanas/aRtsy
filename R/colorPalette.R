@@ -79,15 +79,27 @@ colorPalette <- function(name, n = NULL) {
   } else {
     if (name == "random-palette") {
       name <- sample(c(
-        "azul", "blackwhite", "bell", "boogy1", "boogy2", "boogy3", "dark1", "dark2", "dark3", "flag", "flora", "gogh", "house", "jasp", "jfa", "jungle",
-        "klimt", "kpd", "lava", "nature", "mixer1", "mixer2", "mixer3", "mixer4", "neon1", "neon2", "origami", "retro1", "retro2",
-        "retro3", "retro4", "sooph", "sky", "tuscany1", "tuscany2", "tuscany3", "vrolik1", "vrolik2", "vrolik3", "vrolik4", "vrolik5"
+        "azul", "bell", "blackwhite",
+        "blossom", "boogy1", "boogy2",
+        "boogy3", "dark1", "dark2",
+        "dark3", "flag", "flora",
+        "gogh", "house", "jasp",
+        "jfa", "jungle", "klimt",
+        "kpd", "lava", "nature",
+        "mixer1", "mixer2", "mixer3",
+        "mixer4", "neon1", "neon2",
+        "origami", "retro1", "retro2",
+        "retro3", "retro4", "sooph",
+        "sky", "tuscany1", "tuscany2",
+        "tuscany3", "vrolik1", "vrolik2",
+        "vrolik3", "vrolik4", "vrolik5"
       ), size = 1)
     }
     palette <- switch(name,
       "azul" = c("#ffffff", "#142ea5", "#3b74e4", "#a8d4f7", "#f1da52"),
-      "blackwhite" = c("black", "white"),
       "bell" = c("#000000", "#ff0000", "#ffcc00"),
+      "blackwhite" = c("black", "white"),
+      "blossom" = c("#b89a9d", "#fcf9ee", "#f1acec", "#e0b8c0", "#e95bb1", "#c03962"),
       "boogy1" = c("#a2a07a", "#c49700", "#b4b9cc", "#c0c1b1"),
       "boogy2" = c("#204b9a", "#f1e60e", "#ffffff", "#e5181d", "#1d1d1b"),
       "boogy3" = c("#e9e489", "#995c25", "#5eb9f0", "#68b95d", "#69241f"),
@@ -128,16 +140,16 @@ colorPalette <- function(name, n = NULL) {
       "vrolik5" = c("#FBCE03", "#03F7EC", "#4D0E98", "#3A3838", "#150326")
     )
     if (is.null(palette)) {
-      stop(paste0("'", name, "' is not an existing palette"))
+      stop(paste0("there is no palette called '", name, "'"))
     }
     if (is.null(n)) {
       n <- length(palette)
     }
     if (n > length(palette)) {
-      message("attempt to select more colors than are available in this palette, returning the requested palette with the maximum number of colors")
-      return(palette)
+      palette <- c(palette, palette[sample.int(n - length(palette))])
+    } else {
+      palette <- palette[sample.int(n)]
     }
-    palette <- palette[sample(1:n)]
   }
   return(palette)
 }

@@ -3,8 +3,9 @@ library(aRtsy)
 
 palettes <- c(
   "azul",
-  "blackwhite",
   "bell",
+  "blackwhite",
+  "blossom",
   "boogy1",
   "boogy2",
   "boogy3",

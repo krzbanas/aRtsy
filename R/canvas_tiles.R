@@ -18,20 +18,20 @@
 #' @description This function uses a reaction diffusion algorithm in an attempt to draw a Portuguese-styled tiling pattern.
 #'
 #' @usage canvas_tiles(colors, background = "#ffffff", iterations = 1000,
-#'              duplicates = 5, col.line = "#000000", resolution = 100,
+#'              size = 5, col.line = "#000000", resolution = 100,
 #'              flatten = FALSE)
 #'
 #' @param colors      a string or character vector specifying the color(s) used for the artwork.
 #' @param background  a character specifying the color of the background.
-#' @param duplicates  a non-negative integer specifying how many times the tile should be duplicated.
-#' @param col.line    a character specifying the color of the tile borders.
+#' @param size        a positive integer specifying how many tiles should be in each row of the wall.
+#' @param col.line    a character specifying the color of the joints between the tiles.
 #' @param iterations  a positive integer specifying the number of iterations of the algorithm.
 #' @param resolution  resolution of the artwork in pixels per row/column. Increasing the resolution increases the quality of the artwork but also increases the computation time exponentially.
-#' @param flatten     logical, should colors be flattened after being assigned to a point.
+#' @param flatten     logical, should colors be flattened after being put on the tile.
 #'
 #' @return A \code{ggplot} object containing the artwork.
 #'
-#' @references \url{https://en.wikipedia.org/wiki/Reaction–diffusion_system} \url{https://www.karlsims.com/rd.html}
+#' @references \url{https://en.wikipedia.org/wiki/Reaction–diffusion_system}
 #'
 #' @author Koen Derks, \email{koen-derks@hotmail.com}
 #'
@@ -50,7 +50,7 @@
 #' @export
 
 canvas_tiles <- function(colors, background = "#ffffff", iterations = 1000,
-                         duplicates = 5, col.line = "#000000", resolution = 100,
+                         size = 5, col.line = "#000000", resolution = 100,
                          flatten = FALSE) {
   .checkUserInput(
     resolution = resolution, background = background, iterations = iterations
@@ -70,6 +70,7 @@ canvas_tiles <- function(colors, background = "#ffffff", iterations = 1000,
     "3" = 0.057,
     "4" = 0.06
   )
+  duplicates <- size - 1
   cex.line <- 7 / duplicates
   ones <- matrix(1, resolution, resolution)
   conv_mat <- matrix(c(
