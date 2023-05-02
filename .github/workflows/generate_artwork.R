@@ -1,6 +1,22 @@
 # Packages required for artworks
 library(aRtsy)
 
+.tile_helper <- function(ntiles) {
+  if (ntiles > 1) {
+    out <- list()
+    for (i in 1:ntiles) {
+      proposal <- colorPalette("random-palette")
+      while (list(proposal) %in% out) {
+        proposal <- colorPalette("random-palette")
+      }
+      out[[i]] <- proposal
+    }
+  } else {
+    out <- colorPalette("random-palette")
+  }
+  return(out)
+}
+
 # Name of the artwork
 filename <- paste0("png/daily.png")
 
@@ -11,7 +27,7 @@ set.seed(seed)
 # Select artwork type
 type <- sample.int(32, size = 1)
 
-# Create artwork with random palette, feel free to suggest a new pallette at https://github.com/koenderks/aRtsy/issues
+# Create artwork with random palette, feel free to suggest a new palette at https://github.com/koenderks/aRtsy/issues
 artwork <- switch(type,
   "1" = canvas_turmite(colors = colorPalette("random-palette"), background = "#050505", p = runif(1, 0.2, 0.5), resolution = 2000, noise = TRUE, iterations = 1e7),
   "2" = canvas_strokes(colors = colorPalette("random-palette"), neighbors = sample(1:4, size = 1), p = runif(1, 0.0001, 0.01), iterations = sample(1:3, size = 1), resolution = 1500, side = sample(c(TRUE, FALSE), size = 1)),
@@ -44,7 +60,7 @@ artwork <- switch(type,
   "29" = canvas_mesh(colors = colorPalette("random-palette", n = sample(1:5, size = 1)), background = sample(c("#fafafa", "firebrick", "#f9f0e0", "black", "lavenderblush2", "#215682"), size = 1)),
   "30" = canvas_flame(colors = colorPalette("random-palette"), background = sample(c("#fafafa", "firebrick", "#f9f0e0", "black", "lavenderblush2", "#215682"), size = 1), variations = sample(0:48, size = 3, replace = FALSE), symmetry = sample(-1:2, size = 1), iterations = 1e9, weighted = TRUE, post = sample(0:1, size = 1)),
   "31" = canvas_smoke(colors = if (runif(1) <  2 / 3) colorPalette(sample(c("divergent", "random", "complement"), size = 1), n = 1024) else "all", algorithm = sample(c("minimum", "average"), size = 1), init = sample(1:3, size = 1), shape = sample(c("bursts", "clouds"), size = 1), resolution = 500),
-  "32" = canvas_tiles(colors = colorPalette("random-palette"), iterations = sample(1000:10000, size = 1), size = sample(3:6, size = 1), resolution = 100)
+  "32" = canvas_tiles(colors = .tile_helper(sample.int(7, 1)), iterations = sample(5000:10000, size = 1), size = sample(4:7, size = 1), resolution = 100)
 )
 
 saveCanvas(artwork, filename, width = ifelse(type == 19, yes = NA, no = 7), height = ifelse(type == 19, yes = NA, no = 7))

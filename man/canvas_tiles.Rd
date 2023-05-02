@@ -5,11 +5,10 @@
 \title{Draw Portuguese Tiles}
 \usage{
 canvas_tiles(colors, background = "#ffffff", iterations = 1000,
-             size = 5, col.line = "#000000", resolution = 100,
-             flatten = FALSE)
+             size = 5, col.line = "#000000", resolution = 100)
 }
 \arguments{
-\item{colors}{a string or character vector specifying the color(s) used for the artwork.}
+\item{colors}{a string or character vector specifying the color(s) used for the artwork, or a list containing a set of colors for each unique tile on the wall.}
 
 \item{background}{a character specifying the color of the background.}
 
@@ -20,8 +19,6 @@ canvas_tiles(colors, background = "#ffffff", iterations = 1000,
 \item{col.line}{a character specifying the color of the joints between the tiles.}
 
 \item{resolution}{resolution of the artwork in pixels per row/column. Increasing the resolution increases the quality of the artwork but also increases the computation time exponentially.}
-
-\item{flatten}{logical, should colors be flattened after being put on the tile.}
 }
 \value{
 A \code{ggplot} object containing the artwork.
@@ -35,6 +32,10 @@ set.seed(3)
 
 # Simple example
 canvas_tiles(colors = colorPalette("azul"), iterations = 5000)
+
+# Advanced example
+colorList <- list(colorPalette("blossom"), colorPalette("neon1"), colorPalette("dark1"))
+canvas_tiles(colors = colorList)
 }
 
 }

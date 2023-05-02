@@ -18,16 +18,14 @@
 #' @description This function uses a reaction diffusion algorithm in an attempt to draw a Portuguese-styled tiling pattern.
 #'
 #' @usage canvas_tiles(colors, background = "#ffffff", iterations = 1000,
-#'              size = 5, col.line = "#000000", resolution = 100,
-#'              flatten = FALSE)
+#'              size = 5, col.line = "#000000", resolution = 100)
 #'
-#' @param colors      a string or character vector specifying the color(s) used for the artwork.
+#' @param colors      a string or character vector specifying the color(s) used for the artwork, or a list containing a set of colors for each unique tile on the wall.
 #' @param background  a character specifying the color of the background.
 #' @param size        a positive integer specifying how many tiles should be in each row of the wall.
 #' @param col.line    a character specifying the color of the joints between the tiles.
 #' @param iterations  a positive integer specifying the number of iterations of the algorithm.
 #' @param resolution  resolution of the artwork in pixels per row/column. Increasing the resolution increases the quality of the artwork but also increases the computation time exponentially.
-#' @param flatten     logical, should colors be flattened after being put on the tile.
 #'
 #' @return A \code{ggplot} object containing the artwork.
 #'
@@ -45,31 +43,21 @@
 #'
 #' # Simple example
 #' canvas_tiles(colors = colorPalette("azul"), iterations = 5000)
+#'
+#' # Advanced example
+#' colorList <- list(colorPalette("blossom"), colorPalette("neon1"), colorPalette("dark1"))
+#' canvas_tiles(colors = colorList)
 #' }
 #'
 #' @export
 
 canvas_tiles <- function(colors, background = "#ffffff", iterations = 1000,
-                         size = 5, col.line = "#000000", resolution = 100,
-                         flatten = FALSE) {
+                         size = 5, col.line = "#000000", resolution = 100) {
   .checkUserInput(
     resolution = resolution, background = background, iterations = iterations
   )
   rate_a <- 1
   rate_b <- 0.5
-  type <- sample.int(4, size = 1)
-  feed_rate <- switch(type,
-    "1" = 0.0545,
-    "2" = 0.055,
-    "3" = 0.029,
-    "4" = 0.03
-  )
-  kill_rate <- switch(type,
-    "1" = 0.062,
-    "2" = 0.062,
-    "3" = 0.057,
-    "4" = 0.06
-  )
   duplicates <- size - 1
   cex.line <- 7 / duplicates
   ones <- matrix(1, resolution, resolution)
@@ -78,27 +66,74 @@ canvas_tiles <- function(colors, background = "#ffffff", iterations = 1000,
     0.2, -1, 0.2,
     0.05, 0.2, 0.05
   ), nrow = 3)
-  binary <- matrix(sample(c(0, 1), size = resolution * resolution, replace = TRUE, prob = c(0.99, 0.01)), ncol = resolution)
-  tile <- array(c(ones, binary), dim = c(resolution, resolution, 2))
-  tile <- draw_tile(tile, conv_mat, rate_a, rate_b, feed_rate, kill_rate, iterations)[, , 2]
-  tile <- cbind(tile, tile[, rev(seq_len(ncol(tile)))])
-  tile <- rbind(tile, tile[rev(seq_len(nrow(tile))), ])
-  column <- tile
-  for (i in seq_len(duplicates)) {
-    column <- rbind(column, tile)
+  if (is.list(colors)) {
+    ntiles <- length(colors)
+    colorvalues <- unlist(mapply(c, background, colors, USE.NAMES = FALSE))
+  } else {
+    ntiles <- 1
+    colorvalues <- c(background, colors)
   }
-  canvas <- column
-  for (i in seq_len(duplicates)) {
-    canvas <- cbind(canvas, column)
+  tiles <- list()
+  for (i in 1:ntiles) {
+    type <- sample.int(4, size = 1)
+    feed_rate <- switch(type,
+      "1" = 0.0545,
+      "2" = 0.055,
+      "3" = 0.029,
+      "4" = 0.03
+    )
+    kill_rate <- switch(type,
+      "1" = 0.062,
+      "2" = 0.062,
+      "3" = 0.057,
+      "4" = 0.06
+    )
+    binary <- matrix(sample(c(0, 1), size = resolution * resolution, replace = TRUE, prob = c(0.99, 0.01)), ncol = resolution)
+    tile <- array(c(ones, binary), dim = c(resolution, resolution, 2))
+    tile <- draw_tile(tile, conv_mat, rate_a, rate_b, feed_rate, kill_rate, iterations)[, , 2]
+    tile <- cbind(tile, tile[, rev(seq_len(ncol(tile)))])
+    tile <- rbind(tile, tile[rev(seq_len(nrow(tile))), ])
+    if (ntiles > 1) {
+      tile <- scales::rescale(x = tile, from = range(tile), to = c(0, lengths(colors)[i]))
+    }
+    if (i > 1) {
+      tile <- tile + i + sum(lengths(colors)[1:(i - 1)])
+    }
+    tiles[[i]] <- tile
+  }
+  tile_index <- 1
+  for (i in 1:size) {
+    column <- tiles[[tile_index]]
+    tile_index <- tile_index + 1
+    if (tile_index > ntiles) {
+      tile_index <- 1
+    }
+    for (j in 1:(size - 1)) {
+      column <- rbind(column, tiles[[tile_index]])
+      tile_index <- tile_index + 1
+      if (tile_index > ntiles) {
+        tile_index <- 1
+      }
+    }
+    if (i == 1) {
+      canvas <- column
+    } else {
+      canvas <- cbind(canvas, column)
+    }
   }
   rownames(canvas) <- colnames(canvas) <- seq_len(nrow(canvas))
   full_canvas <- .unraster(canvas, names = c("x", "y", "z"))
-  if (flatten) {
-    full_canvas$z <- as.numeric(as.factor(cut(full_canvas$z, breaks = length(colors) + 1)))
+  if (ntiles > 1) {
+    breaks <- NULL
+    for (i in 1:ntiles) {
+      breaks <- c(breaks, seq(floor(min(tiles[[i]])), max(tiles[[i]]), length.out = lengths(colors)[i] + 1))
+    }
+  } else {
+    breaks <- seq(0, max(full_canvas$z), length.out = length(colorvalues))
   }
   artwork <- ggplot2::ggplot(data = full_canvas, ggplot2::aes(x = x, y = y, fill = z)) +
     ggplot2::geom_raster(interpolate = TRUE) +
-    ggplot2::scale_fill_gradientn(colours = c(background, colors)) +
+    ggplot2::scale_fill_gradientn(colours = colorvalues, values = scales::rescale(breaks, from = range(breaks), to = c(0, 1))) +
     ggplot2::coord_cartesian(xlim = c(0, (resolution * 2) * (duplicates + 1)), ylim = c(0, (resolution * 2) * (duplicates + 1)))
   if (duplicates > 0 && !is.null(col.line)) {
     lineDataX <- data.frame(x = (resolution * 2) * (0:(duplicates + 1)), xend = (resolution * 2) * (0:(duplicates + 1)), y = rep(0, duplicates + 2), yend = rep((resolution * 2) * (duplicates + 1), duplicates + 2))
