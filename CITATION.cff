@@ -28,7 +28,7 @@ preferred-citation:
 repository: https://CRAN.R-project.org/package=aRtsy
 repository-code: https://github.com/koenderks/aRtsy
 url: https://koenderks.github.io/aRtsy/
-date-released: '2023-04-30'
+date-released: '2023-05-02'
 contact:
 - family-names: Derks
   given-names: Koen
@@ -178,6 +178,19 @@ references:
     given-names: Douglas
   - family-names: Chambers
     given-names: John
+  year: '2023'
+- type: software
+  title: scales
+  abstract: 'scales: Scale Functions for Visualization'
+  notes: Imports
+  url: https://scales.r-lib.org
+  repository: https://CRAN.R-project.org/package=scales
+  authors:
+  - family-names: Wickham
+    given-names: Hadley
+    email: hadley@rstudio.com
+  - family-names: Seidel
+    given-names: Dana
   year: '2023'
 - type: software
   title: stats
