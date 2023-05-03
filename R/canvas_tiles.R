@@ -18,7 +18,8 @@
 #' @description This function uses a reaction diffusion algorithm in an attempt to draw a Portuguese-styled tiling pattern.
 #'
 #' @usage canvas_tiles(colors, background = "#ffffff", iterations = 1000,
-#'              size = 5, col.line = "#000000", resolution = 100)
+#'              size = 5, col.line = "#000000", resolution = 100,
+#'              layout = NULL)
 #'
 #' @param colors      a string or character vector specifying the color(s) used for the artwork, or a list containing a set of colors for each unique tile on the wall.
 #' @param background  a character specifying the color of the background.
@@ -26,6 +27,7 @@
 #' @param col.line    a character specifying the color of the joints between the tiles.
 #' @param iterations  a positive integer specifying the number of iterations of the algorithm.
 #' @param resolution  resolution of the artwork in pixels per row/column. Increasing the resolution increases the quality of the artwork but also increases the computation time exponentially.
+#' @param layout      optional. A matrix containing integers ranging from 1 to the maximum number of unique tiles (i.e., \code{length(colors)}) specifying the placement of the tiles on the wall.
 #'
 #' @return A \code{ggplot} object containing the artwork.
 #'
@@ -50,12 +52,32 @@
 #'   colorPalette("neon1"),
 #'   colorPalette("dark1")
 #' ))
+#'
+#' # Custom layout
+#' layout <- matrix(c(
+#'   1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+#'   1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+#'   1, 1, 1, 2, 1, 1, 1, 2, 1, 1, 1,
+#'   1, 1, 2, 2, 2, 1, 2, 2, 2, 1, 1,
+#'   1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1,
+#'   1, 1, 2, 2, 2, 2, 2, 2, 2, 1, 1,
+#'   1, 1, 1, 2, 2, 2, 2, 2, 1, 1, 1,
+#'   1, 1, 1, 1, 2, 2, 2, 1, 1, 1, 1,
+#'   1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1,
+#'   1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+#'   1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+#' ), nrow = 11, byrow = TRUE)
+#' canvas_tiles(
+#'   colors = list(colorPalette("blossom"), colorPalette("azul")),
+#'   size = nrow(layout), layout = layout
+#' )
 #' }
 #'
 #' @export
 
 canvas_tiles <- function(colors, background = "#ffffff", iterations = 1000,
-                         size = 5, col.line = "#000000", resolution = 100) {
+                         size = 5, col.line = "#000000", resolution = 100,
+                         layout = NULL) {
   .checkUserInput(
     resolution = resolution, background = background, iterations = iterations
   )
@@ -108,24 +130,26 @@ canvas_tiles <- function(colors, background = "#ffffff", iterations = 1000,
   if (size == 1) {
     canvas <- tiles[[1]]
   } else {
-    tile_index <- 1
+    if (is.null(layout)) {
+      suppressWarnings({
+        layout_matrix <- matrix(1:ntiles, nrow = size, ncol = size)
+      })
+    } else {
+      stopifnot("'layout' must be a matrix" = is.matrix(layout))
+      stopifnot("'layout' must be a `size` x `size` matrix" = nrow(layout) == size && ncol(layout) == size)
+      stopifnot("'layout' must contain integers from 1 to the number of tiles" = all(layout %% 1 == 0) && max(layout) <= ntiles && min(layout) == 1)
+      layout_matrix <- layout
+      layout_matrix <- layout_matrix[rev(seq_len(nrow(layout_matrix))), ]
+    }
     for (i in 1:size) {
-      column <- tiles[[tile_index]]
-      tile_index <- tile_index + 1
-      if (tile_index > ntiles) {
-        tile_index <- 1
-      }
-      for (j in 1:(size - 1)) {
-        column <- rbind(column, tiles[[tile_index]])
-        tile_index <- tile_index + 1
-        if (tile_index > ntiles) {
-          tile_index <- 1
-        }
+      row <- tiles[[layout_matrix[1, i]]]
+      for (j in 2:size) {
+        row <- cbind(row, tiles[[layout_matrix[j, i]]])
       }
       if (i == 1) {
-        canvas <- column
+        canvas <- row
       } else {
-        canvas <- cbind(canvas, column)
+        canvas <- rbind(canvas, row)
       }
     }
   }
@@ -154,11 +178,13 @@ canvas_tiles <- function(colors, background = "#ffffff", iterations = 1000,
       ggplot2::geom_segment(data = lineDataY, mapping = ggplot2::aes(x = x, xend = xend, y = y, yend = yend), col = col.line, inherit.aes = FALSE, size = cex.line * 0.75) +
       ggplot2::geom_segment(data = lineDataX, mapping = ggplot2::aes(x = x, xend = xend, y = y, yend = yend), col = background, inherit.aes = FALSE, size = cex.line * 0.3) +
       ggplot2::geom_segment(data = lineDataY, mapping = ggplot2::aes(x = x, xend = xend, y = y, yend = yend), col = background, inherit.aes = FALSE, size = cex.line * 0.3)
-    for (i in 0:size) {
-      for (j in 1:10) {
-        pointData <- data.frame(x = rep(i * resolution * 2, 2000) + stats::rnorm(2000, 0, cex.line * 0.4), y = seq(0, resolution * 2 * size, length.out = 2000) + stats::rnorm(2000, 0, cex.line * 0.4))
-        artwork <- artwork + ggplot2::geom_point(data = pointData, mapping = ggplot2::aes(x = x, y = y), fill = background, inherit.aes = FALSE, size = 0, alpha = 0.1, shape = 21, col = background) +
-          ggplot2::geom_point(data = pointData, mapping = ggplot2::aes(x = y, y = x), fill = background, inherit.aes = FALSE, size = 0, alpha = 0.1, shape = 21, col = background)
+    if (size < 8) {
+      for (i in 0:size) {
+        for (j in 1:10) {
+          pointData <- data.frame(x = rep(i * resolution * 2, 2000) + stats::rnorm(2000, 0, cex.line * 0.4), y = seq(0, resolution * 2 * size, length.out = 2000) + stats::rnorm(2000, 0, cex.line * 0.4))
+          artwork <- artwork + ggplot2::geom_point(data = pointData, mapping = ggplot2::aes(x = x, y = y), fill = background, inherit.aes = FALSE, size = 0, alpha = 0.1, shape = 21, col = background) +
+            ggplot2::geom_point(data = pointData, mapping = ggplot2::aes(x = y, y = x), fill = background, inherit.aes = FALSE, size = 0, alpha = 0.1, shape = 21, col = background)
+        }
       }
     }
   }

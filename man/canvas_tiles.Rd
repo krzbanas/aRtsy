@@ -5,7 +5,8 @@
 \title{Draw Portuguese Tiles}
 \usage{
 canvas_tiles(colors, background = "#ffffff", iterations = 1000,
-             size = 5, col.line = "#000000", resolution = 100)
+             size = 5, col.line = "#000000", resolution = 100,
+             layout = NULL)
 }
 \arguments{
 \item{colors}{a string or character vector specifying the color(s) used for the artwork, or a list containing a set of colors for each unique tile on the wall.}
@@ -19,6 +20,8 @@ canvas_tiles(colors, background = "#ffffff", iterations = 1000,
 \item{col.line}{a character specifying the color of the joints between the tiles.}
 
 \item{resolution}{resolution of the artwork in pixels per row/column. Increasing the resolution increases the quality of the artwork but also increases the computation time exponentially.}
+
+\item{layout}{optional. A matrix containing integers ranging from 1 to the maximum number of unique tiles (i.e., \code{length(colors)}) specifying the placement of the tiles on the wall.}
 }
 \value{
 A \code{ggplot} object containing the artwork.
@@ -39,6 +42,25 @@ canvas_tiles(colors = list(
   colorPalette("neon1"),
   colorPalette("dark1")
 ))
+
+# Custom layout
+layout <- matrix(c(
+  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+  1, 1, 1, 2, 1, 1, 1, 2, 1, 1, 1,
+  1, 1, 2, 2, 2, 1, 2, 2, 2, 1, 1,
+  1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1,
+  1, 1, 2, 2, 2, 2, 2, 2, 2, 1, 1,
+  1, 1, 1, 2, 2, 2, 2, 2, 1, 1, 1,
+  1, 1, 1, 1, 2, 2, 2, 1, 1, 1, 1,
+  1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1,
+  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+), nrow = 11, byrow = TRUE)
+canvas_tiles(
+  colors = list(colorPalette("blossom"), colorPalette("azul")),
+  size = nrow(layout), layout = layout
+)
 }
 
 }
