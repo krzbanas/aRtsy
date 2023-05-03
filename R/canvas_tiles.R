@@ -68,7 +68,7 @@
 #'   1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
 #' ), nrow = 11, byrow = TRUE)
 #' canvas_tiles(
-#'   colors = list(colorPalette("blossom"), colorPalette("azul")),
+#'   colors = list(colorPalette("azul"), colorPalette("blossom")),
 #'   size = nrow(layout), layout = layout
 #' )
 #' }
