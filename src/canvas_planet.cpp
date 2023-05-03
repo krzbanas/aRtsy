@@ -39,7 +39,7 @@ arma::mat draw_planet(arma::mat& canvas,
     }
     for (int col = 0; col < ncols; ++col) {
       const double dist = sqrt(pow(xcenter - col, 2) + pow(ycenter - row, 2));
-      if (canvas.at(row, col) != 0) { // The point lies in outer space
+      if (dist >= ceil(radius * 1.01) && canvas.at(row, col) == 0) { // The point lies in outer space
         double star = R::runif(0, 1);
         if (star < starprob) {
           canvas.at(row, col) = 2;

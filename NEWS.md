@@ -1,6 +1,7 @@
 # aRtsy 0.2.3
 
-- Added new function `canvas_tiles()`
+- Added new function `canvas_tiles()`.
+- Fixed a bug in `canvas_planets()` where no stars would be drawn.
 
 # aRtsy 0.2.2
 

@@ -44,7 +44,7 @@
 #' set.seed(1)
 #'
 #' # Simple example
-#' canvas_planet(colors = colorPalette("retro3"))
+#' canvas_planet(colors = colorPalette("lava"), threshold = 3)
 #'
 #' # Advanced example
 #' colors <- list(
