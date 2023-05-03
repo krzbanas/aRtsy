@@ -32,16 +32,16 @@ arma::cube iterate_tile(const arma::cube& canvas,
                         const double& diffb,
                         const double& feedrate,
                         const double& killrate) {
-  const int resolution = canvas.n_rows;
-  const double kplusf = killrate + feedrate;
+  const int& resolution = canvas.n_rows;
+  const double& kplusf = killrate + feedrate;
   arma::cube new_canvas(resolution, resolution, 2);
   for (int x = 0; x < resolution; ++x) {
     for (int y = 0; y < resolution; ++y) {
       double asum = 0, bsum = 0;
       for (int i = -1; i <= 1; ++i) {
         for (int j = -1; j <= 1; ++j) {
-          const int xn = next_index(resolution, x - i);
-          const int yn = next_index(resolution, y - j);
+          const int& xn = next_index(resolution, x - i);
+          const int& yn = next_index(resolution, y - j);
           asum += conv.at(i + 1, j + 1) * canvas.at(xn, yn, 0);
           bsum += conv.at(i + 1, j + 1) * canvas.at(xn, yn, 1);
         }
