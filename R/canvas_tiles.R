@@ -45,8 +45,11 @@
 #' canvas_tiles(colors = colorPalette("azul"), iterations = 5000)
 #'
 #' # Advanced example
-#' colorList <- list(colorPalette("blossom"), colorPalette("neon1"), colorPalette("dark1"))
-#' canvas_tiles(colors = colorList)
+#' canvas_tiles(colors = list(
+#'   colorPalette("blossom"),
+#'   colorPalette("neon1"),
+#'   colorPalette("dark1")
+#' ))
 #' }
 #'
 #' @export
@@ -56,6 +59,7 @@ canvas_tiles <- function(colors, background = "#ffffff", iterations = 1000,
   .checkUserInput(
     resolution = resolution, background = background, iterations = iterations
   )
+  stopifnot("'size' must be > 0" = size > 0)
   rate_a <- 1
   rate_b <- 0.5
   duplicates <- size - 1
@@ -101,24 +105,28 @@ canvas_tiles <- function(colors, background = "#ffffff", iterations = 1000,
     }
     tiles[[i]] <- tile
   }
-  tile_index <- 1
-  for (i in 1:size) {
-    column <- tiles[[tile_index]]
-    tile_index <- tile_index + 1
-    if (tile_index > ntiles) {
-      tile_index <- 1
-    }
-    for (j in 1:(size - 1)) {
-      column <- rbind(column, tiles[[tile_index]])
+  if (size == 1) {
+    canvas <- tiles[[1]]
+  } else {
+    tile_index <- 1
+    for (i in 1:size) {
+      column <- tiles[[tile_index]]
       tile_index <- tile_index + 1
       if (tile_index > ntiles) {
         tile_index <- 1
       }
-    }
-    if (i == 1) {
-      canvas <- column
-    } else {
-      canvas <- cbind(canvas, column)
+      for (j in 1:(size - 1)) {
+        column <- rbind(column, tiles[[tile_index]])
+        tile_index <- tile_index + 1
+        if (tile_index > ntiles) {
+          tile_index <- 1
+        }
+      }
+      if (i == 1) {
+        canvas <- column
+      } else {
+        canvas <- cbind(canvas, column)
+      }
     }
   }
   rownames(canvas) <- colnames(canvas) <- seq_len(nrow(canvas))
@@ -146,6 +154,13 @@ canvas_tiles <- function(colors, background = "#ffffff", iterations = 1000,
       ggplot2::geom_segment(data = lineDataY, mapping = ggplot2::aes(x = x, xend = xend, y = y, yend = yend), col = col.line, inherit.aes = FALSE, size = cex.line * 0.75) +
       ggplot2::geom_segment(data = lineDataX, mapping = ggplot2::aes(x = x, xend = xend, y = y, yend = yend), col = background, inherit.aes = FALSE, size = cex.line * 0.3) +
       ggplot2::geom_segment(data = lineDataY, mapping = ggplot2::aes(x = x, xend = xend, y = y, yend = yend), col = background, inherit.aes = FALSE, size = cex.line * 0.3)
+    for (i in 0:size) {
+      for (j in 1:10) {
+        pointData <- data.frame(x = rep(i * resolution * 2, 2000) + stats::rnorm(2000, 0, cex.line * 0.4), y = seq(0, resolution * 2 * size, length.out = 2000) + stats::rnorm(2000, 0, cex.line * 0.4))
+        artwork <- artwork + ggplot2::geom_point(data = pointData, mapping = ggplot2::aes(x = x, y = y), fill = background, inherit.aes = FALSE, size = 0, alpha = 0.1, shape = 21, col = background) +
+          ggplot2::geom_point(data = pointData, mapping = ggplot2::aes(x = y, y = x), fill = background, inherit.aes = FALSE, size = 0, alpha = 0.1, shape = 21, col = background)
+      }
+    }
   }
   artwork <- aRtsy::theme_canvas(artwork)
   return(artwork)

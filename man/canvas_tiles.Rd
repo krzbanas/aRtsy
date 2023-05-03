@@ -34,8 +34,11 @@ set.seed(3)
 canvas_tiles(colors = colorPalette("azul"), iterations = 5000)
 
 # Advanced example
-colorList <- list(colorPalette("blossom"), colorPalette("neon1"), colorPalette("dark1"))
-canvas_tiles(colors = colorList)
+canvas_tiles(colors = list(
+  colorPalette("blossom"),
+  colorPalette("neon1"),
+  colorPalette("dark1")
+))
 }
 
 }
