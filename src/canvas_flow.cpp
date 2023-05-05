@@ -28,7 +28,8 @@ Rcpp::DataFrame iterate_flow(arma::mat& canvas,
                              const int& bottom,
                              const double& stepmax) {
   // Constants
-  const int nrows = angles.n_rows, ncols = angles.n_cols;
+  const int& nrows = angles.n_rows, ncols = angles.n_cols;
+  const double& crit_x = R::runif(0, 1), crit_y = R::runif(0, 1);
   // Variables
   double x, y, step;
   int col_index, row_index, c;
@@ -37,8 +38,17 @@ Rcpp::DataFrame iterate_flow(arma::mat& canvas,
     // Check for interrupt
     Rcpp::checkUserInterrupt();
     // Initialize variables
-    x = ceil(R::runif(left + 1, right - 1));
-    y = ceil(R::runif(bottom + 1, top - 1));
+    const double& comp = R::runif(0, 1);
+    if (comp < crit_x) {
+      x = ceil(R::runif(left + 1, 0));
+    } else {
+      x = ceil(R::runif(0, right - 1));
+    }
+    if (comp < crit_y) {
+      y = ceil(R::runif(bottom + 1, 0));
+    } else {
+      y = ceil(R::runif(0, top - 1));
+    }
     step = R::runif(0, 100 * stepmax);
     c = ceil(R::runif(0, ncolors));
     // Inner loop
