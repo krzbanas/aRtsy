@@ -95,6 +95,9 @@ reference:
       - saveCanvas
       - theme_canvas
 
-figures: 
+figures:
   fig.width: 5
   fig.height: 5
+  fig.align: "center"
+  dpi: 500
+  bg: "#f8f8f8"
