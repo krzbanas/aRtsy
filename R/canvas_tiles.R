@@ -104,7 +104,8 @@
 #'     colorPalette("neon1"),
 #'     colorPalette("mixer4"),
 #'     colorPalette("neon2"),
-#'     colorPalette("vrolik1")
+#'     colorPalette("vrolik1"),
+#'     colorPalette("blackwhite")
 #'   ),
 #'   iterations = 2000,
 #'   size = nrow(layout), layout = layout
