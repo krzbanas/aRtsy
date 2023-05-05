@@ -17,7 +17,10 @@
 #'
 #' @description This function creates a random color palette, or allows the user to select a pre-implemented palette.
 #'
-#' @usage colorPalette(name, n = NULL)
+#' @usage colorPalette(
+#'   name,
+#'   n = NULL
+#' )
 #'
 #' @param name   name of the color palette. Can be \code{random} for random colors, \code{complement} for complementing colors, \code{divergent} for equally spaced colors, or \code{random-palette} for a random palette, but can also be the name of a pre-implemented palette. See the \code{details} section for a list of pre-implemented palettes.
 #' @param n      the number of colors to select from the palette. Required if \code{name = 'random'}, \code{name = 'complement'}, or \code{name = 'divergent'}. Otherwise, if \code{NULL}, automatically selects all colors from the chosen palette.
@@ -37,7 +40,8 @@
 #'
 #' @export
 
-colorPalette <- function(name, n = NULL) {
+colorPalette <- function(name,
+                         n = NULL) {
   if (!is.null(n) && (n < 1 || n %% 1 != 0)) {
     stop("'n' must be an integer > 0")
   }

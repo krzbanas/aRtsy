@@ -17,8 +17,16 @@
 #'
 #' @description This function draws flow fields on a canvas. The algorithm simulates the flow of points through a field of angles which can be set manually or generated from the predictions of a supervised learning method (i.e., knn, svm, random forest) trained on randomly generated data.
 #'
-#' @usage canvas_flow(colors, background = "#fafafa", lines = 500, lwd = 0.05,
-#'             iterations = 100, stepmax = 0.01, polar = FALSE, angles = NULL)
+#' @usage canvas_flow(
+#'   colors,
+#'   background = "#fafafa",
+#'   lines = 500,
+#'   lwd = 0.05,
+#'   iterations = 100,
+#'   stepmax = 0.01,
+#'   polar = FALSE,
+#'   angles = NULL
+#' )
 #'
 #' @param colors         a string or character vector specifying the color(s) used for the artwork.
 #' @param background     a character specifying the color used for the background.
@@ -62,8 +70,14 @@
 #'
 #' @export
 
-canvas_flow <- function(colors, background = "#fafafa", lines = 500, lwd = 0.05,
-                        iterations = 100, stepmax = 0.01, polar = FALSE, angles = NULL) {
+canvas_flow <- function(colors,
+                        background = "#fafafa",
+                        lines = 500,
+                        lwd = 0.05,
+                        iterations = 100,
+                        stepmax = 0.01,
+                        polar = FALSE,
+                        angles = NULL) {
   .checkUserInput(
     background = background, iterations = iterations
   )

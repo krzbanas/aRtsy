@@ -17,8 +17,15 @@
 #'
 #' @description This function draws Chladni figures on a canvas and subsequently warps the domain under these figures.
 #'
-#' @usage canvas_chladni(colors, waves = 5, warp = 0, resolution = 500,
-#'                angles = NULL, distances = NULL, flatten = FALSE)
+#' @usage canvas_chladni(
+#'   colors,
+#'   waves = 5,
+#'   warp = 0,
+#'   resolution = 500,
+#'   angles = NULL,
+#'   distances = NULL,
+#'   flatten = FALSE
+#' )
 #'
 #' @param colors      a string or character vector specifying the color(s) used for the artwork.
 #' @param waves       a character specifying the number of randomly sampled waves, or an integer vector of waves to be summed.
@@ -49,8 +56,13 @@
 #'
 #' @export
 
-canvas_chladni <- function(colors, waves = 5, warp = 0, resolution = 500,
-                           angles = NULL, distances = NULL, flatten = FALSE) {
+canvas_chladni <- function(colors,
+                           waves = 5,
+                           warp = 0,
+                           resolution = 500,
+                           angles = NULL,
+                           distances = NULL,
+                           flatten = FALSE) {
   .checkUserInput(resolution = resolution)
   if (length(waves) == 1) {
     waves <- sample(1:50, size = waves, replace = TRUE)

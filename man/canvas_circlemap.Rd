@@ -4,8 +4,15 @@
 \alias{canvas_circlemap}
 \title{Draw a Circle Map}
 \usage{
-canvas_circlemap(colors, left = 0, right = 12.56, bottom = 0, top = 1,
-                 iterations = 10, resolution = 1500)
+canvas_circlemap(
+  colors,
+  left = 0,
+  right = 12.56,
+  bottom = 0,
+  top = 1,
+  iterations = 10,
+  resolution = 1500
+)
 }
 \arguments{
 \item{colors}{a string or character vector specifying the color(s) used for the artwork.}

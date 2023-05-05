@@ -17,8 +17,14 @@
 #'
 #' @description This function draws split lines.
 #'
-#' @usage canvas_splits(colors, background = "#fafafa", iterations = 6,
-#'               sd = 0.2, lwd = 0.05, alpha = 0.5)
+#' @usage canvas_splits(
+#'   colors,
+#'   background = "#fafafa",
+#'   iterations = 6,
+#'   sd = 0.2,
+#'   lwd = 0.05,
+#'   alpha = 0.5
+#' )
 #'
 #' @param colors         a string or character vector specifying the color(s) used for the artwork.
 #' @param background     a character specifying the color used for the background (and the hole).
@@ -48,12 +54,14 @@
 #'
 #' @export
 
-canvas_splits <- function(colors, background = "#fafafa", iterations = 6,
-                          sd = 0.2, lwd = 0.05, alpha = 0.5) {
+canvas_splits <- function(colors,
+                          background = "#fafafa",
+                          iterations = 6,
+                          sd = 0.2,
+                          lwd = 0.05,
+                          alpha = 0.5) {
   .checkUserInput(iterations = iterations, background = background)
-  if (sd < 0) {
-    stop("'sd' must be >= 0")
-  }
+  stopifnot("'sd' must be >= 0" = sd >= 0)
   line <- data.frame(
     x = c(0, 1, 1, 0), xend = c(1, 1, 0, 0),
     y = c(0, 0, 1, 1), yend = c(0, 1, 1, 0),

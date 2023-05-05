@@ -17,8 +17,14 @@
 #'
 #' @description This function uses a space colony algorithm to draw Petri dish colonies.
 #'
-#' @usage canvas_petri(colors, background = "#fafafa", dish = "black",
-#'              attractors = 1000, iterations = 15, hole = 0)
+#' @usage canvas_petri(
+#'   colors,
+#'   background = "#fafafa",
+#'   dish = "black",
+#'   attractors = 1000,
+#'   iterations = 15,
+#'   hole = 0
+#' )
 #'
 #' @param colors         a string or character vector specifying the color(s) used for the artwork.
 #' @param background     a character specifying the color used for the background (and the hole).
@@ -50,8 +56,12 @@
 #'
 #' @export
 
-canvas_petri <- function(colors, background = "#fafafa", dish = "black",
-                         attractors = 1000, iterations = 15, hole = 0) {
+canvas_petri <- function(colors,
+                         background = "#fafafa",
+                         dish = "black",
+                         attractors = 1000,
+                         iterations = 15,
+                         hole = 0) {
   .checkUserInput(iterations = iterations)
   if (hole < 0 || hole > 0.9 || length(hole) != 1 || !is.numeric(hole)) {
     stop("'hole' must be a single value > 0 and < 0.9")

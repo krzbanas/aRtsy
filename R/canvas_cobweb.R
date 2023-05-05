@@ -17,8 +17,12 @@
 #'
 #' @description This function draws many Fibonacci spirals shifted by random noise from a normal distribution.
 #'
-#' @usage canvas_cobweb(colors, background = "#fafafa", lines = 300,
-#'               iterations = 100)
+#' @usage canvas_cobweb(
+#'   colors,
+#'   background = "#fafafa",
+#'   lines = 300,
+#'   iterations = 100
+#' )
 #'
 #' @param colors      a string or character vector specifying the color(s) used for the artwork.
 #' @param background  a character specifying the color used for the background.
@@ -43,11 +47,13 @@
 #'
 #' @export
 
-canvas_cobweb <- function(colors, background = "#fafafa", lines = 300,
+canvas_cobweb <- function(colors,
+                          background = "#fafafa",
+                          lines = 300,
                           iterations = 100) {
   .checkUserInput(background = background, iterations = iterations)
   fibonacci <- .fibonacci(n = iterations)
-  seqn <- 1:iterations
+  seqn <- seq_len(iterations)
   nrows <- length(seqn - 3) * lines
   canvas <- data.frame(x = rep(NA, nrows), xend = rep(NA, nrows), y = rep(NA, nrows), yend = rep(NA, nrows), z = rep(NA, nrows), lwd = rep(NA, nrows), col = rep(NA, nrows))
   for (i in 1:lines) {

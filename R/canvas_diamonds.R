@@ -17,8 +17,15 @@
 #'
 #' @description This function draws diamonds on a canvas and (optionally) places two lines behind them. The diamonds can be transparent or have a random color sampled from the input.
 #'
-#' @usage canvas_diamonds(colors, background = "#fafafa", col.line = "black",
-#'                 radius = 10, alpha = 1, p = 0.2, resolution = 500)
+#' @usage canvas_diamonds(
+#'   colors,
+#'   background = "#fafafa",
+#'   col.line = "black",
+#'   radius = 10,
+#'   alpha = 1,
+#'   p = 0.2,
+#'   resolution = 500
+#' )
 #'
 #' @param colors      a string or character vector specifying the color(s) used for the artwork.
 #' @param background  a character specifying the color used for the background.
@@ -46,8 +53,13 @@
 #'
 #' @export
 
-canvas_diamonds <- function(colors, background = "#fafafa", col.line = "black",
-                            radius = 10, alpha = 1, p = 0.2, resolution = 500) {
+canvas_diamonds <- function(colors,
+                            background = "#fafafa",
+                            col.line = "black",
+                            radius = 10,
+                            alpha = 1,
+                            p = 0.2,
+                            resolution = 500) {
   .checkUserInput(background = background, resolution = resolution)
   x <- seq(from = resolution / 5, to = resolution / 5 * 4, by = radius)
   top <- seq(from = resolution / 2 + radius, to = resolution / 5 * 4, by = radius)

@@ -4,8 +4,15 @@
 \alias{canvas_chladni}
 \title{Draw Chladni Figures}
 \usage{
-canvas_chladni(colors, waves = 5, warp = 0, resolution = 500,
-               angles = NULL, distances = NULL, flatten = FALSE)
+canvas_chladni(
+  colors,
+  waves = 5,
+  warp = 0,
+  resolution = 500,
+  angles = NULL,
+  distances = NULL,
+  flatten = FALSE
+)
 }
 \arguments{
 \item{colors}{a string or character vector specifying the color(s) used for the artwork.}

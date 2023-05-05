@@ -17,8 +17,13 @@
 #'
 #' @description This function draws a maze on a canvas.
 #'
-#' @usage canvas_maze(color = "#fafafa", walls = "black", background = "#fafafa",
-#'             resolution = 20, polar = FALSE)
+#' @usage canvas_maze(
+#'   color = "#fafafa",
+#'   walls = "black",
+#'   background = "#fafafa",
+#'   resolution = 20,
+#'   polar = FALSE
+#' )
 #'
 #' @param color       a character specifying the color used for the artwork.
 #' @param walls       a character specifying the color used for the walls of the maze.
@@ -46,8 +51,11 @@
 #'
 #' @export
 
-canvas_maze <- function(color = "#fafafa", walls = "black", background = "#fafafa",
-                        resolution = 20, polar = FALSE) {
+canvas_maze <- function(color = "#fafafa",
+                        walls = "black",
+                        background = "#fafafa",
+                        resolution = 20,
+                        polar = FALSE) {
   canvas <- matrix(0, resolution, resolution)
   x <- sample(2:resolution, size = 1)
   y <- sample(2:resolution, size = 1)

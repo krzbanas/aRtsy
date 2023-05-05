@@ -17,10 +17,15 @@
 #'
 #' @description This function draws one or more rotating circular morphing meshes on the canvas.
 #'
-#' @usage canvas_mesh(colors, background = "#fafafa",
-#'              transform = c("perlin", "fbm", "simplex", "cubic",
-#'                            "worley", "knn", "rf", "svm"),
-#'              lines = 500, iterations = 500, mixprob = 0)
+#' @usage canvas_mesh(
+#'   colors,
+#'   background = "#fafafa",
+#'   transform = c("perlin", "fbm", "simplex", "cubic",
+#'                 "worley", "knn", "rf", "svm"),
+#'   lines = 500,
+#'   iterations = 500,
+#'   mixprob = 0
+#' )
 #'
 #' @param colors         a string or character vector specifying the color(s) used for the artwork.
 #' @param background     a character specifying the color used for the background (and the hole).
@@ -49,12 +54,15 @@
 #'
 #' @export
 
-canvas_mesh <- function(colors, background = "#fafafa",
+canvas_mesh <- function(colors,
+                        background = "#fafafa",
                         transform = c(
                           "perlin", "fbm", "simplex", "cubic",
                           "worley", "knn", "rf", "svm"
                         ),
-                        lines = 500, iterations = 500, mixprob = 0) {
+                        lines = 500,
+                        iterations = 500,
+                        mixprob = 0) {
   transform <- match.arg(transform)
   .checkUserInput(iterations = iterations, background = background)
   artwork <- ggplot2::ggplot()

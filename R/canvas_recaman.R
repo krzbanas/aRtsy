@@ -17,9 +17,17 @@
 #'
 #' @description This function draws Recaman's sequence on a canvas. The algorithm takes increasingly large steps backward on the positive number line, but if it is unable to it takes a step forward.
 #'
-#' @usage canvas_recaman(colors, background = "#fafafa", iterations = 100, start = 0,
-#'                increment = 1, curvature = 1, angle = 0, size = 0.1,
-#'                closed = FALSE)
+#' @usage canvas_recaman(
+#'   colors,
+#'   background = "#fafafa",
+#'   iterations = 100,
+#'   start = 0,
+#'   increment = 1,
+#'   curvature = 1,
+#'   angle = 0,
+#'   size = 0.1,
+#'   closed = FALSE
+#' )
 #'
 #' @param colors         a string or character vector specifying the color(s) used for the artwork.
 #' @param background     a character specifying the color used for the background.
@@ -51,8 +59,14 @@
 #'
 #' @export
 
-canvas_recaman <- function(colors, background = "#fafafa", iterations = 100, start = 0,
-                           increment = 1, curvature = 1, angle = 0, size = 0.1,
+canvas_recaman <- function(colors,
+                           background = "#fafafa",
+                           iterations = 100,
+                           start = 0,
+                           increment = 1,
+                           curvature = 1,
+                           angle = 0,
+                           size = 0.1,
                            closed = FALSE) {
   .checkUserInput(background = background, iterations = iterations)
   if (!(angle %in% c(0, 45))) {

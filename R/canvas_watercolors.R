@@ -17,8 +17,13 @@
 #'
 #' @description This function paints watercolors on a canvas.
 #'
-#' @usage canvas_watercolors(colors, background = "#fafafa", layers = 50,
-#'                    depth = 2, resolution = 250)
+#' @usage canvas_watercolors(
+#'   colors,
+#'   background = "#fafafa",
+#'   layers = 50,
+#'   depth = 2,
+#'   resolution = 250
+#' )
 #'
 #' @param colors       a string specifying the color used for the artwork.
 #' @param background   a character specifying the color used for the background.
@@ -46,8 +51,11 @@
 #'
 #' @export
 
-canvas_watercolors <- function(colors, background = "#fafafa", layers = 50,
-                               depth = 2, resolution = 250) {
+canvas_watercolors <- function(colors,
+                               background = "#fafafa",
+                               layers = 50,
+                               depth = 2,
+                               resolution = 250) {
   .checkUserInput(resolution = resolution, background = background)
   nlayers <- length(colors)
   plotData <- data.frame(x = numeric(), y = numeric(), s = numeric(), z = numeric())

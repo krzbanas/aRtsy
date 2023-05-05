@@ -17,7 +17,11 @@
 #'
 #' @description This function draws the predictions from a k-nearest neighbors algorithm trained on randomly generated categorical data.
 #'
-#' @usage canvas_mosaic(colors, n = 1000, resolution = 500)
+#' @usage canvas_mosaic(
+#'   colors,
+#'   n = 1000,
+#'   resolution = 500
+#' )
 #'
 #' @param colors      a string or character vector specifying the color(s) used for the artwork.
 #' @param n           a positive integer specifying the number of random data points to generate.
@@ -43,7 +47,9 @@
 #'
 #' @export
 
-canvas_mosaic <- function(colors, n = 1000, resolution = 500) {
+canvas_mosaic <- function(colors,
+                          n = 1000,
+                          resolution = 500) {
   .checkUserInput(resolution = resolution)
   train <- data.frame(
     x = stats::runif(n, 0, resolution),

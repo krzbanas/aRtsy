@@ -17,8 +17,13 @@
 #'
 #' @description This function paints functions with random parameters on a canvas.
 #'
-#' @usage canvas_function(colors, background = "#fafafa", by = 0.01,
-#'                polar = TRUE, formula = NULL)
+#' @usage canvas_function(
+#'   colors,
+#'   background = "#fafafa",
+#'   by = 0.01,
+#'   polar = TRUE,
+#'   formula = NULL
+#' )
 #'
 #' @param colors      a string specifying the color used for the artwork.
 #' @param background  a character specifying the color used for the background.
@@ -55,8 +60,11 @@
 #'
 #' @export
 
-canvas_function <- function(colors, background = "#fafafa", by = 0.01,
-                            polar = TRUE, formula = NULL) {
+canvas_function <- function(colors,
+                            background = "#fafafa",
+                            by = 0.01,
+                            polar = TRUE,
+                            formula = NULL) {
   .checkUserInput(background = background)
   if (is.null(formula)) {
     painting_formulas <- list()

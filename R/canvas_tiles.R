@@ -17,9 +17,15 @@
 #'
 #' @description This function uses a reaction diffusion algorithm in an attempt to draw a Portuguese-styled tiling pattern.
 #'
-#' @usage canvas_tiles(colors, background = "#ffffff", iterations = 1000,
-#'              size = 5, col.line = "#000000", resolution = 100,
-#'              layout = NULL)
+#' @usage canvas_tiles(
+#'   colors,
+#'   background = "#ffffff",
+#'   iterations = 1000,
+#'   size = 5,
+#'   col.line = "#000000",
+#'   resolution = 100,
+#'   layout = NULL
+#' )
 #'
 #' @param colors      a string or character vector specifying the color(s) used for the artwork, or a list containing a set of colors for each unique tile on the wall.
 #' @param background  a character specifying the color of the background.
@@ -114,8 +120,12 @@
 #'
 #' @export
 
-canvas_tiles <- function(colors, background = "#ffffff", iterations = 1000,
-                         size = 5, col.line = "#000000", resolution = 100,
+canvas_tiles <- function(colors,
+                         background = "#ffffff",
+                         iterations = 1000,
+                         size = 5,
+                         col.line = "#000000",
+                         resolution = 100,
                          layout = NULL) {
   .checkUserInput(
     resolution = resolution, background = background, iterations = iterations

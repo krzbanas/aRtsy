@@ -17,7 +17,11 @@
 #'
 #' @description This function draws the predictions from a support vector machine algorithm trained on randomly generated continuous data.
 #'
-#' @usage canvas_blacklight(colors, n = 1000, resolution = 500)
+#' @usage canvas_blacklight(
+#'   colors,
+#'   n = 1000,
+#'   resolution = 500
+#' )
 #'
 #' @param colors      a string or character vector specifying the color(s) used for the artwork.
 #' @param n           a positive integer specifying the number of random data points to generate.
@@ -43,7 +47,9 @@
 #'
 #' @export
 
-canvas_blacklight <- function(colors, n = 1000, resolution = 500) {
+canvas_blacklight <- function(colors,
+                              n = 1000,
+                              resolution = 500) {
   .checkUserInput(resolution = resolution)
   canvas <- .noise(dims = c(resolution, resolution), n = n, type = "svm")
   canvas <- .unraster(canvas, names = c("x", "y", "z"))

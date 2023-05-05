@@ -94,3 +94,7 @@ reference:
     contents:
       - saveCanvas
       - theme_canvas
+
+figures: 
+  fig.width: 7
+  fig.height: 7

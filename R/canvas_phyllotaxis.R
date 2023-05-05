@@ -17,8 +17,15 @@
 #'
 #' @description This function draws a phyllotaxis which resembles the arrangement of leaves on a plant stem.
 #'
-#' @usage canvas_phyllotaxis(colors, background = "#fafafa", iterations = 10000,
-#'                angle = 137.5, size = 0.01, alpha = 1, p = 0.5)
+#' @usage canvas_phyllotaxis(
+#'   colors,
+#'   background = "#fafafa",
+#'   iterations = 10000,
+#'   angle = 137.5,
+#'   size = 0.01,
+#'   alpha = 1,
+#'   p = 0.5
+#' )
 #'
 #' @param colors         a string or character vector specifying the color(s) used for the artwork.
 #' @param background     a character specifying the color used for the background.
@@ -48,8 +55,13 @@
 #'
 #' @export
 
-canvas_phyllotaxis <- function(colors, background = "#fafafa", iterations = 10000,
-                               angle = 137.5, size = 0.01, alpha = 1, p = 0.5) {
+canvas_phyllotaxis <- function(colors,
+                               background = "#fafafa",
+                               iterations = 10000,
+                               angle = 137.5,
+                               size = 0.01,
+                               alpha = 1,
+                               p = 0.5) {
   .checkUserInput(background = background, iterations = iterations)
   canvas <- iterate_phyllotaxis(iterations, angle, p)
   canvas$z <- seq_len(nrow(canvas))

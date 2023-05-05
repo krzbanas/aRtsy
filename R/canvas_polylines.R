@@ -17,8 +17,14 @@
 #'
 #' @description This function draws many points on the canvas and connects these points into a polygon. After repeating this for all the colors, the edges of all polygons are drawn on top of the artwork.
 #'
-#' @usage canvas_polylines(colors, background = "#fafafa", ratio = 0.5, iterations = 1000,
-#'                  size = 0.1, resolution = 500)
+#' @usage canvas_polylines(
+#'   colors,
+#'   background = "#fafafa",
+#'   ratio = 0.5,
+#'   iterations = 1000,
+#'   size = 0.1,
+#'   resolution = 500
+#' )
 #'
 #' @param colors      a string or character vector specifying the color(s) used for the artwork.
 #' @param background  a character specifying the color used for the lines.
@@ -45,8 +51,12 @@
 #'
 #' @export
 
-canvas_polylines <- function(colors, background = "#fafafa", ratio = 0.5, iterations = 1000,
-                             size = 0.1, resolution = 500) {
+canvas_polylines <- function(colors,
+                             background = "#fafafa",
+                             ratio = 0.5,
+                             iterations = 1000,
+                             size = 0.1,
+                             resolution = 500) {
   .checkUserInput(resolution = resolution, iterations = iterations)
   alphas <- seq(from = 1, to = 0.1, length.out = length(colors))
   full_canvas <- data.frame(x = numeric(), y = numeric(), type = character())

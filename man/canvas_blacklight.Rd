@@ -4,7 +4,11 @@
 \alias{canvas_blacklight}
 \title{Draw Blacklights}
 \usage{
-canvas_blacklight(colors, n = 1000, resolution = 500)
+canvas_blacklight(
+  colors,
+  n = 1000,
+  resolution = 500
+)
 }
 \arguments{
 \item{colors}{a string or character vector specifying the color(s) used for the artwork.}

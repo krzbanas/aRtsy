@@ -17,8 +17,14 @@
 #'
 #' @description This function draws the Collatz conjecture on the canvas.
 #'
-#' @usage canvas_collatz(colors, background = "#fafafa", n = 200,
-#'                 angle.even = 0.0075, angle.odd = 0.0145, side = FALSE)
+#' @usage canvas_collatz(
+#'   colors,
+#'   background = "#fafafa",
+#'   n = 200,
+#'   angle.even = 0.0075,
+#'   angle.odd = 0.0145,
+#'   side = FALSE
+#' )
 #'
 #' @param colors     a string or character vector specifying the color(s) used for the artwork.
 #' @param background a character specifying the color used for the background.
@@ -47,12 +53,16 @@
 #'
 #' @export
 
-canvas_collatz <- function(colors, background = "#fafafa", n = 200,
-                           angle.even = 0.0075, angle.odd = 0.0145, side = FALSE) {
+canvas_collatz <- function(colors,
+                           background = "#fafafa",
+                           n = 200,
+                           angle.even = 0.0075,
+                           angle.odd = 0.0145,
+                           side = FALSE) {
   .checkUserInput(background = background)
   canvas <- data.frame(x = numeric(), y = numeric(), col = numeric(), z = numeric())
   if (length(n) == 1) {
-    n <- sample(1:1000000, size = n, replace = FALSE)
+    n <- sample.int(1000000, size = n, replace = FALSE)
   }
   for (i in n) {
     series <- rev(get_collatz_sequence(i))

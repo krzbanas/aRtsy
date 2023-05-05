@@ -17,8 +17,13 @@
 #'
 #' @description This function implements the rainbow smoke algorithm.
 #'
-#' @usage canvas_smoke(colors, init = 1, shape = c("bursts", "clouds"),
-#'              algorithm = c("minimum", "average"), resolution = 150)
+#' @usage canvas_smoke(
+#'   colors,
+#'   init = 1,
+#'   shape = c("bursts", "clouds"),
+#'   algorithm = c("minimum", "average"),
+#'   resolution = 150
+#' )
 #'
 #' @param colors      a string or character vector specifying the color(s) used for the artwork.
 #' @param init        an integer larger than zero and lower  than or equal to \code{resolution^2} specifying the initial number of pixels to color on the canvas.
@@ -51,8 +56,11 @@
 #' }
 #'
 #' @export
-canvas_smoke <- function(colors, init = 1, shape = c("bursts", "clouds"),
-                         algorithm = c("minimum", "average"), resolution = 150) {
+canvas_smoke <- function(colors,
+                         init = 1,
+                         shape = c("bursts", "clouds"),
+                         algorithm = c("minimum", "average"),
+                         resolution = 150) {
   .checkUserInput(resolution = resolution)
   stopifnot("'init' must be > 0 and <= resolution^2" = init > 0 && init <= resolution^2)
   shape <- match.arg(shape)

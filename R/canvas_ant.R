@@ -17,8 +17,12 @@
 #'
 #' @description This function draws Langton's Ant on a canvas. Langton's ant is a two-dimensional universal Turing machine with a very simple set of rules. These simple rules can lead to complex emergent behavior.
 #'
-#' @usage canvas_ant(colors, background = "#fafafa", iterations = 1000000,
-#'            resolution = 500)
+#' @usage canvas_ant(
+#'   colors,
+#'   background = "#fafafa",
+#'   iterations = 1000000,
+#'   resolution = 500
+#' )
 #'
 #' @param colors      a character (vector) specifying the color(s) used for the artwork.
 #' @param background  a character specifying the color used for the background.
@@ -48,7 +52,9 @@
 #'
 #' @export
 
-canvas_ant <- function(colors, background = "#fafafa", iterations = 1000000,
+canvas_ant <- function(colors,
+                       background = "#fafafa",
+                       iterations = 1000000,
                        resolution = 500) {
   .checkUserInput(
     background = background, resolution = resolution, iterations = iterations

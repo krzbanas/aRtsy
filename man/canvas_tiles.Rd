@@ -4,9 +4,15 @@
 \alias{canvas_tiles}
 \title{Draw Portuguese Tiles}
 \usage{
-canvas_tiles(colors, background = "#ffffff", iterations = 1000,
-             size = 5, col.line = "#000000", resolution = 100,
-             layout = NULL)
+canvas_tiles(
+  colors,
+  background = "#ffffff",
+  iterations = 1000,
+  size = 5,
+  col.line = "#000000",
+  resolution = 100,
+  layout = NULL
+)
 }
 \arguments{
 \item{colors}{a string or character vector specifying the color(s) used for the artwork, or a list containing a set of colors for each unique tile on the wall.}

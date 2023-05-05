@@ -17,11 +17,22 @@
 #'
 #' @description This function implements the fractal flame algorithm.
 #'
-#' @usage canvas_flame(colors, background = "#000000", iterations = 1000000,
-#'              variations = 0, symmetry = 0, blend = TRUE, weighted = FALSE,
-#'              post = FALSE, final = FALSE, extra = FALSE,
-#'              display = c("colored", "logdensity"),
-#'              zoom = 1, resolution = 1000, gamma = 1)
+#' @usage canvas_flame(
+#'   colors,
+#'   background = "#000000",
+#'   iterations = 1000000,
+#'   variations = 0,
+#'   symmetry = 0,
+#'   blend = TRUE,
+#'   weighted = FALSE,
+#'   post = FALSE,
+#'   final = FALSE,
+#'   extra = FALSE,
+#'   display = c("colored", "logdensity"),
+#'   zoom = 1,
+#'   resolution = 1000,
+#'   gamma = 1
+#' )
 #'
 #' @param colors      a string or character vector specifying the color(s) used for the artwork.
 #' @param background  a character specifying the color used for the background.
@@ -138,11 +149,20 @@
 #'
 #' @export
 
-canvas_flame <- function(colors, background = "#000000", iterations = 1000000,
-                         variations = 0, symmetry = 0, blend = TRUE, weighted = FALSE,
-                         post = FALSE, final = FALSE, extra = FALSE,
+canvas_flame <- function(colors,
+                         background = "#000000",
+                         iterations = 1000000,
+                         variations = 0,
+                         symmetry = 0,
+                         blend = TRUE,
+                         weighted = FALSE,
+                         post = FALSE,
+                         final = FALSE,
+                         extra = FALSE,
                          display = c("colored", "logdensity"),
-                         zoom = 1, resolution = 1000, gamma = 1) {
+                         zoom = 1,
+                         resolution = 1000,
+                         gamma = 1) {
   display <- match.arg(display)
   .checkUserInput(
     resolution = resolution, background = background
