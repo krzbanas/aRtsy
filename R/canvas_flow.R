@@ -79,7 +79,7 @@ canvas_flow <- function(colors, background = "#fafafa", lines = 500, lwd = 0.05,
   if (is.null(angles)) {
     angles <- .noise(
       dims = c(nrows, ncols), n = sample(100:300, size = 1),
-      type = sample(c("knn", "svm", "rf", "perlin", "cubic", "simplex", "worley"), size = 1),
+      type = sample(c("knn", "svm", "perlin", "cubic", "simplex", "worley"), size = 1),
       limits = c(-pi, pi)
     )
   } else if (is.character(angles)) {
