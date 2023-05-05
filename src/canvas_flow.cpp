@@ -40,14 +40,14 @@ Rcpp::DataFrame iterate_flow(arma::mat& canvas,
     // Initialize variables
     const double& comp = R::runif(0, 1);
     if (comp < crit_x) {
-      x = ceil(R::runif(left + 1, 0));
+      x = R::runif(left + 1, 0);
     } else {
-      x = ceil(R::runif(0, right - 1));
+      x = R::runif(0, right - 1);
     }
     if (comp < crit_y) {
-      y = ceil(R::runif(bottom + 1, 0));
+      y = R::runif(bottom + 1, 0);
     } else {
-      y = ceil(R::runif(0, top - 1));
+      y = R::runif(0, top - 1);
     }
     step = R::runif(0, 100 * stepmax);
     c = ceil(R::runif(0, ncolors));
@@ -59,8 +59,8 @@ Rcpp::DataFrame iterate_flow(arma::mat& canvas,
       canvas.at(j * iters + i, 2) = j + 1;
       canvas.at(j * iters + i, 3) = c;
       // Get position
-      col_index = x - left;
-      row_index = y - bottom;
+      col_index = ceil(x - left);
+      row_index = ceil(y - bottom);
       // Check bailout condition
       if ((col_index >= ncols) || (col_index <= 0) || (row_index >= nrows) || (row_index <= 0)) {
         break;
