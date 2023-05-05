@@ -96,5 +96,5 @@ reference:
       - theme_canvas
 
 figures: 
-  fig.width: 7
-  fig.height: 7
+  fig.width: 7.2916667
+  fig.height: 7.2916667
