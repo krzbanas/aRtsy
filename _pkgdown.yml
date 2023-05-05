@@ -100,4 +100,3 @@ figures:
   fig.height: 5
   fig.align: "center"
   dpi: 500
-  bg: "#f8f8f8"
