@@ -141,7 +141,7 @@ canvas_flow <- function(colors,
   if (polar) {
     artwork <- artwork + ggplot2::coord_polar()
   } else {
-    artwork <- artwork + ggplot2::coord_cartesian(xlim = c(left + 1, right - 1), ylim = c(bottom + 1, top - 1))
+    artwork <- artwork + ggplot2::coord_cartesian(xlim = c(left, right), ylim = c(bottom, top))
   }
   artwork <- theme_canvas(artwork, background = background)
   return(artwork)
