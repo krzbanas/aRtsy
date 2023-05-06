@@ -46,7 +46,7 @@ arma::cube iterate_tile(const arma::cube& canvas,
           bsum += conv.at(i + 1, j + 1) * canvas.at(xn, yn, 1);
         }
       }
-      const double xpow = pow(canvas.at(x, y, 1), 2);
+      const double& xpow = pow(canvas.at(x, y, 1), 2);
       new_canvas.at(x, y, 0) = canvas.at(x, y, 0) + diffa * asum - canvas.at(x, y, 0) * xpow + feedrate * (1 - canvas.at(x, y, 0));
       new_canvas.at(x, y, 1) = canvas.at(x, y, 1) + diffb * bsum + canvas.at(x, y, 0) * xpow - kplusf * canvas.at(x, y, 1);
     }

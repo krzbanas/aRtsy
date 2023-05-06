@@ -27,7 +27,7 @@ Rcpp::DataFrame cpp_splits(Rcpp::NumericVector& x,
   for (int i = 0; i < iterations; ++i) {
     const int l1 = x.length() * 4;
     Rcpp::NumericVector x2(l1), xend2(l1), y2(l1), yend2(l1), col2(l1);
-    for (int j = 0; j < x.length(); j++) {
+    for (int j = 0; j < x.length(); ++j) {
       const int& index = j * 4;
       const double& xdir = xend[j] - x[j];
       const double& ydir = yend[j] - y[j];

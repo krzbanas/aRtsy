@@ -53,9 +53,9 @@ Rcpp::DataFrame selectNeighbors(Rcpp::NumericVector x,
                                 Rcpp::NumericVector vy) {
   Rcpp::NumericVector nx;
   Rcpp::NumericVector ny;
-  for (int i = 0; i < x.length(); i++) {
+  for (int i = 0; i < x.length(); ++i) {
 	int contains = 0;
-	for (int j = 0; j < vx.length(); j++) {
+	for (int j = 0; j < vx.length(); ++j) {
 		if (x[i] == vx[j] && y[i] == vy[j]) {
 			contains = 1;
 		}
