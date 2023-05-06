@@ -24,25 +24,25 @@ arma::mat cpp_polylines(arma::mat canvas,
                         const int& cols) {
   canvas.at(0, 0) = R::runif(0, cols);
   canvas.at(0, 1) = R::runif(0, rows);
-  int xradius = cols * ratio;
-  int yradius = rows * ratio;
-  bool c1;
-  bool c2;
+  int xradius = cols * ratio, yradius = rows * ratio;
+  bool c1, c2;
   for (int i = 1; i < iters; ++i) {
     Rcpp::checkUserInterrupt();
-    double v = R::runif(0, 1);
-    double h = R::runif(0, 1);
+    const double v = R::runif(0, 1);
+    const double h = R::runif(0, 1);
     double x1;
     if (h > 0.5) {
       x1 = canvas.at(i-1, 0) + R::rnorm(0, xradius);
-      if (x1 < 0)
+      if (x1 < 0) {
         x1 = 0;
-      if (x1 > cols)
+	  } else if (x1 > cols) {
         x1 = cols;
+      }
       c1 = x1 > (canvas.at(0, 0) + (xradius * R::runif(0.5, 2)));
       c2 = x1 < (canvas.at(0, 0) - (xradius * R::runif(0.5, 2)));
-      if (c1 || c2)
+      if (c1 || c2) {
         x1 = canvas.at(i-1, 0);
+      }
     } else {
       x1 = canvas.at(i-1, 0);
     }
@@ -50,14 +50,16 @@ arma::mat cpp_polylines(arma::mat canvas,
     double y1;
     if (v > 0.5) {
       y1 = canvas.at(i-1, 1) + R::rnorm(0, yradius);
-      if (y1 < 0)
+      if (y1 < 0) {
         y1 = 0;
-      if (y1 > rows)
+      } else if (y1 > rows) {
         y1 = rows;
+      }
       c1 = y1 > (canvas.at(0, 1) + (yradius * R::runif(0.5, 2)));
       c2 = y1 < (canvas.at(0, 1) - (yradius * R::runif(0.5, 2)));
-      if (c1 || c2)
+      if (c1 || c2) {
         y1 = canvas.at(i-1, 1);
+      }
     } else {
       y1 = canvas.at(i-1, 1);
     }

@@ -61,7 +61,7 @@ arma::mat cpp_planet(arma::mat& canvas,
       Rcpp::checkUserInterrupt();
     }
     for (int j = 0; j < l; ++j) {
-      const int& x = xcircle[j], y = ycircle[j];
+      const int x = xcircle[j], y = ycircle[j];
       if ((y > 0) && (y < (nrows - 1)) && (x > 0) && (x < (ncols - 1))) {
         const int level = ref.at(y, x); // Get the current level 
         const int newlevel = (level + 1) == (ncolors + colorsused) ? 3 + colorsused : level + 1;

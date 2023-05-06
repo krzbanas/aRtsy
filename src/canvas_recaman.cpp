@@ -25,7 +25,7 @@ Rcpp::IntegerVector cpp_recaman(const int& n,
     Rcpp::checkUserInterrupt();
     inc += increment;
     int newx = x[i - 1] - inc;
-    const bool& contains = std::find(xlist.begin(), xlist.end(), newx) != xlist.end();
+    const bool contains = std::find(xlist.begin(), xlist.end(), newx) != xlist.end();
     if (contains || newx <= 0) {
       newx = x[i - 1] + inc;
     }

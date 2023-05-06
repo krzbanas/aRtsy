@@ -16,12 +16,11 @@
 #include <RcppArmadillo.h>
 // [[Rcpp::depends(RcppArmadillo)]]
 
-Rcpp::DataFrame mazeNeighbors(int x, 
-                              int y,
-                              int m,
-                              int n) {
-  Rcpp::NumericVector nx;
-  Rcpp::NumericVector ny;
+Rcpp::DataFrame mazeNeighbors(const int& x, 
+                              const int& y,
+                              const int& m,
+                              const int& n) {
+  Rcpp::NumericVector nx, ny;
   if (y > 0 && y <= m) {
     if (x < n) {
       nx.push_back(x + 1);
@@ -47,12 +46,11 @@ Rcpp::DataFrame mazeNeighbors(int x,
   return neighbors;
 }
 
-Rcpp::DataFrame selectNeighbors(Rcpp::NumericVector x, 
-                                Rcpp::NumericVector y,
-                                Rcpp::NumericVector vx,
-                                Rcpp::NumericVector vy) {
-  Rcpp::NumericVector nx;
-  Rcpp::NumericVector ny;
+Rcpp::DataFrame selectNeighbors(const Rcpp::NumericVector& x, 
+                                const Rcpp::NumericVector& y,
+                                const Rcpp::NumericVector& vx,
+                                const Rcpp::NumericVector& vy) {
+  Rcpp::NumericVector nx, ny;
   for (int i = 0; i < x.length(); ++i) {
 	int contains = 0;
 	for (int j = 0; j < vx.length(); ++j) {
@@ -71,18 +69,11 @@ Rcpp::DataFrame selectNeighbors(Rcpp::NumericVector x,
 }
 
 // [[Rcpp::export]]
-Rcpp::DataFrame cpp_maze(arma::mat X,
+Rcpp::DataFrame cpp_maze(arma::mat& X,
                          double x, 
                          double y) {
-  int m = X.n_rows;
-  int n = X.n_cols;
-  int dim = m * n;
-  Rcpp::NumericVector tx = {x};
-  Rcpp::NumericVector ty = {y};
-  Rcpp::NumericVector sx = {x};
-  Rcpp::NumericVector sy = {y};
-  Rcpp::NumericVector vx = {x};
-  Rcpp::NumericVector vy = {y};
+  const int m = X.n_rows, n = X.n_cols, dim = m * n;
+  Rcpp::NumericVector tx = {x}, ty = {y}, sx = {x}, sy = {y}, vx = {x}, vy = {y};
   while (vx.length() < dim) {
     Rcpp::checkUserInterrupt();
     Rcpp::DataFrame nn = mazeNeighbors(x, y, m, n);

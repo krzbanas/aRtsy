@@ -130,12 +130,12 @@ BEGIN_RCPP
 END_RCPP
 }
 // cpp_maze
-Rcpp::DataFrame cpp_maze(arma::mat X, double x, double y);
+Rcpp::DataFrame cpp_maze(arma::mat& X, double x, double y);
 RcppExport SEXP _aRtsy_cpp_maze(SEXP XSEXP, SEXP xSEXP, SEXP ySEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::mat >::type X(XSEXP);
+    Rcpp::traits::input_parameter< arma::mat& >::type X(XSEXP);
     Rcpp::traits::input_parameter< double >::type x(xSEXP);
     Rcpp::traits::input_parameter< double >::type y(ySEXP);
     rcpp_result_gen = Rcpp::wrap(cpp_maze(X, x, y));

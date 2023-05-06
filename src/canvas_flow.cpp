@@ -28,8 +28,8 @@ Rcpp::DataFrame cpp_flow(arma::mat& canvas,
                          const int& bottom,
                          const double& stepmax) {
   // Constants
-  const int& nrows = angles.n_rows, ncols = angles.n_cols;
-  const double& crit_x = R::runif(0, 1), crit_y = R::runif(0, 1);
+  const int nrows = angles.n_rows, ncols = angles.n_cols;
+  const double crit_x = R::runif(0, 1), crit_y = R::runif(0, 1);
   // Variables
   double x, y, step;
   int col_index, row_index, c;
@@ -38,7 +38,7 @@ Rcpp::DataFrame cpp_flow(arma::mat& canvas,
     // Check for interrupt
     Rcpp::checkUserInterrupt();
     // Initialize variables
-    const double& comp = R::runif(0, 1);
+    const double comp = R::runif(0, 1);
     if (comp < crit_x) {
       x = R::runif(left + 1, ceil(comp * right) - 1);
     } else {

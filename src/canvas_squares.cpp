@@ -32,7 +32,7 @@ arma::mat cpp_squares(arma::mat& X,
                       const int& cuts,
                       const double& ratio) {
   // Constants
-  const int& m = X.n_rows, n = X.n_cols;
+  const int m = X.n_rows, n = X.n_cols;
   // Variables
   bool cutfromtop, cutfromleft;
   int cutx, cuty, color, c;

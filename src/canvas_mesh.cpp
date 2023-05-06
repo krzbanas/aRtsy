@@ -17,13 +17,13 @@
 // [[Rcpp::depends(RcppArmadillo)]]
 
 void shift_right_int(Rcpp::IntegerVector& x) {
-  const int& x1 = x[0];
+  const int x1 = x[0];
   x.erase(0);
   x.push_back(x1);
 }
 
 void shift_right_double(Rcpp::DoubleVector& x) {
-  const double& x1 = x[0];
+  const double x1 = x[0];
   x.erase(0);
   x.push_back(x1);
 }

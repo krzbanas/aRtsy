@@ -17,8 +17,8 @@
 // [[Rcpp::depends(RcppArmadillo)]]
 
 arma::umat create_palette_rgb(const int& resolution) {
-  const int& color_count = resolution * resolution;
-  const int& numcolors = ceil(pow(color_count, 1.0/3));
+  const int color_count = resolution * resolution;
+  const int numcolors = ceil(pow(color_count, 1.0/3));
   arma::umat colors(color_count, 3);
   int i = 0;
   for (int b = 0; b < numcolors; ++b) {
@@ -38,8 +38,8 @@ arma::umat create_palette_rgb(const int& resolution) {
 }
 
 arma::umat create_palette_gbr(const int& resolution) {
-  const int& color_count = resolution * resolution;
-  const int& numcolors = ceil(pow(color_count, 1.0/3));
+  const int color_count = resolution * resolution;
+  const int numcolors = ceil(pow(color_count, 1.0/3));
   arma::umat colors(color_count, 3);
   int i = 0;
   for (int r = 0; r < numcolors; ++r) {
@@ -59,8 +59,8 @@ arma::umat create_palette_gbr(const int& resolution) {
 }
 
 arma::umat create_palette_brg(const int& resolution) {
-  const int& color_count = resolution * resolution;
-  const int& numcolors = ceil(pow(color_count, 1.0/3));
+  const int color_count = resolution * resolution;
+  const int numcolors = ceil(pow(color_count, 1.0/3));
   arma::umat colors(color_count, 3);
   int i = 0;
   for (int g = 0; g < numcolors; ++g) {
@@ -82,7 +82,7 @@ arma::umat create_palette_brg(const int& resolution) {
 void shuffle_rows(arma::umat& palette) {
   arma::uvec indices = arma::randi<arma::uvec>(palette.n_rows, arma::distr_param(0, palette.n_rows - 1));
   arma::umat shuffled(palette.n_rows, palette.n_cols);
-  const int& nrows = palette.n_rows;
+  const int nrows = palette.n_rows;
   for (int i = 0; i < nrows; ++i) {
     shuffled.row(i) = palette.row(indices(i));
   }
@@ -90,7 +90,7 @@ void shuffle_rows(arma::umat& palette) {
 }
 
 void shuffle_within_rows(arma::umat& palette) {
-  const int& nrows = palette.n_rows;
+  const int nrows = palette.n_rows;
   for (int i = 0; i < nrows; ++i) {
     palette.row(i) = arma::shuffle(palette.row(i), 1);
   }
@@ -98,7 +98,7 @@ void shuffle_within_rows(arma::umat& palette) {
 
 const arma::umat new_palette(const int& resolution) {
   arma::umat palette;
-  const int& pick = floor(R::runif(0, 3));
+  const int pick = floor(R::runif(0, 3));
   switch (pick) {
     case 0:
       palette = create_palette_rgb(resolution);
@@ -115,7 +115,7 @@ const arma::umat new_palette(const int& resolution) {
 
 const arma::umat sample_palette(const int& resolution,
                                 const arma::umat& color_mat) {
-  const int& color_count = resolution * resolution;
+  const int color_count = resolution * resolution;
   arma::uvec indices = arma::randi<arma::uvec>(color_count, arma::distr_param(0, color_mat.n_rows - 1));
   arma::umat palette(color_count, 3);
   for (int i = 0; i < color_count; ++i) {
@@ -148,9 +148,9 @@ const arma::umat get_palette(const int& resolution,
 
 double color_difference(const Rcpp::IntegerVector& c1,
                         const Rcpp::IntegerVector& c2) {
-  const int& r = c1[0] - c2[0];
-  const int& g = c1[1] - c2[1];
-  const int& b = c1[2] - c2[2];
+  const int r = c1[0] - c2[0];
+  const int g = c1[1] - c2[1];
+  const int b = c1[2] - c2[2];
   return (r*r + g*g + b*b) >> 1; // Bit-shifting
 }
 
@@ -275,7 +275,7 @@ void update_point(Rcpp::IntegerVector& point,
 
 void init_point(Rcpp::IntegerVector& point,
                 arma::umat& coords) {
-  const int& row = floor(R::runif(0, coords.n_rows));
+  const int row = floor(R::runif(0, coords.n_rows));
   point[0] = coords(row, 0);
   point[1] = coords(row, 1);
   coords.shed_row(row);
@@ -312,10 +312,10 @@ arma::cube cpp_smoke(arma::cube& canvas,
                      const int& algorithm,
                      const int& shape,
                      const bool& all_colors) {
-  const int& resolution = canvas.n_rows;
+  const int resolution = canvas.n_rows;
   Rcpp::IntegerVector color(3), point(2);
   const arma::umat& colors = get_palette(resolution, all_colors, color_mat, shape);
-  const int& nrows = colors.n_rows;
+  const int nrows = colors.n_rows;
   for (int i = 0; i < nrows; ++i) {
     Rcpp::checkUserInterrupt();
     color = Rcpp::as<Rcpp::IntegerVector>(Rcpp::wrap(colors.row(i)));
