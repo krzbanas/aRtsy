@@ -52,7 +52,7 @@ canvas_cobweb <- function(colors,
                           lines = 300,
                           iterations = 100) {
   .checkUserInput(background = background, iterations = iterations)
-  fibonacci <- .fibonacci(n = iterations)
+  fibonacci <- .cobweb_fibonacci(n = iterations)
   seqn <- seq_len(iterations)
   nrows <- length(seqn - 3) * lines
   canvas <- data.frame(x = rep(NA, nrows), xend = rep(NA, nrows), y = rep(NA, nrows), yend = rep(NA, nrows), z = rep(NA, nrows), lwd = rep(NA, nrows), col = rep(NA, nrows))
@@ -86,7 +86,7 @@ canvas_cobweb <- function(colors,
   return(artwork)
 }
 
-.fibonacci <- function(n) {
+.cobweb_fibonacci <- function(n) {
   x <- c(0, 1)
   for (i in 3:n) {
     x[i] <- x[i - 1] + x[i - 2]

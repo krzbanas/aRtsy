@@ -60,7 +60,7 @@ canvas_maze <- function(color = "#fafafa",
   x <- sample(2:resolution, size = 1)
   y <- sample(2:resolution, size = 1)
   maze <- cpp_maze(canvas, x, y)
-  full_canvas <- .connectMaze(maze, canvas)
+  full_canvas <- .maze_connect(maze, canvas)
   full_canvas <- .unraster(full_canvas, names = c("x", "y", "z"))
   artwork <- ggplot2::ggplot(data = full_canvas, ggplot2::aes(x = x, y = y, fill = factor(z), color = factor(z))) +
     ggplot2::geom_tile() +
@@ -77,7 +77,7 @@ canvas_maze <- function(color = "#fafafa",
   return(artwork)
 }
 
-.connectMaze <- function(maze, canvas) {
+.maze_connect <- function(maze, canvas) {
   # From https://github.com/matfmc/mazegenerator
   for (i in seq_len(nrow(maze))) {
     if (i == 1) {

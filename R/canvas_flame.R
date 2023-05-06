@@ -182,7 +182,7 @@ canvas_flame <- function(colors,
     colors <- c(colors, sample(x = colors, size = n, replace = TRUE))
     color_mat <- matrix(t(grDevices::col2rgb(colors) / 255), nrow = length(colors), ncol = 3)
   }
-  fs <- .createFunctionSystem(n, symmetry)
+  fs <- .flame_system(n, symmetry)
   w_i <- stats::runif(n = fs[["n"]], min = 0, max = 1)
   v_ij <- matrix(stats::runif(fs[["n"]] * length(variations), min = 0, max = 1), nrow = fs[["n"]], ncol = length(variations))
   for (i in seq_len(nrow(v_ij))) {
@@ -203,7 +203,7 @@ canvas_flame <- function(colors,
     funcPars = fs[["parameters"]],
     variations = variations,
     varWeights = v_ij,
-    varParams = .getVariationParameters(),
+    varParams = .flame_variations(),
     postPars = matrix(stats::runif(fs[["n"]] * 6, min = -1, max = 1), nrow = fs[["n"]], ncol = 6),
     finalPars = stats::runif(6, min = -1, max = 1),
     extraPars = stats::runif(6, min = -1, max = 1),
@@ -220,7 +220,7 @@ canvas_flame <- function(colors,
       ggplot2::geom_raster(interpolate = TRUE) +
       ggplot2::scale_fill_gradientn(colors = colors, na.value = background)
   } else {
-    canvas <- .scaleColorChannels(canvas)
+    canvas <- .flame_scaling(canvas)
     canvas[, , 2:4] <- canvas[, , 2:4]^(1 / gamma) # Gamma correction
     maxVal <- max(c(1, c(canvas[, , 2]), c(canvas[, , 3]), c(canvas[, , 4])))
     if (maxVal == 0) {
@@ -235,7 +235,7 @@ canvas_flame <- function(colors,
   return(artwork)
 }
 
-.getVariationParameters <- function() {
+.flame_variations <- function() {
   return(c(
     stats::runif(1, 1, 2), stats::runif(1, -2, -1), sample(3:7, size = 1), # blob.high, blob.low, blob.waves
     stats::runif(4, 0, 1), # padj.a, pdj.b, pdj.c, pdj.d
@@ -255,7 +255,7 @@ canvas_flame <- function(colors,
   ))
 }
 
-.scaleColorChannels <- function(canvas) {
+.flame_scaling <- function(canvas) {
   hits <- which(canvas[, , 1] > 0)
   scaling <- log(canvas[, , 1][hits]) / canvas[, , 1][hits]
   canvas[, , 2][hits] <- canvas[, , 2][hits] * scaling
@@ -264,7 +264,7 @@ canvas_flame <- function(colors,
   return(canvas)
 }
 
-.createFunctionSystem <- function(n, symmetry) {
+.flame_system <- function(n, symmetry) {
   parameters <- matrix(stats::runif(n * 6, min = -1, max = 1), nrow = n, ncol = 6)
   indicator <- nrow(parameters)
   if (symmetry != 0) {

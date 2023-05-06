@@ -66,7 +66,7 @@ canvas_smoke <- function(colors,
   shape <- match.arg(shape)
   algorithm <- match.arg(algorithm)
   all_colors <- length(colors) == 1 && colors[1] == "all"
-  color_mat <- .getColorMat(colors, all_colors)
+  color_mat <- .smoke_colors(colors, all_colors)
   shape <- switch(shape,
     "bursts" = 0,
     "clouds" = 1
@@ -86,7 +86,7 @@ canvas_smoke <- function(colors,
   return(artwork)
 }
 
-.getColorMat <- function(colors, all_colors) {
+.smoke_colors <- function(colors, all_colors) {
   if (all_colors) {
     return(matrix(NA, 1, 1))
   } else {
