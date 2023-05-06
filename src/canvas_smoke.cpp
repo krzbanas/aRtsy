@@ -305,13 +305,13 @@ void mark_neighbors(arma::cube& canvas,
 }
 
 // [[Rcpp::export]]
-arma::cube draw_smoke(arma::cube& canvas,
-                      arma::umat coords,
-                      const arma::umat& color_mat,
-                      const int& init,
-                      const int& algorithm,
-                      const int& shape,
-                      const bool& all_colors) {
+arma::cube cpp_smoke(arma::cube& canvas,
+                     arma::umat coords,
+                     const arma::umat& color_mat,
+                     const int& init,
+                     const int& algorithm,
+                     const int& shape,
+                     const bool& all_colors) {
   const int resolution = canvas.n_rows;
   Rcpp::IntegerVector color(3), point(2);
   const arma::umat colors = get_palette(resolution, all_colors, color_mat, shape);

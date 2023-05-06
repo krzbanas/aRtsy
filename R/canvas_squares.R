@@ -63,7 +63,7 @@ canvas_squares <- function(colors,
   neighbors <- expand.grid(-1:1, -1:1)
   colnames(neighbors) <- c("x", "y")
   canvas <- matrix(0, nrow = resolution, ncol = resolution)
-  full_canvas <- draw_squares(canvas, neighbors, length(colors), cuts, ratio)
+  full_canvas <- cpp_squares(canvas, neighbors, length(colors), cuts, ratio)
   if (noise) {
     full_canvas <- full_canvas - .noise(dims = c(resolution, resolution))
   }

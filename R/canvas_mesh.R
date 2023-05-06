@@ -82,13 +82,13 @@ canvas_mesh <- function(colors,
     radius_increase <- data.frame(x = 1:lines, y = stats::rnorm(lines, mean = 0, sd = stats::runif(1, min = 0.01, max = 0.5)))
     circle_radius_increase <- predict(stats::loess(y ~ x, data = radius_increase), newdata = radius_increase)
     x <- rep(0:iterations, each = lines) + 0.75 * cos(circle_points)
-    mesh <- iterate_mesh(
+    mesh <- cpp_mesh(
       canvas = matrix(NA, nrow = lines * (iterations + 1), ncol = 2),
       points = circle_points,
       centers = circle_centers,
       iterations = iterations,
       start = start,
-      order = 1:lines,
+      order = seq_len(lines),
       radii = circle_radius,
       increase = circle_radius_increase
     )

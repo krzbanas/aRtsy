@@ -63,7 +63,7 @@ canvas_ant <- function(colors,
     stop(paste0("'iterations' must be >= ", length(colors)))
   }
   palette <- c(background, colors)
-  full_canvas <- draw_ant(
+  full_canvas <- cpp_ant(
     canvas = matrix(0, nrow = resolution, ncol = resolution),
     directions = .ant_directions(length(colors)),
     iterations = iterations,

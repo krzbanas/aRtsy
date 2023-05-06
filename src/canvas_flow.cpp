@@ -17,16 +17,16 @@
 // [[Rcpp::depends(RcppArmadillo)]]
 
 // [[Rcpp::export]]
-Rcpp::DataFrame iterate_flow(arma::mat& canvas,
-                             const arma::mat& angles,
-                             const int& lines,
-                             const int& iters,
-                             const int& ncolors,
-                             const int& left,
-                             const int& right,
-                             const int& top,
-                             const int& bottom,
-                             const double& stepmax) {
+Rcpp::DataFrame cpp_flow(arma::mat& canvas,
+                         const arma::mat& angles,
+                         const int& lines,
+                         const int& iters,
+                         const int& ncolors,
+                         const int& left,
+                         const int& right,
+                         const int& top,
+                         const int& bottom,
+                         const double& stepmax) {
   // Constants
   const int& nrows = angles.n_rows, ncols = angles.n_cols;
   const double& crit_x = R::runif(0, 1), crit_y = R::runif(0, 1);

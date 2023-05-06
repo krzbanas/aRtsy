@@ -108,7 +108,7 @@ canvas_planet <- function(colors,
   planets <- length(radius)
   colorsused <- 0
   for (i in 1:planets) {
-    canvas <- draw_planet(
+    canvas <- cpp_planet(
       canvas = canvas,
       resolution = resolution,
       radius = radius[i],

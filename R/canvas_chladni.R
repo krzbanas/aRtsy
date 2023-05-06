@@ -65,7 +65,7 @@ canvas_chladni <- function(colors,
                            flatten = FALSE) {
   .checkUserInput(resolution = resolution)
   if (length(waves) == 1) {
-    waves <- sample(1:50, size = waves, replace = TRUE)
+    waves <- sample.int(50, size = waves, replace = TRUE)
   }
   x <- seq(0, 0.5 * pi, length.out = resolution)
   y <- seq(0, 0.5 * pi, length.out = resolution)
@@ -75,7 +75,7 @@ canvas_chladni <- function(colors,
   } else {
     inputCanvas <- as.matrix(canvas)
   }
-  full_canvas <- data.frame(x = canvas[, 1], y = canvas[, 2], z = iterate_chladni(x = inputCanvas[, 1], y = inputCanvas[, 2], waves))
+  full_canvas <- data.frame(x = canvas[, 1], y = canvas[, 2], z = cpp_chladni(x = inputCanvas[, 1], y = inputCanvas[, 2], waves))
   if (flatten) {
     full_canvas$z <- round(full_canvas$z, 0)
   }

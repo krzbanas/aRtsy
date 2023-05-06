@@ -59,7 +59,7 @@ canvas_maze <- function(color = "#fafafa",
   canvas <- matrix(0, resolution, resolution)
   x <- sample(2:resolution, size = 1)
   y <- sample(2:resolution, size = 1)
-  maze <- iterate_maze(canvas, x, y)
+  maze <- cpp_maze(canvas, x, y)
   full_canvas <- .connectMaze(maze, canvas)
   full_canvas <- .unraster(full_canvas, names = c("x", "y", "z"))
   artwork <- ggplot2::ggplot(data = full_canvas, ggplot2::aes(x = x, y = y, fill = factor(z), color = factor(z))) +

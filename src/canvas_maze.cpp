@@ -71,9 +71,9 @@ Rcpp::DataFrame selectNeighbors(Rcpp::NumericVector x,
 }
 
 // [[Rcpp::export]]
-Rcpp::DataFrame iterate_maze(arma::mat X,
-                             double x, 
-                             double y) {
+Rcpp::DataFrame cpp_maze(arma::mat X,
+                         double x, 
+                         double y) {
   int m = X.n_rows;
   int n = X.n_cols;
   int dim = m * n;

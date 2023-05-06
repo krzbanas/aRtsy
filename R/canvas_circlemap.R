@@ -62,10 +62,7 @@ canvas_circlemap <- function(colors,
                              resolution = 1500) {
   .checkUserInput(resolution = resolution)
   canvas <- matrix(1, nrow = resolution, ncol = resolution)
-  canvas <- draw_circlemap(
-    canvas = canvas, left = left, right = right,
-    bottom = bottom, top = top, iters = iterations
-  )
+  canvas <- cpp_circlemap(canvas, left, right, bottom, top, iterations)
   canvas <- (canvas / iterations) / length(colors)
   full_canvas <- .unraster(canvas, names = c("y", "x", "z"))
   artwork <- ggplot2::ggplot(data = full_canvas, ggplot2::aes(x = x, y = y, fill = z)) +

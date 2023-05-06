@@ -65,9 +65,9 @@ canvas_collatz <- function(colors,
     n <- sample.int(1000000, size = n, replace = FALSE)
   }
   for (i in n) {
-    series <- rev(get_collatz_sequence(i))
+    series <- rev(cpp_collatz_sequence(i))
     line <- matrix(0, nrow = length(series), ncol = 2)
-    line <- draw_collatz(line, series, angle.even, angle.odd)
+    line <- cpp_collatz(line, series, angle.even, angle.odd)
     line <- data.frame(
       x = line[, 1],
       y = line[, 2],

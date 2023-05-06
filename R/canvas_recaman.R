@@ -79,7 +79,7 @@ canvas_recaman <- function(colors,
   if (increment < 1) {
     stop("'increment' must be a single integer >= 0")
   }
-  x <- iterate_recaman(iterations, start, increment)
+  x <- cpp_recaman(iterations, start, increment)
   if (closed) {
     xend <- c(x[-1], x[1])
   } else {

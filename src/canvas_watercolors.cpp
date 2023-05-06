@@ -16,11 +16,11 @@
 #include <Rcpp.h>
 
 // [[Rcpp::export]]
-Rcpp::DataFrame deform(Rcpp::DoubleVector& x,
-                       Rcpp::DoubleVector& y,
-                       Rcpp::DoubleVector& s,
-                       const int& maxdepth,
-                       const double& resolution) {
+Rcpp::DataFrame cpp_watercolors(Rcpp::DoubleVector& x,
+                                Rcpp::DoubleVector& y,
+                                Rcpp::DoubleVector& s,
+                                const int& maxdepth,
+                                const double& resolution) {
   // Variables
   int times, index;
   double bx, by, edgevar, angle;

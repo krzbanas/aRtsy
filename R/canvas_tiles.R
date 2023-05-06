@@ -165,14 +165,14 @@ canvas_tiles <- function(colors,
     )
     binary <- matrix(sample(c(0, 1), size = resolution * resolution, replace = TRUE, prob = c(0.99, 0.01)), ncol = resolution)
     tile <- array(c(ones, binary), dim = c(resolution, resolution, 2))
-    tile <- draw_tile(tile, conv_mat, rate_a, rate_b, feed_rate, kill_rate, iterations)[, , 2]
+    tile <- cpp_tiles(tile, conv_mat, rate_a, rate_b, feed_rate, kill_rate, iterations)[, , 2]
     tile <- cbind(tile, tile[, rev(seq_len(ncol(tile)))])
     tile <- rbind(tile, tile[rev(seq_len(nrow(tile))), ])
     if (ntiles > 1) {
       tile <- scales::rescale(x = tile, from = range(tile), to = c(0, lengths(colors)[i]))
     }
     if (i > 1) {
-      tile <- tile + i + sum(lengths(colors)[1:(i - 1)])
+      tile <- tile + i + sum(lengths(colors)[seq_len(i - 1)])
     }
     tiles[[i]] <- tile
   }
@@ -181,7 +181,7 @@ canvas_tiles <- function(colors,
   } else {
     if (is.null(layout)) {
       suppressWarnings({
-        layout_matrix <- matrix(1:ntiles, nrow = size, ncol = size)
+        layout_matrix <- matrix(seq_len(ntiles), nrow = size, ncol = size)
       })
     } else {
       stopifnot("'layout' must be a matrix" = is.matrix(layout))

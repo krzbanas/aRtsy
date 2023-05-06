@@ -55,7 +55,7 @@ arma::cube iterate_tile(const arma::cube& canvas,
 }
 
 // [[Rcpp::export]]
-arma::cube draw_tile(arma::cube& canvas,
+arma::cube cpp_tiles(arma::cube& canvas,
                      const arma::mat& conv,
                      const double& diffa,
                      const double& diffb,

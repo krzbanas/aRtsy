@@ -17,18 +17,18 @@
 // [[Rcpp::depends(RcppArmadillo)]]
 
 // [[Rcpp::export]]
-arma::mat draw_planet(arma::mat& canvas,
-                      const int& resolution,
-                      const int& radius,
-                      const int& xcenter,
-                      const int& ycenter,
-                      const int& threshold,
-                      const int& iterations,
-                      const int& ncolors,
-                      const int& colorsused,
-                      const double& starprob,
-                      const double& fade,
-                      const bool& lightright) {
+arma::mat cpp_planet(arma::mat& canvas,
+                     const int& resolution,
+                     const int& radius,
+                     const int& xcenter,
+                     const int& ycenter,
+                     const int& threshold,
+                     const int& iterations,
+                     const int& ncolors,
+                     const int& colorsused,
+                     const double& starprob,
+                     const double& fade,
+                     const bool& lightright) {
   const int nrows = canvas.n_rows, ncols = canvas.n_cols, n = resolution * resolution;
   Rcpp::IntegerVector xcircle(n), ycircle(n);
   int l = 0;

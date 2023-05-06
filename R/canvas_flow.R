@@ -122,7 +122,7 @@ canvas_flow <- function(colors,
   }
   canvas <- matrix(NA, nrow = iterations * lines, ncol = 5)
   ncolors <- length(colors)
-  canvas <- iterate_flow(canvas, angles, lines, iterations, ncolors, left, right, top, bottom, stepmax)
+  canvas <- cpp_flow(canvas, angles, lines, iterations, ncolors, left, right, top, bottom, stepmax)
   canvas <- canvas[!is.na(canvas[, 1]), ]
   for (j in seq_len(lines)) {
     index <- which(canvas[, 3] == j)

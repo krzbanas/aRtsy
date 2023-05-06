@@ -61,7 +61,7 @@ canvas_polylines <- function(colors,
   alphas <- seq(from = 1, to = 0.1, length.out = length(colors))
   full_canvas <- data.frame(x = numeric(), y = numeric(), type = character())
   for (i in seq_along(colors)) {
-    mat <- draw_polylines(matrix(NA, nrow = iterations, ncol = 2), ratio, iterations, resolution, resolution)
+    mat <- cpp_polylines(matrix(NA, nrow = iterations, ncol = 2), ratio, iterations, resolution, resolution)
     polygon <- data.frame(x = mat[, 1], y = mat[, 2], type = rep(colors[i], iterations))
     full_canvas <- rbind(full_canvas, polygon)
   }

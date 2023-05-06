@@ -16,13 +16,13 @@
 #include <Rcpp.h>
 
 // [[Rcpp::export]]
-Rcpp::IntegerVector iterate_recaman(int n,
-                                    int start,
-                                    int increment) {
+Rcpp::IntegerVector cpp_recaman(const int& n,
+                                const int& start,
+                                const int& increment) {
   int inc = 0;
   Rcpp::IntegerVector x = {start};
   Rcpp::IntegerVector xlist = {start};
-  for (int i = 1; i < n; i++) {
+  for (int i = 1; i < n; ++i) {
     Rcpp::checkUserInterrupt();
     inc = inc + increment;
     int newx = x[i - 1] - inc;

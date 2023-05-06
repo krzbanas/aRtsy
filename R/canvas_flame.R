@@ -188,7 +188,7 @@ canvas_flame <- function(colors,
   for (i in seq_len(nrow(v_ij))) {
     v_ij[i, ] <- v_ij[i, ] / sum(v_ij[i, ])
   }
-  canvas <- iterate_flame( # 1 = x, 2 = y, 3 = red, 4 = green, 5 = blue
+  canvas <- cpp_flame( # 1 = x, 2 = y, 3 = red, 4 = green, 5 = blue
     canvas = array(0, dim = c(resolution + 1, resolution + 1, 4)), iterations = iterations,
     resolution = resolution,
     edge = 2 * (1 / zoom),

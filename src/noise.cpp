@@ -17,12 +17,12 @@
 // [[Rcpp::depends(RcppArmadillo)]]
 
 // [[Rcpp::export]]
-arma::vec c_noise_knn(const arma::vec& x,
-                      const arma::vec& y,
-                      const arma::vec& z,
-                      const arma::vec& newx,
-                      const arma::vec& newy,
-                      const int& k) {
+arma::vec cpp_knn(const arma::vec& x,
+                  const arma::vec& y,
+                  const arma::vec& z,
+                  const arma::vec& newx,
+                  const arma::vec& newy,
+                  const int& k) {
   // Constants
   const int n = newx.n_elem;
   // Variables

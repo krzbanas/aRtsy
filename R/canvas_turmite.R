@@ -68,7 +68,7 @@ canvas_turmite <- function(colors,
   canvas <- matrix(0, nrow = resolution, ncol = resolution)
   for (i in seq_along(colors)) {
     k <- sample(x = 0:1, size = 1)
-    turmite <- draw_turmite(
+    turmite <- cpp_turmite(
       canvas = matrix(0, nrow = resolution, ncol = resolution),
       iters = iterations,
       row = if (k == 0) sample(0:(resolution - 1), size = 1) else 0,

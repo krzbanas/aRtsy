@@ -78,11 +78,11 @@ canvas_petri <- function(colors,
   node_data$xend <- node_data$x # Node x-location
   node_data$yend <- node_data$y # Node y-location
   for (i in 1:iterations) {
-    closest_nodes <- get_closest_node(attractor_data$x, attractor_data$y, node_data$xend, node_data$yend, attraction_distance)
+    closest_nodes <- cpp_petri_closest(attractor_data$x, attractor_data$y, node_data$xend, node_data$yend, attraction_distance)
     if (all(closest_nodes == 0)) {
       break
     }
-    directions <- get_directions(attractor_data$x, attractor_data$y, node_data$xend, node_data$yend, closest_nodes)
+    directions <- cpp_petri_directions(attractor_data$x, attractor_data$y, node_data$xend, node_data$yend, closest_nodes)
     directions$xend <- (directions$xend / sqrt(sum(directions$xend^2, na.rm = TRUE))) / 1.5
     directions$yend <- (directions$yend / sqrt(sum(directions$yend^2, na.rm = TRUE))) / 1.5
     new_nodes <- data.frame(
@@ -93,13 +93,13 @@ canvas_petri <- function(colors,
     )
     new_nodes <- new_nodes[stats::complete.cases(new_nodes), ]
     node_data[nrow(node_data) + seq_len(nrow(new_nodes)), ] <- new_nodes
-    attractor_data <- kill_attractors(attractor_data$x, attractor_data$y, node_data$x, node_data$y, kill_distance)
+    attractor_data <- cpp_petri_kill(attractor_data$x, attractor_data$y, node_data$x, node_data$y, kill_distance)
     if (nrow(attractor_data) < 1) {
       break
     }
   }
-  circle_points <- draw_circle(center_x = 0, center_y = 0, diameter = 2 * pi, n = 100)
-  hole_points <- draw_circle(center_x = 0, center_y = 0, diameter = 2 * pi * hole, n = 100)
+  circle_points <- cpp_draw_circle(center_x = 0, center_y = 0, diameter = 2 * pi, n = 100)
+  hole_points <- cpp_draw_circle(center_x = 0, center_y = 0, diameter = 2 * pi * hole, n = 100)
   limits <- range(pretty(c(node_data$x, node_data$xend, node_data$y, node_data$yend, circle_points$x, circle_points$y)))
   node_data$size <- (max(node_data$t) - node_data$t) / max(node_data$t)
   artwork <- ggplot2::ggplot(data = node_data, mapping = ggplot2::aes(x = x, y = y, xend = xend, yend = yend, group = factor(z))) +

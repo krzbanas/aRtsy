@@ -67,7 +67,7 @@ canvas_strokes <- function(colors,
   neighborsLocations <- as.matrix(expand.grid(-(neighbors):neighbors, -(neighbors):neighbors))
   canvas <- matrix(0, nrow = resolution, ncol = resolution)
   for (i in seq_len(iterations)) {
-    canvas <- draw_strokes(canvas = canvas, neighbors = neighborsLocations, s = length(colors), p = p)
+    canvas <- cpp_strokes(canvas, neighborsLocations, length(colors), p)
   }
   full_canvas <- .unraster(canvas, names = c("x", "y", "z"))
   artwork <- ggplot2::ggplot(data = full_canvas, ggplot2::aes(x = x, y = y, fill = z)) +
