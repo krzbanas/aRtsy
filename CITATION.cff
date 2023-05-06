@@ -1,5 +1,5 @@
 # -----------------------------------------------------------
-# CITATION file created with {cffr} R package, v0.4.1
+# CITATION file created with {cffr} R package, v0.5.0
 # See also: https://docs.ropensci.org/cffr/
 # -----------------------------------------------------------
  
@@ -28,7 +28,7 @@ preferred-citation:
 repository: https://CRAN.R-project.org/package=aRtsy
 repository-code: https://github.com/koenderks/aRtsy
 url: https://koenderks.github.io/aRtsy/
-date-released: '2023-05-05'
+date-released: '2023-05-06'
 contact:
 - family-names: Derks
   given-names: Koen
