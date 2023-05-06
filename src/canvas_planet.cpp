@@ -49,7 +49,7 @@ arma::mat draw_planet(arma::mat& canvas,
         ycircle[l] = row;
         canvas.at(row, col) = 3 + colorsused + floor(R::runif(0, ncolors - 3));
         ++l;
-      } else if (dist > (radius + 1) && dist < ceil(radius * 1.01)) { // The point lies on the edge
+      } else if (dist > radius && dist < ceil(radius * 1.01)) { // The point lies on the edge
         canvas.at(row, col) = 0;
       }
     }
