@@ -40,19 +40,19 @@ Rcpp::DataFrame iterate_flow(arma::mat& canvas,
     // Initialize variables
     const double& comp = R::runif(0, 1);
     if (comp < crit_x) {
-      x = R::runif(left + 1, 0);
+      x = R::runif(left + 1, ceil(comp * right) - 1);
     } else {
-      x = R::runif(0, right - 1);
+      x = R::runif(ceil(comp * left), right - 1);
     }
     if (comp < crit_y) {
-      y = R::runif(bottom + 1, 0);
+      y = R::runif(bottom + 1, ceil(comp * top) - 1);
     } else {
-      y = R::runif(0, top - 1);
+      y = R::runif(ceil(comp * bottom), top - 1);
     }
     step = R::runif(0, 100 * stepmax);
     c = ceil(R::runif(0, ncolors));
     // Inner loop
-    for (int i = 0; i < iters; i++) {
+    for (int i = 0; i < iters; ++i) {
       // Assign values
       canvas.at(j * iters + i, 0) = x;
       canvas.at(j * iters + i, 1) = y;

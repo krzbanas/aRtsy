@@ -11,6 +11,7 @@ canvas_flow(
   lwd = 0.05,
   iterations = 100,
   stepmax = 0.01,
+  outline = c("none", "circle", "square"),
   polar = FALSE,
   angles = NULL
 )
@@ -28,6 +29,8 @@ canvas_flow(
 
 \item{stepmax}{the maximum proportion of the canvas covered in each iteration.}
 
+\item{outline}{character. Which outline to use for the artwork. Possible options are \code{none} (default), \code{circle} or \code{square}.}
+
 \item{polar}{logical. Whether to draw the flow field with polar coordinates.}
 
 \item{angles}{optional, a 200 x 200 matrix containing the angles in the flow field, or a character indicating the type of noise to use (\code{svm}, \code{knn}, \code{rf}, \code{perlin}, \code{cubic}, \code{simplex}, or \code{worley}). If \code{NULL} (the default), the noise type is chosen randomly.}
@@ -44,6 +47,12 @@ set.seed(1)
 
 # Simple example
 canvas_flow(colors = colorPalette("dark2"))
+
+# Example with circle outline
+canvas_flow(
+  colors = colorPalette("dark2"), background = "black",
+  lines = 10000, outline = "circle", iterations = 10
+)
 
 # Advanced example
 angles <- matrix(0, 200, 200)

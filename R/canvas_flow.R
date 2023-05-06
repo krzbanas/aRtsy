@@ -24,6 +24,7 @@
 #'   lwd = 0.05,
 #'   iterations = 100,
 #'   stepmax = 0.01,
+#'   outline = c("none", "circle", "square"),
 #'   polar = FALSE,
 #'   angles = NULL
 #' )
@@ -34,6 +35,7 @@
 #' @param lwd            expansion factor for the line width.
 #' @param iterations     the maximum number of iterations for each line.
 #' @param stepmax        the maximum proportion of the canvas covered in each iteration.
+#' @param outline        character. Which outline to use for the artwork. Possible options are \code{none} (default), \code{circle} or \code{square}.
 #' @param polar          logical. Whether to draw the flow field with polar coordinates.
 #' @param angles         optional, a 200 x 200 matrix containing the angles in the flow field, or a character indicating the type of noise to use (\code{svm}, \code{knn}, \code{rf}, \code{perlin}, \code{cubic}, \code{simplex}, or \code{worley}). If \code{NULL} (the default), the noise type is chosen randomly.
 #'
@@ -53,6 +55,12 @@
 #'
 #' # Simple example
 #' canvas_flow(colors = colorPalette("dark2"))
+#'
+#' # Example with circle outline
+#' canvas_flow(
+#'   colors = colorPalette("dark2"), background = "black",
+#'   lines = 10000, outline = "circle", iterations = 10
+#' )
 #'
 #' # Advanced example
 #' angles <- matrix(0, 200, 200)
@@ -76,29 +84,31 @@ canvas_flow <- function(colors,
                         lwd = 0.05,
                         iterations = 100,
                         stepmax = 0.01,
+                        outline = c("none", "circle", "square"),
                         polar = FALSE,
                         angles = NULL) {
   .checkUserInput(
     background = background, iterations = iterations
   )
+  outline <- match.arg(outline)
   sequence <- seq(0, 100, length = 100)
   grid <- expand.grid(sequence, sequence)
   grid <- data.frame(x = grid[, 1], y = grid[, 2], z = 0)
-  left <- 100 * -0.5
-  right <- 100 * 1.5
-  bottom <- 100 * -0.5
-  top <- 100 * 1.5
+  left <- -100
+  right <- 100
+  bottom <- -100
+  top <- 100
   ncols <- right - left
   nrows <- top - bottom
   if (is.null(angles)) {
     angles <- .noise(
-      dims = c(nrows, ncols), n = sample(100:300, size = 1),
-      type = sample(c("knn", "svm", "perlin", "cubic", "simplex", "worley"), size = 1),
+      dims = c(nrows, ncols), n = sample(100:300, 1),
+      type = sample(c("knn", "svm", "perlin", "cubic", "simplex", "worley"), 1),
       limits = c(-pi, pi)
     )
   } else if (is.character(angles)) {
     angles <- .noise(
-      dims = c(nrows, ncols), n = sample(100:300, size = 1),
+      dims = c(nrows, ncols), n = sample(100:300, 1),
       type = angles,
       limits = c(-pi, pi)
     )
@@ -114,19 +124,24 @@ canvas_flow <- function(colors,
   ncolors <- length(colors)
   canvas <- iterate_flow(canvas, angles, lines, iterations, ncolors, left, right, top, bottom, stepmax)
   canvas <- canvas[!is.na(canvas[, 1]), ]
-  for (j in 1:lines) {
+  for (j in seq_len(lines)) {
     index <- which(canvas[, 3] == j)
     canvas[index, 5] <- .bmline(n = length(index), lwd)
   }
   canvas <- as.data.frame(canvas)
   colnames(canvas) <- c("x", "y", "z", "color", "size")
   canvas$color <- colors[canvas[["color"]]]
+  canvas <- switch(outline,
+    "none" = canvas,
+    "circle" = canvas[which(sqrt(canvas$x^2 + canvas$y^2) < 175 / 2), ],
+    "square" = canvas[which(canvas$x >= -75 & canvas$x <= 75 & canvas$y >= -75 & canvas$y <= 75), ]
+  )
   artwork <- ggplot2::ggplot(data = canvas, mapping = ggplot2::aes(x = x, y = y, group = factor(z))) +
     ggplot2::geom_path(linewidth = canvas[["size"]], color = canvas[["color"]], lineend = "round")
   if (polar) {
     artwork <- artwork + ggplot2::coord_polar()
   } else {
-    artwork <- artwork + ggplot2::coord_cartesian(xlim = c(0, 100), ylim = c(0, 100))
+    artwork <- artwork + ggplot2::coord_cartesian(xlim = c(left + 1, right - 1), ylim = c(bottom + 1, top - 1))
   }
   artwork <- theme_canvas(artwork, background = background)
   return(artwork)
