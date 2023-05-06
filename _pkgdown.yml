@@ -14,9 +14,9 @@ navbar:
   left:
     - icon: fa-home fa-lg
       href: index.html
-    - text: "Functions"
+    - text: "Gallery"
       href: reference/index.html
-    - text: "News"
+    - text: "Updates"
       href: news/index.html
   right:
    - icon: fa-github
