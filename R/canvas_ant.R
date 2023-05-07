@@ -52,8 +52,8 @@
 #'   \item{If the cell is colored, the ant turns 90 degrees counterclockwise,
 #'     uncolors the cell, and moves forward one unit.}
 #'   \item{The ant continues to move around the grid, following these rules at
-#'     each step. If a certain number of iterations has passed, choose a
-#'     different color which corresponds to a different combination of these
+#'     each step. If a certain number of iterations has passed, the ant chooses
+#'     a different color which corresponds to a different combination of these
 #'     rules.}
 #' }
 #'

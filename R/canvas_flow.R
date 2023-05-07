@@ -58,8 +58,8 @@
 #'
 #' # Outline example
 #' canvas_flow(
-#'   colors = colorPalette("dark2"), lines = 10000,
-#'   outline = "circle", iterations = 10
+#'   colors = colorPalette("vrolik1"), lines = 10000,
+#'   outline = "circle", iterations = 10, angles = "svm"
 #' )
 #'
 #' # Polar example
