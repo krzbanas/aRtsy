@@ -77,7 +77,7 @@ canvas_chladni <- function(colors,
   }
   full_canvas <- data.frame(x = canvas[, 1], y = canvas[, 2], z = cpp_chladni(x = inputCanvas[, 1], y = inputCanvas[, 2], waves))
   if (flatten) {
-    full_canvas$z <- round(full_canvas$z, 0)
+    full_canvas[["z"]] <- round(full_canvas[["z"]], 0)
   }
   artwork <- ggplot2::ggplot(data = full_canvas, mapping = ggplot2::aes(x = x, y = y, fill = z)) +
     ggplot2::geom_raster(interpolate = TRUE) +

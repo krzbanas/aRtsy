@@ -78,13 +78,13 @@ canvas_collatz <- function(colors,
     )
     canvas <- rbind(canvas, line)
   }
-  canvas$z <- as.factor(canvas$z)
-  canvas$size <- 1 - (canvas$size / max(canvas$size))
-  canvas$alpha <- 1 - canvas$size
+  canvas[["z"]] <- as.factor(canvas[["z"]])
+  canvas[["size"]] <- 1 - (canvas[["size"]] / max(canvas[["size"]]))
+  canvas[["alpha"]] <- 1 - canvas[["size"]]
   artwork <- ggplot2::ggplot(data = canvas, mapping = ggplot2::aes(x = x, y = y, group = z)) +
-    ggplot2::geom_path(linewidth = canvas$size, color = canvas$col, alpha = canvas$alpha, lineend = "round") +
-    ggplot2::xlim(range(canvas$x)) +
-    ggplot2::ylim(range(canvas$y))
+    ggplot2::geom_path(linewidth = canvas[["size"]], color = canvas[["col"]], alpha = canvas[["alpha"]], lineend = "round") +
+    ggplot2::xlim(range(canvas[["x"]])) +
+    ggplot2::ylim(range(canvas[["y"]]))
   if (side) {
     artwork <- artwork + ggplot2::coord_flip()
   }

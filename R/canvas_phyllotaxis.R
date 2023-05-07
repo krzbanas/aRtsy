@@ -64,7 +64,7 @@ canvas_phyllotaxis <- function(colors,
                                p = 0.5) {
   .checkUserInput(background = background, iterations = iterations)
   canvas <- cpp_phyllotaxis(iterations, angle, p)
-  canvas$z <- seq_len(nrow(canvas))
+  canvas[["z"]] <- seq_len(nrow(canvas))
   artwork <- ggplot2::ggplot(data = canvas, mapping = ggplot2::aes(x = x, y = y, color = z)) +
     ggplot2::geom_point(size = size, alpha = alpha) +
     ggplot2::scale_color_gradientn(colors = colors)

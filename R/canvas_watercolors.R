@@ -96,7 +96,7 @@ canvas_watercolors <- function(colors,
   coords <- data.frame(x = polyx, y = polyy)
   coords[nrow(coords) + 1, ] <- coords[1, ]
   varsegments <- stats::rnorm(nrow(coords), mean = 6, sd = 1.5)
-  canvas <- data.frame(x = coords$x, y = coords$y, s = varsegments)
+  canvas <- data.frame(x = coords[["x"]], y = coords[["y"]], s = varsegments)
   canvas <- cpp_watercolors(canvas[, 1], canvas[, 2], canvas[, 3], 5, resolution)
   return(canvas)
 }

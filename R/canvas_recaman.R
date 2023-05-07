@@ -87,8 +87,8 @@ canvas_recaman <- function(colors,
     x <- x[-length(x)]
   }
   canvas <- data.frame(z = seq_along(x), x = x, xend = xend)
-  canvas$y <- x * sin(angle %% 360)
-  canvas$yend <- canvas$y[match(canvas$xend, canvas$x)]
+  canvas[["y"]] <- x * sin(angle %% 360)
+  canvas[["yend"]] <- canvas[["y"]][match(canvas[["xend"]], canvas[["x"]])]
   minx <- apply(canvas[, 2:3], 1, min, na.rm = TRUE)
   maxx <- apply(canvas[, 2:3], 1, max, na.rm = TRUE)
   miny <- apply(canvas[, 4:5], 1, min, na.rm = TRUE)

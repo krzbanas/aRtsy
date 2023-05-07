@@ -55,7 +55,7 @@ for (i in seq_along(palettes)) {
   palette <- aRtsy::colorPalette(palettes[i])
   d <- data.frame(y = rep(1, length(palette)), col = palette)
   p <- ggplot2::ggplot(data = d, mapping = ggplot2::aes(y = y, group = col)) +
-    ggplot2::geom_bar(fill = d$col) +
+    ggplot2::geom_bar(fill = d[["col"]]) +
     ggplot2::xlab(palettes[i]) +
     ggplot2::theme(
       axis.title.x = ggplot2::element_text(size = 9),

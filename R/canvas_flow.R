@@ -56,10 +56,16 @@
 #' # Simple example
 #' canvas_flow(colors = colorPalette("dark2"))
 #'
-#' # Example with circle outline
+#' # Outline example
 #' canvas_flow(
-#'   colors = colorPalette("dark2"), background = "black",
-#'   lines = 10000, outline = "circle", iterations = 10
+#'   colors = colorPalette("dark2"), lines = 10000,
+#'   outline = "circle", iterations = 10
+#' )
+#'
+#' # Polar example
+#' canvas_flow(
+#'   colors = colorPalette("vrolik2"), lines = 300,
+#'   lwd = 0.5, polar = TRUE
 #' )
 #'
 #' # Advanced example
@@ -71,9 +77,6 @@
 #'   colors = colorPalette("tuscany1"), background = "black",
 #'   angles = angles, lwd = 0.4, lines = 1000, stepmax = 0.001
 #' )
-#'
-#' # Polar example
-#' canvas_flow(colors = colorPalette("vrolik2"), lines = 300, lwd = 0.5, polar = TRUE)
 #' }
 #'
 #' @export
@@ -130,12 +133,12 @@ canvas_flow <- function(colors,
   }
   canvas <- as.data.frame(canvas)
   colnames(canvas) <- c("x", "y", "z", "color", "size")
-  canvas$color <- colors[canvas[["color"]]]
-  canvas <- switch(outline,
-    "none" = canvas,
-    "circle" = canvas[which(sqrt(canvas$x^2 + canvas$y^2) < 175 / 2), ],
-    "square" = canvas[which(canvas$x >= -75 & canvas$x <= 75 & canvas$y >= -75 & canvas$y <= 75), ]
-  )
+  canvas[["color"]] <- colors[canvas[["color"]]]
+  if (outline == "circle") {
+    canvas[which(sqrt(canvas[["x"]]^2 + canvas[["y"]]^2) > 175 / 2), "color"] <- background
+  } else if (outline == "square") {
+    canvas[which(canvas[["x"]] < -75 & canvas[["x"]] > 75 & canvas[["y"]] < -75 & canvas[["y"]] > 75), "color"] <- background
+  }
   artwork <- ggplot2::ggplot(data = canvas, mapping = ggplot2::aes(x = x, y = y, group = factor(z))) +
     ggplot2::geom_path(linewidth = canvas[["size"]], color = canvas[["color"]], lineend = "round")
   if (polar) {

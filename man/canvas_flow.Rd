@@ -48,10 +48,16 @@ set.seed(1)
 # Simple example
 canvas_flow(colors = colorPalette("dark2"))
 
-# Example with circle outline
+# Outline example
 canvas_flow(
-  colors = colorPalette("dark2"), background = "black",
-  lines = 10000, outline = "circle", iterations = 10
+  colors = colorPalette("dark2"), lines = 10000,
+  outline = "circle", iterations = 10
+)
+
+# Polar example
+canvas_flow(
+  colors = colorPalette("vrolik2"), lines = 300,
+  lwd = 0.5, polar = TRUE
 )
 
 # Advanced example
@@ -63,9 +69,6 @@ canvas_flow(
   colors = colorPalette("tuscany1"), background = "black",
   angles = angles, lwd = 0.4, lines = 1000, stepmax = 0.001
 )
-
-# Polar example
-canvas_flow(colors = colorPalette("vrolik2"), lines = 300, lwd = 0.5, polar = TRUE)
 }
 
 }

@@ -66,12 +66,12 @@ canvas_maze <- function(color = "#fafafa",
     ggplot2::geom_tile() +
     ggplot2::scale_fill_manual(values = c(color, walls)) +
     ggplot2::scale_color_manual(values = c(color, walls)) +
-    ggplot2::ylim(c(0, max(full_canvas$y) + 1))
+    ggplot2::ylim(c(0, max(full_canvas[["y"]]) + 1))
   if (!polar) {
-    artwork <- artwork + ggplot2::xlim(c(0, max(full_canvas$x) + 1))
+    artwork <- artwork + ggplot2::xlim(c(0, max(full_canvas[["x"]]) + 1))
   } else {
     artwork <- artwork + ggplot2::coord_polar(start = stats::runif(1, 0, 2 * pi), clip = "off") +
-      ggplot2::xlim(c(0.5, max(full_canvas$x) + 0.5))
+      ggplot2::xlim(c(0.5, max(full_canvas[["x"]]) + 0.5))
   }
   artwork <- theme_canvas(artwork, background = background)
   return(artwork)
@@ -97,23 +97,23 @@ canvas_maze <- function(color = "#fafafa",
   maze[(maze[, 5] == 0 & maze[, 6] == -1) & !is.na(maze[, 5]), "end"] <- "B"
   maze[(maze[, 5] == 1 & maze[, 6] == 0) & !is.na(maze[, 5]), "end"] <- "C"
   maze[(maze[, 5] == 0 & maze[, 6] == 1) & !is.na(maze[, 5]), "end"] <- "D"
-  maze$conec <- paste0(maze$start, maze$end)
+  maze[["conec"]] <- paste0(maze[["start"]], maze[["end"]])
   maze <- maze[, c(1, 2, 9)]
-  maze[maze$conec == "CD" | maze$conec == "DC" | maze$conec == "DNA" | maze$conec == "CNA" | maze$conec == "CC" | maze$conec == "DD", "cell"] <- 1
-  maze[maze$conec == "AC" | maze$conec == "CA" | maze$conec == "AD" | maze$conec == "DA" | maze$conec == "ANA" | maze$conec == "AA", "cell"] <- 2
-  maze[maze$conec == "BC" | maze$conec == "CB" | maze$conec == "BD" | maze$conec == "DB" | maze$conec == "BNA" | maze$conec == "BB", "cell"] <- 3
-  maze[maze$conec == "AB" | maze$conec == "BA", "cell"] <- 4
+  maze[maze[["conec"]] == "CD" | maze[["conec"]] == "DC" | maze[["conec"]] == "DNA" | maze[["conec"]] == "CNA" | maze[["conec"]] == "CC" | maze[["conec"]] == "DD", "cell"] <- 1
+  maze[maze[["conec"]] == "AC" | maze[["conec"]] == "CA" | maze[["conec"]] == "AD" | maze[["conec"]] == "DA" | maze[["conec"]] == "ANA" | maze[["conec"]] == "AA", "cell"] <- 2
+  maze[maze[["conec"]] == "BC" | maze[["conec"]] == "CB" | maze[["conec"]] == "BD" | maze[["conec"]] == "DB" | maze[["conec"]] == "BNA" | maze[["conec"]] == "BB", "cell"] <- 3
+  maze[maze[["conec"]] == "AB" | maze[["conec"]] == "BA", "cell"] <- 4
   for (i in seq_len(nrow(maze))) {
-    if (canvas[maze$x[i], maze$y[i]] == 0) {
-      canvas[maze$x[i], maze$y[i]] <- maze$cell[i]
-    } else if (canvas[maze$x[i], maze$y[i]] == 4) {
+    if (canvas[maze[["x"]][i], maze[["y"]][i]] == 0) {
+      canvas[maze[["x"]][i], maze[["y"]][i]] <- maze[["cell"]][i]
+    } else if (canvas[maze[["x"]][i], maze[["y"]][i]] == 4) {
       next
-    } else if (canvas[maze$x[i], maze$y[i]] == 2 && maze$cell[i] == 3) {
-      canvas[maze$x[i], maze$y[i]] <- 4
-    } else if (canvas[maze$x[i], maze$y[i]] == 3 && maze$cell[i] == 2) {
-      canvas[maze$x[i], maze$y[i]] <- 4
-    } else if (canvas[maze$x[i], maze$y[i]] == 1) {
-      canvas[maze$x[i], maze$y[i]] <- maze$cell[i]
+    } else if (canvas[maze[["x"]][i], maze[["y"]][i]] == 2 && maze[["cell"]][i] == 3) {
+      canvas[maze[["x"]][i], maze[["y"]][i]] <- 4
+    } else if (canvas[maze[["x"]][i], maze[["y"]][i]] == 3 && maze[["cell"]][i] == 2) {
+      canvas[maze[["x"]][i], maze[["y"]][i]] <- 4
+    } else if (canvas[maze[["x"]][i], maze[["y"]][i]] == 1) {
+      canvas[maze[["x"]][i], maze[["y"]][i]] <- maze[["cell"]][i]
     }
   }
   cell_type_0 <- matrix(c(0, 0, 0, 0, 0, 0, 0, 0, 0), ncol = 3, byrow = TRUE)

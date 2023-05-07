@@ -210,7 +210,7 @@ canvas_tiles <- function(colors,
       breaks <- c(breaks, seq(floor(min(tiles[[i]])), max(tiles[[i]]), length.out = lengths(colors)[i] + 1))
     }
   } else {
-    breaks <- seq(0, max(full_canvas$z), length.out = length(colorvalues))
+    breaks <- seq(0, max(full_canvas[["z"]]), length.out = length(colorvalues))
   }
   artwork <- ggplot2::ggplot(data = full_canvas, ggplot2::aes(x = x, y = y, fill = z)) +
     ggplot2::geom_raster(interpolate = TRUE) +

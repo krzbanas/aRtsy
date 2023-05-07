@@ -68,19 +68,19 @@ canvas_cobweb <- function(colors,
     xend <- c(x[-1], x[1])
     yend <- c(y[-1], y[1])
     subdata <- data.frame(x = x, xend = xend, y = y, yend = yend, z = i, lwd = stats::runif(1, 0, 0.1), col = sample(colors, size = 1))
-    subdata <- subdata[-which(subdata$x == subdata$xend | subdata$y == subdata$yend), ]
-    ind <- which(is.na(canvas$x))[1]
+    subdata <- subdata[-which(subdata[["x"]] == subdata[["xend"]] | subdata[["y"]] == subdata[["yend"]]), ]
+    ind <- which(is.na(canvas[["x"]]))[1]
     canvas[ind:(ind + nrow(subdata) - 1), ] <- subdata[stats::complete.cases(subdata), ]
   }
   canvas <- canvas[stats::complete.cases(canvas), ]
   artwork <- ggplot2::ggplot() +
     ggplot2::geom_curve(
       data = canvas, mapping = ggplot2::aes(x = x, y = y, xend = xend, yend = yend, group = z),
-      color = canvas$col, curvature = stats::runif(1, 0, 0.8), ncp = 25, linewidth = canvas$lwd, alpha = 0.01
+      color = canvas[["col"]], curvature = stats::runif(1, 0, 0.8), ncp = 25, linewidth = canvas[["lwd"]], alpha = 0.01
     ) +
     ggplot2::coord_cartesian(
-      xlim = c(min(canvas$x) / 4, max(canvas$x) / 4),
-      ylim = c(min(canvas$y) / 4, max(canvas$y) / 4)
+      xlim = c(min(canvas[["x"]]) / 4, max(canvas[["x"]]) / 4),
+      ylim = c(min(canvas[["y"]]) / 4, max(canvas[["y"]]) / 4)
     )
   artwork <- theme_canvas(artwork, background = background)
   return(artwork)
