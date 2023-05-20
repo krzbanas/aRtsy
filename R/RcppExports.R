@@ -73,6 +73,10 @@ cpp_smoke <- function(canvas, coords, color_mat, init, algorithm, shape, all_col
     .Call('_aRtsy_cpp_smoke', PACKAGE = 'aRtsy', canvas, coords, color_mat, init, algorithm, shape, all_colors)
 }
 
+cpp_splatter <- function(heightMap, iterations, n, resolution, ncols, lwd) {
+    .Call('_aRtsy_cpp_splatter', PACKAGE = 'aRtsy', heightMap, iterations, n, resolution, ncols, lwd)
+}
+
 cpp_splits <- function(x, xend, y, yend, col, sda, ncols, iterations) {
     .Call('_aRtsy_cpp_splits', PACKAGE = 'aRtsy', x, xend, y, yend, col, sda, ncols, iterations)
 }

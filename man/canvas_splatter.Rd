@@ -2,13 +2,13 @@
 % Please edit documentation in R/canvas_splatter.R
 \name{canvas_splatter}
 \alias{canvas_splatter}
-\title{Draw Paint Splatters}
+\title{Draw Paint Splatter}
 \usage{
 canvas_splatter(
   colors,
   background = "#fafafa",
-  iterations = 100,
-  n = 100,
+  iterations = 250,
+  n = 250,
   lwd = 0.1,
   resolution = 500
 )
@@ -34,7 +34,7 @@ increases the computation time exponentially.}
 A \code{ggplot} object containing the artwork.
 }
 \description{
-This function draws paint splatters on a canvas using a particle
+This function draws paint splatter on a canvas using a particle
   system.
 }
 \examples{
@@ -42,7 +42,7 @@ This function draws paint splatters on a canvas using a particle
 set.seed(2)
 
 # Simple example
-canvas_splatter(colors = colorPalette("origami"), n = 200, iterations = 250)
+canvas_splatter(colors = colorPalette("origami"), iterations = 500, n = 500)
 }
 
 }
