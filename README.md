@@ -67,6 +67,7 @@ saveCanvas(artwork, filename = "myArtwork.png")
 * [`canvas_splits()`](#split-lines)
 * [`canvas_smoke()`](#rainbow-smoke)
 * [`canvas_stripes()`](#stripes)
+* [`canvas_splatter()`](#paint-splatter)
 * [`canvas_strokes()`](#paint-strokes)
 * [`canvas_phyllotaxis()`](#phyllotaxis)
 * [`canvas_tiles()`](#portuguese-tiles)
@@ -343,6 +344,24 @@ You can use the `canvas_stripes()` function to make your own artwork using this 
 set.seed(1)
 canvas_stripes(colors = colorPalette("random", n = 10))
 # see ?canvas_stripes for more input parameters of this function
+```
+
+#### Paint splatter
+
+This artwork uses a particle system (described in [this](https://mattdesl.svbtle.com/generative-art-with-nodejs-and-canvas) blog post by Matt Deslauriers) to create an image that look like paint splatter. The particles in the system all have a speed and velocity that they travel around on the canvas with.
+
+<p align="center">
+  <img src='https://github.com/koenderks/aRtsy/raw/development/png/splatters/2023-05-19.png' width='30%'>
+  <img src='https://github.com/koenderks/aRtsy/raw/development/png/splatters/2023-05-20.png' width='30%'>
+  <img src='https://github.com/koenderks/aRtsy/raw/development/png/splatters/2023-05-18.png' width='30%'>
+</p>
+
+You can use the `canvas_splatter()` function to make your own artwork using this algorithm.
+
+```r
+set.seed(1)
+canvas_splatter(colors = colorPalette("tuscany1"))
+# see ?canvas_splatter for more input parameters of this function
 ```
 
 #### Paint strokes
