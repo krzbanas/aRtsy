@@ -50,10 +50,10 @@
 #'
 #' @examples
 #' \donttest{
-#' set.seed(1)
+#' set.seed(2)
 #'
 #' # Simple example
-#' canvas_splatter(colors = colorPalette("mixer1"))
+#' canvas_splatter(colors = colorPalette("origami"), n = 200, iterations = 250)
 #' }
 #'
 #' @export
@@ -83,6 +83,11 @@ canvas_splatter <- function(colors, background = "#fafafa", iterations = 100,
       fx <- min(max(round(x), 0), resolution - 1)
       fy <- min(max(round(y), 0), resolution - 1)
       heightValue <- heightMap[fy, fx] / 255
+      # Calculate line width
+      s2 <- stats::runif(1, 0.0001, 0.05)
+      r <- particle[["radius"]] * abs(ambient::gen_simplex(x * s2, y * s2, particle[["duration"]] + time, seed = seed))
+      width <- r * min(max(heightValue, 0.01), lwd) * (particle[["time"]] / particle[["duration"]])
+      # Calculate angle
       pS <- min(max(heightValue, 0.00001), 0.0001)
       angle <- ambient::gen_simplex(x = fx * pS, y = fy * pS, z = particle[["duration"]] + time, seed = seed) * pi * 2
       # Calculate particle speed
@@ -96,10 +101,6 @@ canvas_splatter <- function(colors, background = "#fafafa", iterations = 100,
       move <- velocity * speed
       particle[["xpos"]] <- particle[["xpos"]] + move[1]
       particle[["ypos"]] <- particle[["ypos"]] + move[2]
-      # Calculate line width
-      s2 <- stats::runif(1, 0.0001, 0.05)
-      r <- particle[["radius"]] * abs(ambient::gen_simplex(x * s2, y * s2, particle[["duration"]] + time, seed = seed))
-      width <- r * min(max(heightValue, 0.01), lwd) * (particle[["time"]] / particle[["duration"]])
       # Record position
       index <- (i - 1) * n + 1 + (j - 1)
       canvas[index, "x"] <- x

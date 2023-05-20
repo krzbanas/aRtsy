@@ -39,10 +39,10 @@ This function draws paint splatters on a canvas using a particle
 }
 \examples{
 \donttest{
-set.seed(1)
+set.seed(2)
 
 # Simple example
-canvas_splatter(colors = colorPalette("mixer1"))
+canvas_splatter(colors = colorPalette("origami"), n = 200, iterations = 250)
 }
 
 }
