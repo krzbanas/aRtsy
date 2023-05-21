@@ -35,7 +35,7 @@ arma::mat cpp_polylines(arma::mat canvas,
       x1 = canvas.at(i-1, 0) + R::rnorm(0, xradius);
       if (x1 < 0) {
         x1 = 0;
-	  } else if (x1 > cols) {
+      } else if (x1 > cols) {
         x1 = cols;
       }
       c1 = x1 > (canvas.at(0, 0) + (xradius * R::runif(0.5, 2)));

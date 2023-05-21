@@ -60,6 +60,9 @@
 
 canvas_splatter <- function(colors, background = "#fafafa", iterations = 250,
                             n = 250, lwd = 0.1, resolution = 500) {
+  .checkUserInput(
+    resolution = resolution, background = background, iterations = iterations
+  )
   heightMap <- .noise(dims = c(resolution, resolution), type = "perlin", limits = c(0, 255))
   canvas <- cpp_splatter(heightMap, iterations, n, resolution, length(c(background, colors)), lwd)
   canvas <- as.data.frame(canvas)

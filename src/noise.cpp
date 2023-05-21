@@ -33,7 +33,7 @@ arma::vec cpp_knn(const arma::vec& x,
     Rcpp::checkUserInterrupt();
     const arma::uvec& si = arma::sort_index(sqrt(arma::square(x - newx[i]) + arma::square(y - newy[i])));
     // Inner loop
-	for (int j = 0; j < k; ++j) {
+    for (int j = 0; j < k; ++j) {
       newz.at(i) += z.at(si.at(j)) / k;
     }
   }

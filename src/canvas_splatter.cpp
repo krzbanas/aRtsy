@@ -16,64 +16,43 @@
 #include <RcppArmadillo.h>
 // [[Rcpp::depends(RcppArmadillo)]]
 
-double gen_simplex(double x, double y, double z, int seed) {
-    Rcpp::Environment pkg = Rcpp::Environment::namespace_env("ambient");
-    Rcpp::Function f = pkg["gen_simplex"];
-    Rcpp::NumericVector result = f( Rcpp::Named("x", x), Rcpp::Named("y", y), Rcpp::Named("z", z), Rcpp::Named("seed", seed));
-	double out = result[0];
-	return out;
-}
-
-Rcpp::DoubleVector splatter_sphere(const double scale) {
-  const double r = R::runif(0, 1) * 2 * M_PI;
-  Rcpp::DoubleVector out(2);
-  out[0] = cos(r) * scale;
-  out[1] = sin(r) * scale;
+double gen_simplex(const double& x,
+                   const double& y,
+                   const double& z,
+                   const int& seed) {
+  Rcpp::Environment pkg = Rcpp::Environment::namespace_env("ambient");
+  Rcpp::Function f = pkg["gen_simplex"];
+  Rcpp::NumericVector result = f( Rcpp::Named("x", x), Rcpp::Named("y", y), Rcpp::Named("z", z), Rcpp::Named("seed", seed));
+  double out = result[0];
   return out;
 }
 
-arma::mat init_particles(arma::mat particles,
-                         const int resolution,
-                         const int ncols) {
-  double startArea = 0.5;
-  double maxRadius = 10;
-  double scale = resolution / 2;
-  int nrows = particles.n_rows;
-  for (int i = 0; i < nrows; ++i) {
-    particles.at(i, 0) = i + 1; // z
-    Rcpp::DoubleVector pos = splatter_sphere(R::runif(0, scale * startArea));
-    particles.at(i, 1) = pos[0] + resolution / 2; // x-position
-    particles.at(i, 2) = pos[1] + scale; // y-position
-    particles.at(i, 3) = R::runif(0.01, maxRadius); // radius
-    particles.at(i, 4) = R::runif(1, 500); // duration
-    particles.at(i, 5) = R::runif(0, particles.at(i, 4)); // time
-    particles.at(i, 6) = R::runif(-1, 1); // x-velocity
-    particles.at(i, 7) = R::runif(-1, 1); // y-velocity
-    particles.at(i, 8) = R::runif(0.5, 1); // speed
-    particles.at(i, 9) = ceil(R::runif(0, ncols)); // color
-  }
-  return particles;
+Rcpp::NumericVector init_position(const double& scale) {
+  const double r = R::runif(0, 1) * 2 * M_PI;
+  Rcpp::NumericVector out = Rcpp::NumericVector::create(cos(r) * scale, sin(r) * scale);
+  return out;
 }
 
-arma::mat reset_particle(arma::mat particles,
-                         const int i,
-                         const int resolution,
-                         const int ncols) {
+void reset_particles(arma::mat& particles,
+                    const Rcpp::IntegerVector& indices,
+                    const int& resolution,
+                    const int& ncols) {
   double startArea = 0.5;
   double maxRadius = 10;
   double scale = resolution / 2;
-  particles.at(i, 0) = arma::max(particles.col(0)) + 1; // z
-  Rcpp::DoubleVector pos = splatter_sphere(R::runif(0, scale * startArea));
-  particles.at(i, 1) = pos[0] + resolution / 2; // x-position
-  particles.at(i, 2) = pos[1] + scale; // y-position
-  particles.at(i, 3) = R::runif(0.01, maxRadius); // radius
-  particles.at(i, 4) = R::runif(1, 500); // duration
-  particles.at(i, 5) = R::runif(0, particles.at(i, 4)); // time
-  particles.at(i, 6) = R::runif(-1, 1); // x-velocity
-  particles.at(i, 7) = R::runif(-1, 1); // y-velocity
-  particles.at(i, 8) = R::runif(0.5, 1); // speed
-  particles.at(i, 9) = ceil(R::runif(0, ncols)); // color
-  return particles;
+  for (auto index : indices) {
+    particles.at(index, 0) = arma::max(particles.col(0)) + 1;     // id
+    Rcpp::NumericVector pos = init_position(R::runif(0, scale * startArea));
+    particles.at(index, 1) = pos[0] + resolution / 2;             // x-position
+    particles.at(index, 2) = pos[1] + scale;                      // y-position
+    particles.at(index, 3) = R::runif(0.01, maxRadius);           // radius
+    particles.at(index, 4) = R::runif(1, 500);                    // duration
+    particles.at(index, 5) = R::runif(0, particles.at(index, 4)); // time
+    particles.at(index, 6) = R::runif(-1, 1);                     // x-velocity
+    particles.at(index, 7) = R::runif(-1, 1);                     // y-velocity
+    particles.at(index, 8) = R::runif(0.5, 1);                    // speed
+    particles.at(index, 9) = ceil(R::runif(0, ncols));            // color
+  }
 }
 
 // [[Rcpp::export]]
@@ -85,12 +64,13 @@ arma::mat cpp_splatter(const arma::mat& heightMap,
                        double& lwd) {
   arma::mat particles(n, 10);
   arma::mat canvas(iterations * n, 7);
-  particles = init_particles(particles, resolution, ncols);
+  Rcpp::IntegerVector indices = Rcpp::seq(0, n - 1);
+  reset_particles(particles, indices, resolution, ncols);
   const double seed = ceil(R::runif(0, 50000));
   int time = 0;
   for (int i = 0; i < iterations; ++i) {
-    Rcpp::checkUserInterrupt();
     ++time;
+    Rcpp::checkUserInterrupt();
     for (int j = 0; j < n; j++) {
       const double x = particles.at(j, 1);
       const double y = particles.at(j, 2);
@@ -118,17 +98,17 @@ arma::mat cpp_splatter(const arma::mat& heightMap,
       particles.at(j, 2) = particles.at(j, 2) + move[1];
       // Record position
       const int index = i * n + j;
-      canvas.at(index, 0) = x; // x position
-      canvas.at(index, 1) = y; // y position
-      canvas.at(index, 2) = particles.at(j, 1); // end x position
-      canvas.at(index, 3) = particles.at(j, 2); // end y position
+      canvas.at(index, 0) = x;                  // x-position
+      canvas.at(index, 1) = y;                  // y-position
+      canvas.at(index, 2) = particles.at(j, 1); // ending x-position
+      canvas.at(index, 3) = particles.at(j, 2); // ending y-position
       canvas.at(index, 4) = particles.at(j, 9); // color
-      canvas.at(index, 5) = particles.at(j, 0); // z
-      canvas.at(index, 6) = width; // width
+      canvas.at(index, 5) = particles.at(j, 0); // id
+      canvas.at(index, 6) = width;              // width
       // Update time
       ++particles.at(j, 5);
       if (particles.at(j, 5) > particles.at(j, 4) || (particles.at(j, 1) < 0 || particles.at(j, 1) > resolution) || (particles.at(j, 2) < 0 || particles.at(j, 2) > resolution)) {
-        particles = reset_particle(particles, j, resolution, ncols);
+        reset_particles(particles, Rcpp::IntegerVector::create(j), resolution, ncols);
       }
     }
   }
