@@ -402,7 +402,7 @@ canvas_strokes(colors = colorPalette("tuscany1"))
 
 #### Swirls
 
-This artwork uses a particle system (described in [this](https://mattdesl.svbtle.com/generative-art-with-nodejs-and-canvas) blog post by Matt Deslauriers) to create swirling lines. The particles in the system all have a speed and velocity that they travel around on the canvas with.
+In this artwork, inspired by Matt Deslauriers' blog post on [generative art with Node.js and canvas](https://mattdesl.svbtle.com/generative-art-with-nodejs-and-canvas), a particle system takes center stage, giving birth to enchanting swirling lines. The individual particles in the system are subjected to velocities in two directions, dictating the paths they traverse while shaping the swirls on the canvas.
 
 <p align="center">
   <img src='https://github.com/koenderks/aRtsy/raw/development/png/swirls/2023-05-18.png' width='30%'>
