@@ -28,44 +28,44 @@ double gen_simplex(const double& x,
   return out;
 }
 
-Rcpp::NumericVector init_position(const double& scale) {
+Rcpp::NumericVector init_swirl_position(const double& scale) {
   const double r = R::runif(0, 1) * 2 * M_PI;
   Rcpp::NumericVector out = Rcpp::NumericVector::create(cos(r) * scale, sin(r) * scale);
   return out;
 }
 
-void reset_particles(arma::mat& particles,
-                    const Rcpp::IntegerVector& indices,
-                    const int& resolution,
-                    const int& ncols) {
+void reset_swirl(arma::mat& particles,
+                 const Rcpp::IntegerVector& indices,
+                 const int& resolution,
+                 const int& ncols) {
   double scale = resolution / 2;
   for (int index : indices) {
     particles.at(index, 0) = arma::max(particles.col(0)) + 1;     // id
-    Rcpp::NumericVector pos = init_position(R::runif(0, scale * 0.5));
+    Rcpp::NumericVector pos = init_swirl_position(R::runif(0, scale * 0.5));
     particles.at(index, 1) = pos[0] + scale;                      // x-position
     particles.at(index, 2) = pos[1] + scale;                      // y-position
     particles.at(index, 3) = R::runif(0.01, 10);                  // radius
-    particles.at(index, 4) = R::runif(1, 500);                    // duration
+    particles.at(index, 4) = R::runif(1, 1000);                    // duration
     particles.at(index, 5) = R::runif(0, particles.at(index, 4)); // time
     particles.at(index, 6) = R::runif(-1, 1);                     // x-velocity
     particles.at(index, 7) = R::runif(-1, 1);                     // y-velocity
-    particles.at(index, 8) = R::runif(0.5, 2);                    // speed
+    particles.at(index, 8) = R::runif(0.5, 1);                    // speed
     particles.at(index, 9) = ceil(R::runif(0, ncols));            // color
   }
 }
 
 // [[Rcpp::export]]
-arma::mat cpp_splatter(const arma::mat& heightMap,
-                       const int& iterations,
-                       const int& n,
-                       const int& resolution,
-                       const int& ncols,
-                       double& lwd) {
+arma::mat cpp_swirls(const arma::mat& heightMap,
+                     const int& iterations,
+                     const int& n,
+                     const int& resolution,
+                     const int& ncols,
+                     double& lwd) {
   int time = 0;
   const double seed = ceil(R::runif(0, INT_MAX)), freq = R::runif(0.001, 0.01);
   Rcpp::IntegerVector indices = Rcpp::seq(0, n - 1);
   arma::mat particles(n, 10), canvas(iterations * n, 7);
-  reset_particles(particles, indices, resolution, ncols);
+  reset_swirl(particles, indices, resolution, ncols);
   for (int i = 0; i < iterations; ++i) {
     ++time;
     Rcpp::checkUserInterrupt();
@@ -84,7 +84,7 @@ arma::mat cpp_splatter(const arma::mat& heightMap,
       double pS = fmin(fmax(heightValue, 0.00001), 0.0001);
       const double angle = gen_simplex(fx * pS, fy * pS, particles.at(j, 4) + time, freq, seed) * M_PI * 2;
       // Calculate speed
-      const double speed = particles.at(j, 8) + fmin(fmax(1 - heightValue, 0), 2);
+      const double speed = particles.at(j, 8) + fmin(fmax(1 - heightValue, 0), 1);
       // Update particle velocity
       Rcpp::DoubleVector velocity = {particles.at(j, 6) + cos(angle), particles.at(j, 7) + sin(angle)};
       velocity = velocity / sqrt(sum(pow(velocity, 2)));
@@ -106,7 +106,7 @@ arma::mat cpp_splatter(const arma::mat& heightMap,
       // Update time
       ++particles.at(j, 5);
       if (particles.at(j, 5) > particles.at(j, 4) || (particles.at(j, 1) < 0 || particles.at(j, 1) > resolution) || (particles.at(j, 2) < 0 || particles.at(j, 2) > resolution)) {
-        reset_particles(particles, Rcpp::IntegerVector::create(j), resolution, ncols);
+        reset_swirl(particles, Rcpp::IntegerVector::create(j), resolution, ncols);
       }
     }
   }

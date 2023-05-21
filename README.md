@@ -67,11 +67,11 @@ saveCanvas(artwork, filename = "myArtwork.png")
 * [`canvas_splits()`](#split-lines)
 * [`canvas_smoke()`](#rainbow-smoke)
 * [`canvas_stripes()`](#stripes)
-* [`canvas_splatter()`](#paint-splatter)
 * [`canvas_strokes()`](#paint-strokes)
 * [`canvas_phyllotaxis()`](#phyllotaxis)
 * [`canvas_tiles()`](#portuguese-tiles)
 * [`canvas_recaman()`](#recamáns-sequence)
+* [`canvas_swirls()`](#swirls)
 * [`canvas_turmite()`](#turmite)
 * [`canvas_watercolors()`](#watercolors)
 
@@ -346,24 +346,6 @@ canvas_stripes(colors = colorPalette("random", n = 10))
 # see ?canvas_stripes for more input parameters of this function
 ```
 
-#### Paint splatter
-
-This artwork uses a particle system (described in [this](https://mattdesl.svbtle.com/generative-art-with-nodejs-and-canvas) blog post by Matt Deslauriers) to create an image that look like paint splatter. The particles in the system all have a speed and velocity that they travel around on the canvas with.
-
-<p align="center">
-  <img src='https://github.com/koenderks/aRtsy/raw/development/png/splatters/2023-05-19.png' width='30%'>
-  <img src='https://github.com/koenderks/aRtsy/raw/development/png/splatters/2023-05-20.png' width='30%'>
-  <img src='https://github.com/koenderks/aRtsy/raw/development/png/splatters/2023-05-18.png' width='30%'>
-</p>
-
-You can use the `canvas_splatter()` function to make your own artwork using this algorithm.
-
-```r
-set.seed(1)
-canvas_splatter(colors = colorPalette("tuscany1"))
-# see ?canvas_splatter for more input parameters of this function
-```
-
 #### Paint strokes
 
 When you think of the act of painting, you probably imagine stroking paint on a canvas. This type of artwork tries to mimic that activity. The algorithm is based on the simple idea that each next point on a grid-based canvas has a chance to take over the color of an adjacent colored point, but also has a minor chance of generating a new color. Going over the canvas like this results in something that looks like strokes of paint.
@@ -456,6 +438,24 @@ You can use the `canvas_turmite()` function to make your own artwork using this 
 set.seed(1)
 canvas_turmite(colors = colorPalette("dark2"))
 # see ?canvas_turmite for more input parameters of this function
+```
+
+#### Swirls
+
+This artwork uses a particle system (described in [this](https://mattdesl.svbtle.com/generative-art-with-nodejs-and-canvas) blog post by Matt Deslauriers) to create swirling lines. The particles in the system all have a speed and velocity that they travel around on the canvas with.
+
+<p align="center">
+  <img src='https://github.com/koenderks/aRtsy/raw/development/png/swirls/2023-05-19.png' width='30%'>
+  <img src='https://github.com/koenderks/aRtsy/raw/development/png/swirls/2023-05-20.png' width='30%'>
+  <img src='https://github.com/koenderks/aRtsy/raw/development/png/swirls/2023-05-18.png' width='30%'>
+</p>
+
+You can use the `canvas_swirls()` function to make your own artwork using this algorithm.
+
+```r
+set.seed(1)
+canvas_swirls(colors = colorPalette("tuscany1"))
+# see ?canvas_swirls for more input parameters of this function
 ```
 
 #### Watercolors

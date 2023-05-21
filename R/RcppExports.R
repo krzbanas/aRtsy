@@ -73,10 +73,6 @@ cpp_smoke <- function(canvas, coords, color_mat, init, algorithm, shape, all_col
     .Call('_aRtsy_cpp_smoke', PACKAGE = 'aRtsy', canvas, coords, color_mat, init, algorithm, shape, all_colors)
 }
 
-cpp_splatter <- function(heightMap, iterations, n, resolution, ncols, lwd) {
-    .Call('_aRtsy_cpp_splatter', PACKAGE = 'aRtsy', heightMap, iterations, n, resolution, ncols, lwd)
-}
-
 cpp_splits <- function(x, xend, y, yend, col, sda, ncols, iterations) {
     .Call('_aRtsy_cpp_splits', PACKAGE = 'aRtsy', x, xend, y, yend, col, sda, ncols, iterations)
 }
@@ -87,6 +83,10 @@ cpp_squares <- function(X, neighbors, s, cuts, ratio) {
 
 cpp_strokes <- function(canvas, neighbors, s, p) {
     .Call('_aRtsy_cpp_strokes', PACKAGE = 'aRtsy', canvas, neighbors, s, p)
+}
+
+cpp_swirls <- function(heightMap, iterations, n, resolution, ncols, lwd) {
+    .Call('_aRtsy_cpp_swirls', PACKAGE = 'aRtsy', heightMap, iterations, n, resolution, ncols, lwd)
 }
 
 cpp_tiles <- function(canvas, conv, diffa, diffb, feedrate, killrate, iterations) {

@@ -299,22 +299,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// cpp_splatter
-arma::mat cpp_splatter(const arma::mat& heightMap, const int& iterations, const int& n, const int& resolution, const int& ncols, double& lwd);
-RcppExport SEXP _aRtsy_cpp_splatter(SEXP heightMapSEXP, SEXP iterationsSEXP, SEXP nSEXP, SEXP resolutionSEXP, SEXP ncolsSEXP, SEXP lwdSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::mat& >::type heightMap(heightMapSEXP);
-    Rcpp::traits::input_parameter< const int& >::type iterations(iterationsSEXP);
-    Rcpp::traits::input_parameter< const int& >::type n(nSEXP);
-    Rcpp::traits::input_parameter< const int& >::type resolution(resolutionSEXP);
-    Rcpp::traits::input_parameter< const int& >::type ncols(ncolsSEXP);
-    Rcpp::traits::input_parameter< double& >::type lwd(lwdSEXP);
-    rcpp_result_gen = Rcpp::wrap(cpp_splatter(heightMap, iterations, n, resolution, ncols, lwd));
-    return rcpp_result_gen;
-END_RCPP
-}
 // cpp_splits
 Rcpp::DataFrame cpp_splits(Rcpp::NumericVector& x, Rcpp::NumericVector& xend, Rcpp::NumericVector& y, Rcpp::NumericVector& yend, Rcpp::NumericVector& col, const double& sda, const int& ncols, const int& iterations);
 RcppExport SEXP _aRtsy_cpp_splits(SEXP xSEXP, SEXP xendSEXP, SEXP ySEXP, SEXP yendSEXP, SEXP colSEXP, SEXP sdaSEXP, SEXP ncolsSEXP, SEXP iterationsSEXP) {
@@ -359,6 +343,22 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const int& >::type s(sSEXP);
     Rcpp::traits::input_parameter< const double& >::type p(pSEXP);
     rcpp_result_gen = Rcpp::wrap(cpp_strokes(canvas, neighbors, s, p));
+    return rcpp_result_gen;
+END_RCPP
+}
+// cpp_swirls
+arma::mat cpp_swirls(const arma::mat& heightMap, const int& iterations, const int& n, const int& resolution, const int& ncols, double& lwd);
+RcppExport SEXP _aRtsy_cpp_swirls(SEXP heightMapSEXP, SEXP iterationsSEXP, SEXP nSEXP, SEXP resolutionSEXP, SEXP ncolsSEXP, SEXP lwdSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::mat& >::type heightMap(heightMapSEXP);
+    Rcpp::traits::input_parameter< const int& >::type iterations(iterationsSEXP);
+    Rcpp::traits::input_parameter< const int& >::type n(nSEXP);
+    Rcpp::traits::input_parameter< const int& >::type resolution(resolutionSEXP);
+    Rcpp::traits::input_parameter< const int& >::type ncols(ncolsSEXP);
+    Rcpp::traits::input_parameter< double& >::type lwd(lwdSEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_swirls(heightMap, iterations, n, resolution, ncols, lwd));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -445,10 +445,10 @@ static const R_CallMethodDef CallEntries[] = {
     {"_aRtsy_cpp_polylines", (DL_FUNC) &_aRtsy_cpp_polylines, 5},
     {"_aRtsy_cpp_recaman", (DL_FUNC) &_aRtsy_cpp_recaman, 3},
     {"_aRtsy_cpp_smoke", (DL_FUNC) &_aRtsy_cpp_smoke, 7},
-    {"_aRtsy_cpp_splatter", (DL_FUNC) &_aRtsy_cpp_splatter, 6},
     {"_aRtsy_cpp_splits", (DL_FUNC) &_aRtsy_cpp_splits, 8},
     {"_aRtsy_cpp_squares", (DL_FUNC) &_aRtsy_cpp_squares, 5},
     {"_aRtsy_cpp_strokes", (DL_FUNC) &_aRtsy_cpp_strokes, 4},
+    {"_aRtsy_cpp_swirls", (DL_FUNC) &_aRtsy_cpp_swirls, 6},
     {"_aRtsy_cpp_tiles", (DL_FUNC) &_aRtsy_cpp_tiles, 7},
     {"_aRtsy_cpp_turmite", (DL_FUNC) &_aRtsy_cpp_turmite, 5},
     {"_aRtsy_cpp_watercolors", (DL_FUNC) &_aRtsy_cpp_watercolors, 5},

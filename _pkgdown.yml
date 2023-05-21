@@ -57,10 +57,10 @@ reference:
       - canvas_planet
       - canvas_recaman
       - canvas_smoke
-      - canvas_splatter
       - canvas_splits
       - canvas_stripes
       - canvas_strokes
+      - canvas_swirls
       - canvas_tiles
       - canvas_turmite
       - canvas_watercolors

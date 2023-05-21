@@ -13,16 +13,16 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#' Draw Paint Splatter
+#' Draw Swirls
 #'
-#' @description This function draws paint splatter on a canvas using a particle
-#'   system.
+#' @description This function draws swirling stripes on a canvas by simulating a
+#'   particle system.
 #'
-#' @usage canvas_splatter(
+#' @usage canvas_swirls(
 #'   colors,
 #'   background = "#fafafa",
 #'   iterations = 250,
-#'   n = 250,
+#'   n = 100,
 #'   lwd = 0.1,
 #'   resolution = 500
 #' )
@@ -53,19 +53,19 @@
 #' set.seed(2)
 #'
 #' # Simple example
-#' canvas_splatter(colors = colorPalette("origami"), iterations = 500, n = 500)
+#' canvas_swirls(colors = colorPalette("origami"), iterations = 500, n = 500)
 #' }
 #'
 #' @export
 
-canvas_splatter <- function(colors, background = "#fafafa", iterations = 250,
-                            n = 250, lwd = 0.1, resolution = 500) {
+canvas_swirls <- function(colors, background = "#fafafa", iterations = 250,
+                          n = 100, lwd = 0.1, resolution = 500) {
   .checkUserInput(
     resolution = resolution, background = background, iterations = iterations
   )
   heightMap <- .noise(dims = c(resolution, resolution), type = "perlin", limits = c(0, 255))
   palette <- c(background, colors)
-  canvas <- cpp_splatter(heightMap, iterations, n, resolution, length(palette), lwd)
+  canvas <- cpp_swirls(heightMap, iterations, n, resolution, length(palette), lwd)
   canvas <- as.data.frame(canvas)
   colnames(canvas) <- c("x", "y", "xend", "yend", "color", "z", "width")
   canvas <- canvas[((canvas[["xend"]] > 0 & canvas[["xend"]] < resolution) & (canvas[["yend"]] > 0 & canvas[["yend"]] < resolution)), ]
