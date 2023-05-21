@@ -45,9 +45,9 @@ reference:
       The Iterative collection implements algorithms whose state is dependent on a previous state.
     contents:
       - canvas_ant
+      - canvas_chladni
       - canvas_cobweb
       - canvas_collatz
-      - canvas_chladni
       - canvas_flame
       - canvas_flow
       - canvas_maze

@@ -55,23 +55,23 @@ saveCanvas(artwork, filename = "myArtwork.png")
 *The Iterative collection*
 
 * [`canvas_ant()`](#langtons-ant)
+* [`canvas_chladni()`](#chladni-figures)
 * [`canvas_cobweb()`](#cobwebs)
 * [`canvas_collatz()`](#collatz-conjecture)
-* [`canvas_chladni()`](#chladni-figures)
 * [`canvas_flame()`](#fractal-flames)
 * [`canvas_flow()`](#flow-fields)
 * [`canvas_maze()`](#mazes)
 * [`canvas_mesh()`](#meshes)
 * [`canvas_petri()`](#petri-dishes)
+* [`canvas_phyllotaxis()`](#phyllotaxis)
 * [`canvas_planet()`](#planets)
-* [`canvas_splits()`](#split-lines)
+* [`canvas_recaman()`](#recamáns-sequence)
 * [`canvas_smoke()`](#rainbow-smoke)
+* [`canvas_splits()`](#split-lines)
 * [`canvas_stripes()`](#stripes)
 * [`canvas_strokes()`](#paint-strokes)
-* [`canvas_phyllotaxis()`](#phyllotaxis)
-* [`canvas_tiles()`](#portuguese-tiles)
-* [`canvas_recaman()`](#recamáns-sequence)
 * [`canvas_swirls()`](#swirls)
+* [`canvas_tiles()`](#portuguese-tiles)
 * [`canvas_turmite()`](#turmite)
 * [`canvas_watercolors()`](#watercolors)
 
@@ -123,6 +123,24 @@ canvas_ant(colors = colorPalette("house"))
 # see ?canvas_ant for more input parameters of this function
 ```
 
+#### Chladni figures
+
+This function draws [Chladni](https://en.wikipedia.org/wiki/Ernst_Chladni) figures on the canvas. It works by generating one or multiple sine waves on a square matrix. You can provide the waves to be added yourself. After generating the waves it is possible to warp them using a [domain warping](https://iquilezles.org/articles/warp/) technique. The angles and distances for the warp can be set manually or according to a type of noise.
+
+<p align="center">
+  <img src='https://github.com/koenderks/aRtsy/raw/development/png/chladnis/2021-11-12.png' width='30%'>
+  <img src='https://github.com/koenderks/aRtsy/raw/development/png/chladnis/2021-11-13.png' width='30%'>
+  <img src='https://github.com/koenderks/aRtsy/raw/development/png/chladnis/2021-11-14.png' width='30%'>
+</p>
+
+You can use the `canvas_chladni()` function to make your own artwork using this algorithm.
+
+```r
+set.seed(1)
+canvas_chladni(colors = colorPalette("tuscany1"))
+# see ?canvas_chladni for more input parameters of this function
+```
+
 #### Cobwebs
 
 This function draws a lines in a structure that resemble cobwebs. The algorithm creates many [Fibonacci spirals](https://en.wikipedia.org/wiki/Golden_spiral) shifted by random noise from a normal distribution.
@@ -164,24 +182,6 @@ You can use the `canvas_collatz()` function to make your own artwork using this 
 set.seed(1)
 canvas_collatz(colors = colorPalette("tuscany3"))
 # see ?canvas_collatz for more input parameters of this function
-```
-
-#### Chladni figures
-
-This function draws [Chladni](https://en.wikipedia.org/wiki/Ernst_Chladni) figures on the canvas. It works by generating one or multiple sine waves on a square matrix. You can provide the waves to be added yourself. After generating the waves it is possible to warp them using a [domain warping](https://iquilezles.org/articles/warp/) technique. The angles and distances for the warp can be set manually or according to a type of noise.
-
-<p align="center">
-  <img src='https://github.com/koenderks/aRtsy/raw/development/png/chladnis/2021-11-12.png' width='30%'>
-  <img src='https://github.com/koenderks/aRtsy/raw/development/png/chladnis/2021-11-13.png' width='30%'>
-  <img src='https://github.com/koenderks/aRtsy/raw/development/png/chladnis/2021-11-14.png' width='30%'>
-</p>
-
-You can use the `canvas_chladni()` function to make your own artwork using this algorithm.
-
-```r
-set.seed(1)
-canvas_chladni(colors = colorPalette("tuscany1"))
-# see ?canvas_chladni for more input parameters of this function
 ```
 
 #### Fractal flames
@@ -274,6 +274,24 @@ canvas_petri(colors = colorPalette("sooph"))
 # see ?canvas_petri for more input parameters of this function
 ```
 
+#### Phyllotaxis
+
+This function draws a [Phyllotaxis](https://en.wikipedia.org/wiki/Phyllotaxis) on the canvas. This structure represents the arrangement of leaves on a plant stem.
+
+<p align="center">
+  <img src='https://github.com/koenderks/aRtsy/raw/development/png/phyllotaxis/2021-11-05.png' width='30%'>
+  <img src='https://github.com/koenderks/aRtsy/raw/development/png/phyllotaxis/2021-11-03.png' width='30%'>
+  <img src='https://github.com/koenderks/aRtsy/raw/development/png/phyllotaxis/2021-11-04.png' width='30%'>
+</p>
+
+You can use the `canvas_phyllotaxis()` function to make your own artwork using this algorithm.
+
+```r
+set.seed(1)
+canvas_phyllotaxis(colors = colorPalette("tuscany1"))
+# see ?canvas_phyllotaxis for more input parameters of this function
+```
+
 #### Planets
 
 We all love space, and this type of artwork puts you right between the planets. The algorithm creates one or multiple planets in space and uses a cellular automata (described in the blog post [Neighborhoods: Experimenting with Cyclic Cellular Automata](https://fronkonstin.com/2021/01/02/neighborhoods-experimenting-with-cyclic-cellular-automata/) by Antonio Sánchez Chinchón) to fill in their surfaces. The color and placement of the planets can be set manually.
@@ -292,22 +310,22 @@ canvas_planet(colors = colorPalette("retro3"))
 # see ?canvas_planet for more input parameters of this function
 ```
 
-#### Split lines
+#### Recamán's sequence
 
-This function generates a [fractal curve](https://en.wikipedia.org/wiki/Fractal_curve). It starts with four simple lines and proceeds to split each line in four new line segments. If this action is repeated for some time, and each time the same split is made, the end product is a fractal curve. The fractal curve in this function (optionally) uses some noise to create random distortions in the curve.
+This function draws Recamán's sequence on a canvas. The algorithm takes increasingly large steps backwards on the positive number line, but takes a step forward if it is unable to perform the step backwards.
 
 <p align="center">
-  <img src='https://github.com/koenderks/aRtsy/raw/development/png/splits/2022-05-03.png' width='30%'>
-  <img src='https://github.com/koenderks/aRtsy/raw/development/png/splits/2022-05-01.png' width='30%'>
-  <img src='https://github.com/koenderks/aRtsy/raw/development/png/splits/2022-05-02.png' width='30%'>
+  <img src='https://github.com/koenderks/aRtsy/raw/development/png/recamans/2021-11-02.png' width='30%'>
+  <img src='https://github.com/koenderks/aRtsy/raw/development/png/recamans/2021-11-03.png' width='30%'>
+  <img src='https://github.com/koenderks/aRtsy/raw/development/png/recamans/2021-11-04.png' width='30%'>
 </p>
 
-You can use the `canvas_splits()` function to make your own artwork using this algorithm.
+You can use the `canvas_recaman()` function to make your own artwork using this algorithm.
 
 ```r
 set.seed(1)
-canvas_splits(colors = colorPalette("origami"))
-# see ?canvas_splits for more input parameters of this function
+canvas_recaman(colors = colorPalette("random", n = 10))
+# see ?canvas_recaman for more input parameters of this function
 ```
 
 #### Rainbow smoke
@@ -326,6 +344,24 @@ You can use the `canvas_smoke()` function to make your own artwork using this al
 set.seed(1)
 canvas_smoke(colors = colorPalette("random", 1024))
 # see ?canvas_smoke for more input parameters of this function
+```
+
+#### Split lines
+
+This function generates a [fractal curve](https://en.wikipedia.org/wiki/Fractal_curve). It starts with four simple lines and proceeds to split each line in four new line segments. If this action is repeated for some time, and each time the same split is made, the end product is a fractal curve. The fractal curve in this function (optionally) uses some noise to create random distortions in the curve.
+
+<p align="center">
+  <img src='https://github.com/koenderks/aRtsy/raw/development/png/splits/2022-05-03.png' width='30%'>
+  <img src='https://github.com/koenderks/aRtsy/raw/development/png/splits/2022-05-01.png' width='30%'>
+  <img src='https://github.com/koenderks/aRtsy/raw/development/png/splits/2022-05-02.png' width='30%'>
+</p>
+
+You can use the `canvas_splits()` function to make your own artwork using this algorithm.
+
+```r
+set.seed(1)
+canvas_splits(colors = colorPalette("origami"))
+# see ?canvas_splits for more input parameters of this function
 ```
 
 #### Stripes
@@ -364,22 +400,22 @@ canvas_strokes(colors = colorPalette("tuscany1"))
 # see ?canvas_strokes for more input parameters of this function
 ```
 
-#### Phyllotaxis
+#### Swirls
 
-This function draws a [Phyllotaxis](https://en.wikipedia.org/wiki/Phyllotaxis) on the canvas. This structure represents the arrangement of leaves on a plant stem.
+This artwork uses a particle system (described in [this](https://mattdesl.svbtle.com/generative-art-with-nodejs-and-canvas) blog post by Matt Deslauriers) to create swirling lines. The particles in the system all have a speed and velocity that they travel around on the canvas with.
 
 <p align="center">
-  <img src='https://github.com/koenderks/aRtsy/raw/development/png/phyllotaxis/2021-11-05.png' width='30%'>
-  <img src='https://github.com/koenderks/aRtsy/raw/development/png/phyllotaxis/2021-11-03.png' width='30%'>
-  <img src='https://github.com/koenderks/aRtsy/raw/development/png/phyllotaxis/2021-11-04.png' width='30%'>
+  <img src='https://github.com/koenderks/aRtsy/raw/development/png/swirls/2023-05-18.png' width='30%'>
+  <img src='https://github.com/koenderks/aRtsy/raw/development/png/swirls/2023-05-20.png' width='30%'>
+  <img src='https://github.com/koenderks/aRtsy/raw/development/png/swirls/2023-05-19.png' width='30%'>
 </p>
 
-You can use the `canvas_phyllotaxis()` function to make your own artwork using this algorithm.
+You can use the `canvas_swirls()` function to make your own artwork using this algorithm.
 
 ```r
 set.seed(1)
-canvas_phyllotaxis(colors = colorPalette("tuscany1"))
-# see ?canvas_phyllotaxis for more input parameters of this function
+canvas_swirls(colors = colorPalette("tuscany1"))
+# see ?canvas_swirls for more input parameters of this function
 ```
 
 #### Portuguese tiles
@@ -398,24 +434,6 @@ You can use the `canvas_tiles()` function to make your own artwork using this al
 set.seed(1)
 canvas_tiles(colors = colorPalette("azul"))
 # see ?canvas_tiles for more input parameters of this function
-```
-
-#### Recamán's sequence
-
-This function draws Recamán's sequence on a canvas. The algorithm takes increasingly large steps backwards on the positive number line, but takes a step forward if it is unable to perform the step backwards.
-
-<p align="center">
-  <img src='https://github.com/koenderks/aRtsy/raw/development/png/recamans/2021-11-02.png' width='30%'>
-  <img src='https://github.com/koenderks/aRtsy/raw/development/png/recamans/2021-11-03.png' width='30%'>
-  <img src='https://github.com/koenderks/aRtsy/raw/development/png/recamans/2021-11-04.png' width='30%'>
-</p>
-
-You can use the `canvas_recaman()` function to make your own artwork using this algorithm.
-
-```r
-set.seed(1)
-canvas_recaman(colors = colorPalette("random", n = 10))
-# see ?canvas_recaman for more input parameters of this function
 ```
 
 #### Turmite
@@ -438,24 +456,6 @@ You can use the `canvas_turmite()` function to make your own artwork using this 
 set.seed(1)
 canvas_turmite(colors = colorPalette("dark2"))
 # see ?canvas_turmite for more input parameters of this function
-```
-
-#### Swirls
-
-This artwork uses a particle system (described in [this](https://mattdesl.svbtle.com/generative-art-with-nodejs-and-canvas) blog post by Matt Deslauriers) to create swirling lines. The particles in the system all have a speed and velocity that they travel around on the canvas with.
-
-<p align="center">
-  <img src='https://github.com/koenderks/aRtsy/raw/development/png/swirls/2023-05-18.png' width='30%'>
-  <img src='https://github.com/koenderks/aRtsy/raw/development/png/swirls/2023-05-20.png' width='30%'>
-  <img src='https://github.com/koenderks/aRtsy/raw/development/png/swirls/2023-05-19.png' width='30%'>
-</p>
-
-You can use the `canvas_swirls()` function to make your own artwork using this algorithm.
-
-```r
-set.seed(1)
-canvas_swirls(colors = colorPalette("tuscany1"))
-# see ?canvas_swirls for more input parameters of this function
 ```
 
 #### Watercolors
