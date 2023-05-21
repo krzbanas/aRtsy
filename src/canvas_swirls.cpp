@@ -49,7 +49,7 @@ void reset_swirl(arma::mat& particles,
     particles.at(index, 5) = R::runif(0, particles.at(index, 4)); // time
     particles.at(index, 6) = R::runif(-1, 1);                     // x-velocity
     particles.at(index, 7) = R::runif(-1, 1);                     // y-velocity
-    particles.at(index, 8) = R::runif(0.5, 1);                    // speed
+    particles.at(index, 8) = R::runif(0.5, 2);                    // speed
     particles.at(index, 9) = ceil(R::runif(0, ncols));            // color
   }
 }
@@ -84,7 +84,7 @@ arma::mat cpp_swirls(const arma::mat& heightMap,
       double pS = fmin(fmax(heightValue, 0.00001), 0.0001);
       const double angle = gen_simplex(fx * pS, fy * pS, particles.at(j, 4) + time, freq, seed) * M_PI * 2;
       // Calculate speed
-      const double speed = particles.at(j, 8) + fmin(fmax(1 - heightValue, 0), 1);
+      const double speed = particles.at(j, 8) + fmin(fmax(1 - heightValue, 0), 2);
       // Update particle velocity
       Rcpp::DoubleVector velocity = {particles.at(j, 6) + cos(angle), particles.at(j, 7) + sin(angle)};
       velocity = velocity / sqrt(sum(pow(velocity, 2)));
