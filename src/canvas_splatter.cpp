@@ -37,15 +37,13 @@ void reset_particles(arma::mat& particles,
                     const Rcpp::IntegerVector& indices,
                     const int& resolution,
                     const int& ncols) {
-  double startArea = 0.5;
-  double maxRadius = 10;
   double scale = resolution / 2;
-  for (auto index : indices) {
+  for (int index : indices) {
     particles.at(index, 0) = arma::max(particles.col(0)) + 1;     // id
-    Rcpp::NumericVector pos = init_position(R::runif(0, scale * startArea));
-    particles.at(index, 1) = pos[0] + resolution / 2;             // x-position
+    Rcpp::NumericVector pos = init_position(R::runif(0, scale * 0.5));
+    particles.at(index, 1) = pos[0] + scale;                      // x-position
     particles.at(index, 2) = pos[1] + scale;                      // y-position
-    particles.at(index, 3) = R::runif(0.01, maxRadius);           // radius
+    particles.at(index, 3) = R::runif(0.01, 10);                  // radius
     particles.at(index, 4) = R::runif(1, 500);                    // duration
     particles.at(index, 5) = R::runif(0, particles.at(index, 4)); // time
     particles.at(index, 6) = R::runif(-1, 1);                     // x-velocity
@@ -66,7 +64,7 @@ arma::mat cpp_splatter(const arma::mat& heightMap,
   arma::mat canvas(iterations * n, 7);
   Rcpp::IntegerVector indices = Rcpp::seq(0, n - 1);
   reset_particles(particles, indices, resolution, ncols);
-  const double seed = ceil(R::runif(0, 50000));
+  const double seed = ceil(R::runif(0, INT_MAX));
   int time = 0;
   for (int i = 0; i < iterations; ++i) {
     ++time;
