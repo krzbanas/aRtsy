@@ -64,13 +64,14 @@ canvas_splatter <- function(colors, background = "#fafafa", iterations = 250,
     resolution = resolution, background = background, iterations = iterations
   )
   heightMap <- .noise(dims = c(resolution, resolution), type = "perlin", limits = c(0, 255))
-  canvas <- cpp_splatter(heightMap, iterations, n, resolution, length(c(background, colors)), lwd)
+  palette <- c(background, colors)
+  canvas <- cpp_splatter(heightMap, iterations, n, resolution, length(palette), lwd)
   canvas <- as.data.frame(canvas)
   colnames(canvas) <- c("x", "y", "xend", "yend", "color", "z", "width")
   canvas <- canvas[((canvas[["xend"]] > 0 & canvas[["xend"]] < resolution) & (canvas[["yend"]] > 0 & canvas[["yend"]] < resolution)), ]
-  palette <- c(background, colors)[canvas[["color"]]]
+  palette <- palette[canvas[["color"]]]
   artwork <- ggplot2::ggplot(canvas) +
-    ggplot2::geom_segment(mapping = ggplot2::aes(x = x, y = y, xend = xend, yend = yend, group = z), linewidth = canvas[["width"]], color = palette, lineend = "round") +
+    ggplot2::geom_segment(mapping = ggplot2::aes(x = x, y = y, xend = xend, yend = yend, group = z), linewidth = canvas[["width"]], color = palette, lineend = "square") +
     ggplot2::scale_x_continuous(limits = c(0, resolution)) +
     ggplot2::scale_y_continuous(limits = c(0, resolution))
   artwork <- aRtsy::theme_canvas(artwork, background = background)

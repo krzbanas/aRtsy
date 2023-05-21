@@ -19,10 +19,11 @@
 double gen_simplex(const double& x,
                    const double& y,
                    const double& z,
+                   const double& freq,
                    const int& seed) {
   Rcpp::Environment pkg = Rcpp::Environment::namespace_env("ambient");
   Rcpp::Function f = pkg["gen_simplex"];
-  Rcpp::NumericVector result = f( Rcpp::Named("x", x), Rcpp::Named("y", y), Rcpp::Named("z", z), Rcpp::Named("seed", seed));
+  Rcpp::NumericVector result = f( Rcpp::Named("x", x), Rcpp::Named("y", y), Rcpp::Named("z", z), Rcpp::Named("frequency", freq), Rcpp::Named("seed", seed));
   double out = result[0];
   return out;
 }
@@ -48,7 +49,7 @@ void reset_particles(arma::mat& particles,
     particles.at(index, 5) = R::runif(0, particles.at(index, 4)); // time
     particles.at(index, 6) = R::runif(-1, 1);                     // x-velocity
     particles.at(index, 7) = R::runif(-1, 1);                     // y-velocity
-    particles.at(index, 8) = R::runif(0.5, 1);                    // speed
+    particles.at(index, 8) = R::runif(0.5, 2);                    // speed
     particles.at(index, 9) = ceil(R::runif(0, ncols));            // color
   }
 }
@@ -60,16 +61,16 @@ arma::mat cpp_splatter(const arma::mat& heightMap,
                        const int& resolution,
                        const int& ncols,
                        double& lwd) {
-  arma::mat particles(n, 10);
-  arma::mat canvas(iterations * n, 7);
-  Rcpp::IntegerVector indices = Rcpp::seq(0, n - 1);
-  reset_particles(particles, indices, resolution, ncols);
-  const double seed = ceil(R::runif(0, INT_MAX));
   int time = 0;
+  const double seed = ceil(R::runif(0, INT_MAX)), freq = R::runif(0.001, 0.01);
+  Rcpp::IntegerVector indices = Rcpp::seq(0, n - 1);
+  arma::mat particles(n, 10), canvas(iterations * n, 7);
+  reset_particles(particles, indices, resolution, ncols);
   for (int i = 0; i < iterations; ++i) {
     ++time;
     Rcpp::checkUserInterrupt();
-    for (int j = 0; j < n; j++) {
+    for (int j = 0; j < n; ++j) {
+      // Look up texture
       const double x = particles.at(j, 1);
       const double y = particles.at(j, 2);
       const double fx = fmin(fmax(round(x), 0), resolution - 1);
@@ -77,14 +78,13 @@ arma::mat cpp_splatter(const arma::mat& heightMap,
       const double heightValue = heightMap.at(fy, fx) / 255;
       // Calculate line width
       const double s2 = R::runif(0.0001, 0.05);
-      const double noise = gen_simplex(x * s2, y * s2, particles.at(j, 4) + time, seed);
-      const double r = particles.at(j, 3) * fabs(noise);
+      const double r = particles.at(j, 3) * fabs(gen_simplex(x * s2, y * s2, particles.at(j, 4) + time, freq, seed));
       const double width = r * fmin(fmax(heightValue, 0.01), lwd) * (particles.at(j, 5) / particles.at(j, 4));
       // Calculate angle
       double pS = fmin(fmax(heightValue, 0.00001), 0.0001);
-      const double angle = gen_simplex(fx * pS, fy * pS, particles.at(j, 4) + time, seed) * M_PI * 2;
+      const double angle = gen_simplex(fx * pS, fy * pS, particles.at(j, 4) + time, freq, seed) * M_PI * 2;
       // Calculate speed
-      const double speed = particles.at(j, 8) + fmin(fmax(1 - heightValue, 0), 0.1);
+      const double speed = particles.at(j, 8) + fmin(fmax(1 - heightValue, 0), 2);
       // Update particle velocity
       Rcpp::DoubleVector velocity = {particles.at(j, 6) + cos(angle), particles.at(j, 7) + sin(angle)};
       velocity = velocity / sqrt(sum(pow(velocity, 2)));
