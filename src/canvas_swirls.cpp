@@ -60,9 +60,10 @@ arma::mat cpp_swirls(const arma::mat& heightMap,
                      const int& n,
                      const int& resolution,
                      const int& ncols,
-                     double& lwd) {
+                     const double& lwd,
+                     const double& freq) {
   int time = 0;
-  const double seed = ceil(R::runif(0, INT_MAX)), freq = R::runif(0.001, 0.01);
+  const double seed = ceil(R::runif(0, INT_MAX));
   Rcpp::IntegerVector indices = Rcpp::seq(0, n - 1);
   arma::mat particles(n, 10), canvas(iterations * n, 7);
   reset_swirl(particles, indices, resolution, ncols);

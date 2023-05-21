@@ -22,7 +22,8 @@
 #'   colors,
 #'   background = "#fafafa",
 #'   iterations = 250,
-#'   n = 100,
+#'   n = 250,
+#'   curvature = 0.005,
 #'   lwd = 0.1,
 #'   resolution = 500
 #' )
@@ -33,6 +34,9 @@
 #' @param iterations  a positive integer specifying the number of iterations of
 #'   the algorithm.
 #' @param n           a positive integer specifying the number of particles.
+#' @param curvature   a positive number specifying the curvature of the lines.
+#'   Larger values imply relatively curved lines, while lower values produce
+#'   relatively straight lines.
 #' @param lwd         expansion factor for the line width.
 #' @param resolution  resolution of the artwork in pixels per row/column.
 #'   Increasing the resolution increases the quality of the artwork but also
@@ -53,19 +57,20 @@
 #' set.seed(2)
 #'
 #' # Simple example
-#' canvas_swirls(colors = colorPalette("origami"), iterations = 500, n = 500)
+#' canvas_swirls(colors = colorPalette("origami"))
 #' }
 #'
 #' @export
 
 canvas_swirls <- function(colors, background = "#fafafa", iterations = 250,
-                          n = 100, lwd = 0.1, resolution = 500) {
+                          n = 250, curvature = 0.005, lwd = 0.1, resolution = 500) {
   .checkUserInput(
     resolution = resolution, background = background, iterations = iterations
   )
+  stopifnot("'curvature' must be a single value > 0 and <= 0.01" = curvature > 0 && curvature <= 0.01)
   heightMap <- .noise(dims = c(resolution, resolution), type = "perlin", limits = c(0, 255))
   palette <- c(background, colors)
-  canvas <- cpp_swirls(heightMap, iterations, n, resolution, length(palette), lwd)
+  canvas <- cpp_swirls(heightMap, iterations, n, resolution, length(palette), lwd, curvature)
   canvas <- as.data.frame(canvas)
   colnames(canvas) <- c("x", "y", "xend", "yend", "color", "z", "width")
   canvas <- canvas[((canvas[["xend"]] > 0 & canvas[["xend"]] < resolution) & (canvas[["yend"]] > 0 & canvas[["yend"]] < resolution)), ]

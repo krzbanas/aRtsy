@@ -85,8 +85,8 @@ cpp_strokes <- function(canvas, neighbors, s, p) {
     .Call('_aRtsy_cpp_strokes', PACKAGE = 'aRtsy', canvas, neighbors, s, p)
 }
 
-cpp_swirls <- function(heightMap, iterations, n, resolution, ncols, lwd) {
-    .Call('_aRtsy_cpp_swirls', PACKAGE = 'aRtsy', heightMap, iterations, n, resolution, ncols, lwd)
+cpp_swirls <- function(heightMap, iterations, n, resolution, ncols, lwd, freq) {
+    .Call('_aRtsy_cpp_swirls', PACKAGE = 'aRtsy', heightMap, iterations, n, resolution, ncols, lwd, freq)
 }
 
 cpp_tiles <- function(canvas, conv, diffa, diffb, feedrate, killrate, iterations) {

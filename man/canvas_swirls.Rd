@@ -8,7 +8,8 @@ canvas_swirls(
   colors,
   background = "#fafafa",
   iterations = 250,
-  n = 100,
+  n = 250,
+  curvature = 0.005,
   lwd = 0.1,
   resolution = 500
 )
@@ -23,6 +24,10 @@ artwork.}
 the algorithm.}
 
 \item{n}{a positive integer specifying the number of particles.}
+
+\item{curvature}{a positive number specifying the curvature of the lines.
+Larger values imply relatively curved lines, while lower values produce
+relatively straight lines.}
 
 \item{lwd}{expansion factor for the line width.}
 
@@ -42,7 +47,7 @@ This function draws swirling stripes on a canvas by simulating a
 set.seed(2)
 
 # Simple example
-canvas_swirls(colors = colorPalette("origami"), iterations = 500, n = 500)
+canvas_swirls(colors = colorPalette("origami"))
 }
 
 }
