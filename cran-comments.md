@@ -1,5 +1,5 @@
-## aRtsy version 0.2.3
-This is a submission for aRtsy version 0.2.3. In this version I have:
+## aRtsy version 0.2.4
+This is a submission for aRtsy version 0.2.4. In this version I have:
 
 * Added a new function to the package.
 

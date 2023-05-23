@@ -28,6 +28,9 @@ palettes <- c(
   "mixer3",
   "mixer4",
   "nature",
+  "neo1",
+  "neo2",
+  "neo3",
   "neon1",
   "neon2",
   "retro1",
@@ -55,7 +58,7 @@ for (i in seq_along(palettes)) {
   palette <- aRtsy::colorPalette(palettes[i])
   d <- data.frame(y = rep(1, length(palette)), col = palette)
   p <- ggplot2::ggplot(data = d, mapping = ggplot2::aes(y = y, group = col)) +
-    ggplot2::geom_bar(fill = d[["col"]]) +
+    ggplot2::geom_bar(fill = d[["col"]], col = "black", linewidth = 0.1) +
     ggplot2::xlab(palettes[i]) +
     ggplot2::theme(
       axis.title.x = ggplot2::element_text(size = 9),
@@ -75,5 +78,5 @@ for (i in seq_along(palettes)) {
 
 plot <- do.call("ggarrange", c(plotList, nrow = nrow, ncol = ncol)) +
   ggplot2::theme(panel.background = ggplot2::element_rect(fill = NA, colour = NA))
-ggplot2::ggsave(filename = "./man/figures/colors.svg", plot = plot, width = 12.5, height = 17.5, units = "cm")
-ggplot2::ggsave(filename = "./man/figures/colors.pdf", plot = plot, width = 12.5, height = 17.5, units = "cm")
+ggplot2::ggsave(filename = "./man/figures/colors.svg", plot = plot, width = 12.5, height = nrow * 1.25, units = "cm")
+ggplot2::ggsave(filename = "./man/figures/colors.pdf", plot = plot, width = 12.5, height = nrow * 1.25, units = "cm")

@@ -1,3 +1,7 @@
+# aRtsy 0.2.4
+
+ - Added new color palettes `neo1`, `neo2` and `neo3`.
+
 # aRtsy 0.2.3
 
 - Added new function `canvas_swirls()`.
